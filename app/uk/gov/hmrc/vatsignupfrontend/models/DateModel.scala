@@ -53,9 +53,13 @@ object DateModel {
 
   val desFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd").withResolverStyle(ResolverStyle.STRICT)
 
+  val citizenDetailsFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("ddMMuuuu").withResolverStyle(ResolverStyle.STRICT)
+
   def dateConvert(date: DateModel): LocalDate = date.toLocalDate
 
   def dateConvert(date: LocalDate): DateModel = DateModel(date.getDayOfMonth.toString, date.getMonthValue.toString, date.getYear.toString)
+
+  def convertCitizenDetailsDate(cidDate: String): DateModel = dateConvert(LocalDate.parse(cidDate, citizenDetailsFormat))
 
   implicit val format: OFormat[DateModel] = Json.format[DateModel]
 }
