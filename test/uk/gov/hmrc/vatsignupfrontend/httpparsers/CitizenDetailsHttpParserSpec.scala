@@ -22,30 +22,31 @@ import uk.gov.hmrc.http.HttpResponse
 import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.httpparsers.CitizenDetailsHttpParser._
 import uk.gov.hmrc.vatsignupfrontend.models.{DateModel, UserDetailsModel}
+import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 
 class CitizenDetailsHttpParserSpec extends UnitSpec {
   val testHttpVerb = "GET"
   val testUri = "/"
 
   val validJson =  Json.parse(
-    """{
+    s"""{
       |  "name": {
       |    "current": {
-      |      "firstName": "John",
-      |      "lastName": "Smith"
+      |      "firstName": "$testName",
+      |      "lastName": "$testName"
       |    },
       |    "previous": []
       |  },
       |  "ids": {
-      |    "nino": "AA055075C"
+      |    "nino": "$testNino"
       |  },
       |  "dateOfBirth": "11121971"
       |}  """.stripMargin('|'))
 
   val invalidJson =  Json.parse(
-    """{
+    s"""{
       |  "ids": {
-      |    "nino": "AA055075C"
+      |    "nino": "$testNino"
       |  }
       |}""".stripMargin('|'))
 
@@ -58,7 +59,7 @@ class CitizenDetailsHttpParserSpec extends UnitSpec {
       "an instance of Citizen Details can be successfully parsed from the response body" in {
         val httpResponse = HttpResponse(OK, Some(validJson))
 
-        res(httpResponse) shouldBe Right(CitizenDetailsRetrievalSuccess(UserDetailsModel("John", "Smith", "AA055075C",  DateModel("11", "12", "1971"))))
+        res(httpResponse) shouldBe Right(CitizenDetailsRetrievalSuccess(UserDetailsModel(testName, testName, testNino,  DateModel("11", "12", "1971"))))
       }
     }
 

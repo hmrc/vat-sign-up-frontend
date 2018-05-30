@@ -16,9 +16,10 @@
 
 package uk.gov.hmrc.vatsignupfrontend.models
 
-import java.time.format.{DateTimeFormatter, ResolverStyle}
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import uk.gov.hmrc.vatsignupfrontend.models.DateModel._
+
 
 case class UserDetailsModel(firstName: String,
                             lastName: String,
@@ -31,13 +32,11 @@ object UserDetailsModel {
   implicit val writes = Json.writes[UserDetailsModel]
 
   val matchingStubWrites = new OWrites[UserDetailsModel] {
-    private val dobFormat = DateTimeFormatter.ofPattern("ddMMyyyy").withResolverStyle(ResolverStyle.STRICT)
-
     def writes(userDetails: UserDetailsModel) = Json.obj(
       "firstname" -> Json.obj("value" -> userDetails.firstName),
       "lastName"  -> Json.obj("value" -> userDetails.lastName),
       "nino"  -> Json.obj("value" -> userDetails.nino),
-      "dob"  -> Json.obj("value" -> userDetails.dateOfBirth.toLocalDate.format(dobFormat))
+      "dob"  -> Json.obj("value" -> userDetails.dateOfBirth.toLocalDate.format(citizenDetailsFormat))
     )
   }
 
@@ -45,7 +44,7 @@ object UserDetailsModel {
     ((JsPath \ "name" \ "current" \ "firstName").read[String] and
       (JsPath \ "name" \ "current" \ "lastName").read[String] and
       (JsPath \ "ids" \ "nino").read[String] and
-      (JsPath \ "dateOfBirth").read[String].map(dob => DateModel.convertCitizenDetailsDate(dob))
+      (JsPath \ "dateOfBirth").read[String].map(convertCitizenDetailsDate _)
       )(UserDetailsModel.apply _)
 
 }

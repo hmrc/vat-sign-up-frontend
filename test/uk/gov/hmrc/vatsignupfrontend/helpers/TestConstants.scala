@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.vatsignupfrontend.helpers
 
+import java.util.UUID
+
 import uk.gov.hmrc.auth.core.Enrolment
 import uk.gov.hmrc.domain.Generator
 import uk.gov.hmrc.vatsignupfrontend.Constants.Enrolments._
@@ -25,6 +27,7 @@ import scala.util.Random
 
 object TestConstants {
   val testVatNumber: String = TestConstantsGenerator.randomVatNumber
+  val testName: String = UUID.randomUUID().toString
   val testBusinessPostcode: PostCode = PostCode(TestConstantsGenerator.randomPostCode)
   val testCompanyNumber: String = TestConstantsGenerator.randomCrnNumeric
   val testCompanyName: String = Random.alphanumeric.take(10).mkString
