@@ -21,6 +21,7 @@ import javax.inject.{Inject, Singleton}
 import play.api.Mode.Mode
 import play.api.mvc.Call
 import play.api.{Configuration, Environment}
+import uk.gov.hmrc.domain.{SaUtr, TaxIds}
 import uk.gov.hmrc.play.config.ServicesConfig
 import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.{FeatureSwitching, StubIncorporationInformation}
 
@@ -77,6 +78,8 @@ class AppConfig @Inject()(val runModeConfiguration: Configuration, environment: 
 
   def getCompanyName(companyNumber: String) = s"$incorporationInformationUrl/company-number/$companyNumber/company-name"
 
+  def getCitizenDetailsUrl(sautr: String) = s"$citizenDetailsUrl/citizen-details/sautr/$sautr/"
+
   lazy val btaUrl = loadConfig("bta.url")
 
   lazy val agentServicesUrl = loadConfig("agent-services.url")
@@ -86,6 +89,9 @@ class AppConfig @Inject()(val runModeConfiguration: Configuration, environment: 
   lazy val matchingStubUrl = baseUrl("matching-stub")
 
   lazy val stubCitizenDetailsUserUrl = s"$matchingStubUrl/dynamic-cid"
+
+  lazy val citizenDetailsUrl = baseUrl("citizen-details")
+
   lazy val identityVerificationProxyUrl = baseUrl("identity-verification-proxy")
 
   lazy val identityVerificationStartUrl = identityVerificationProxyUrl + "/identity-verification-proxy/journey/start"
