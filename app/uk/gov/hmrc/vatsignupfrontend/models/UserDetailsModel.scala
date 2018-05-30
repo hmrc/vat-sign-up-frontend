@@ -17,8 +17,8 @@
 package uk.gov.hmrc.vatsignupfrontend.models
 
 import java.time.format.{DateTimeFormatter, ResolverStyle}
-
-import play.api.libs.json.{Json, OWrites}
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 
 case class UserDetailsModel(firstName: String,
                             lastName: String,
@@ -40,5 +40,12 @@ object UserDetailsModel {
       "dob"  -> Json.obj("value" -> userDetails.dateOfBirth.toLocalDate.format(dobFormat))
     )
   }
+
+  val citizenDetailsReads: Reads[UserDetailsModel] =
+    ((JsPath \ "name" \ "current" \ "firstName").read[String] and
+      (JsPath \ "name" \ "current" \ "lastName").read[String] and
+      (JsPath \ "ids" \ "nino").read[String] and
+      (JsPath \ "dateOfBirth").read[String].map(dob => DateModel.convertCitizenDetailsDate(dob))
+      )(UserDetailsModel.apply _)
 
 }

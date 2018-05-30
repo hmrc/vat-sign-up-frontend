@@ -21,7 +21,7 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.http.HttpResponse
 import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.httpparsers.CitizenDetailsHttpParser._
-import uk.gov.hmrc.vatsignupfrontend.models.{CitizenDetails, DateModel}
+import uk.gov.hmrc.vatsignupfrontend.models.{DateModel, UserDetailsModel}
 
 class CitizenDetailsHttpParserSpec extends UnitSpec {
   val testHttpVerb = "GET"
@@ -58,7 +58,7 @@ class CitizenDetailsHttpParserSpec extends UnitSpec {
       "an instance of Citizen Details can be successfully parsed from the response body" in {
         val httpResponse = HttpResponse(OK, Some(validJson))
 
-        res(httpResponse) shouldBe Right(CitizenDetailsRetrievalSuccess(CitizenDetails("John", "Smith", DateModel("11", "12", "1971"), "AA055075C")))
+        res(httpResponse) shouldBe Right(CitizenDetailsRetrievalSuccess(UserDetailsModel("John", "Smith", "AA055075C",  DateModel("11", "12", "1971"))))
       }
     }
 

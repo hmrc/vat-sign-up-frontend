@@ -20,8 +20,9 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
 import org.scalatest.{BeforeAndAfterEach, Suite}
-import uk.gov.hmrc.vatsignupfrontend.httpparsers.CitizenDetailsHttpParser.{CitizenDetailsResponse, CitizenDetailsRetrievalFailureResponse, CitizenDetailsRetrievalSuccess, MoreThanOneCitizenMatched, NoCitizenRecord}
-import uk.gov.hmrc.vatsignupfrontend.models.CitizenDetails
+import uk.gov.hmrc.vatsignupfrontend.httpparsers.CitizenDetailsHttpParser.{CitizenDetailsResponse,
+CitizenDetailsRetrievalFailureResponse, CitizenDetailsRetrievalSuccess, MoreThanOneCitizenMatched, NoCitizenRecord}
+import uk.gov.hmrc.vatsignupfrontend.models.UserDetailsModel
 import uk.gov.hmrc.vatsignupfrontend.services.CitizenDetailsService
 
 import scala.concurrent.Future
@@ -44,8 +45,8 @@ trait MockCitizenDetailsService extends BeforeAndAfterEach with MockitoSugar {
       .thenReturn(returnValue)
   }
 
-  def mockCitizenDetailsSuccess(sautr: String, citizenDetails: CitizenDetails): Unit =
-    mockCitizenDetails(sautr)(Future.successful(Right(CitizenDetailsRetrievalSuccess(citizenDetails))))
+  def mockCitizenDetailsSuccess(sautr: String, userDetails: UserDetailsModel): Unit =
+    mockCitizenDetails(sautr)(Future.successful(Right(CitizenDetailsRetrievalSuccess(userDetails))))
 
   def mockCitizenDetailsNotFound(sautr: String): Unit =
     mockCitizenDetails(sautr)(Future.successful(Left(NoCitizenRecord)))

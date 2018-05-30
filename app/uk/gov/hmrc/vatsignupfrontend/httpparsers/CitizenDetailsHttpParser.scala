@@ -20,7 +20,8 @@ package uk.gov.hmrc.vatsignupfrontend.httpparsers
 import play.api.http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND, OK}
 import play.api.libs.json.{JsError, JsResult, JsSuccess}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import uk.gov.hmrc.vatsignupfrontend.models.CitizenDetails
+import uk.gov.hmrc.vatsignupfrontend.models.UserDetailsModel
+import uk.gov.hmrc.vatsignupfrontend.models.UserDetailsModel.citizenDetailsReads
 
 object CitizenDetailsHttpParser {
 
@@ -29,11 +30,11 @@ object CitizenDetailsHttpParser {
   implicit object CitizenDetailsHttpReads extends HttpReads[CitizenDetailsResponse] {
     override def read(method: String, url: String, response: HttpResponse): CitizenDetailsResponse = {
 
-      def parseCitizenDetails: JsResult[CitizenDetails] = response.json.validate[CitizenDetails]
+      def parseCitizenDetails: JsResult[UserDetailsModel] = response.json.validate[UserDetailsModel](citizenDetailsReads)
 
       response.status match {
         case OK => parseCitizenDetails match {
-          case JsSuccess(citizenDetails,  _) => Right(CitizenDetailsRetrievalSuccess(citizenDetails))
+          case JsSuccess(userDetails,  _) => Right(CitizenDetailsRetrievalSuccess(userDetails))
           case JsError(_) => Left(CitizenDetailsRetrievalFailureResponse(INTERNAL_SERVER_ERROR))
         }
         case NOT_FOUND => Left(NoCitizenRecord)
@@ -45,7 +46,7 @@ object CitizenDetailsHttpParser {
 
   sealed trait CitizenDetailsRetrievalFailure
 
-  case class CitizenDetailsRetrievalSuccess(citizenDetails: CitizenDetails)
+  case class CitizenDetailsRetrievalSuccess(userDetails: UserDetailsModel)
 
   case object NoCitizenRecord extends CitizenDetailsRetrievalFailure
 
