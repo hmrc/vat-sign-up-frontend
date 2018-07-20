@@ -33,8 +33,12 @@ error.invalid_company_number.field                                     = Please 
 error.invalid_company_number.summary                                   = Please enter a valid company number
 error.invalid_company_utr.field                                        = Please enter a valid company unique taxpayer reference
 error.invalid_company_utr.summary                                      = Please enter a valid company unique taxpayer reference
-error.invalid_vat_number.field                                         = Please enter a valid vat registration number
-error.invalid_vat_number.summary                                       = Please enter a valid vat registration number
+error.invalid_vat_number.field                                         = Enter your VAT number
+error.invalid_vat_number.summary                                       = Enter your VAT number
+error.invalid_vat_number_length.field                                  = VAT number must be 9 digits
+error.invalid_vat_number_length.summary                                = VAT number must be 9 digits
+error.invalid_vat_number_characters.field                              = VAT number must only include numbers 0 to 9
+error.invalid_vat_number_characters.summary                            = VAT number must only include numbers 0 to 9
 error.invalid_email.field                                              = Please enter a valid email address
 error.invalid_email.summary                                            = Please enter a valid email address
 error.invalid_postcode.field                                           = Please enter a valid postcode
@@ -45,6 +49,8 @@ error.exceeds_max_length_email.field                                   = Email a
 error.exceeds_max_length_email.summary                                 = Email address must be 132 characters or less
 error.yes_no.field                                                     = Please select an option
 error.yes_no.summary                                                   = Please select an option
+error.multiple_vat_check.field                                         = Select yes if you have more than one VAT registered business
+error.multiple_vat_check.summary                                       = Select yes if you have more than one VAT registered business
 
 
 error.invalid_first_name.field                                         = Please enter a valid first name

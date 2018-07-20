@@ -27,7 +27,9 @@ class VatNumberFormSpec extends PlaySpec with GuiceOneAppPerSuite {
 
   "The vatNumberForm" should {
 
-    val error_key = "error.invalid_vat_number"
+    val error_key1 = "error.invalid_vat_number"
+    val error_key2 = "error.invalid_vat_number_length"
+    val error_key3 = "error.invalid_vat_number_characters"
 
     "validate that data containing 9 digits passes" in {
       val actual = vatNumberForm.bind(Map(vatNumber -> testVatNumber)).value
@@ -36,22 +38,22 @@ class VatNumberFormSpec extends PlaySpec with GuiceOneAppPerSuite {
 
     "validate that data has been entered" in {
       val formWithError = vatNumberForm.bind(Map(vatNumber -> ""))
-      formWithError.errors should contain(FormError(vatNumber, error_key))
+      formWithError.errors should contain(FormError(vatNumber, error_key1))
     }
 
     "validate that data containing any non numeric data fails" in {
       val formWithError = vatNumberForm.bind(Map(vatNumber -> (testVatNumber.drop(1) + "A")))
-      formWithError.errors should contain(FormError(vatNumber, error_key))
+      formWithError.errors should contain(FormError(vatNumber, error_key3))
     }
 
     "validate that data containing more than 9 digits fails" in {
       val formWithError = vatNumberForm.bind(Map(vatNumber -> (testVatNumber + "1")))
-      formWithError.errors should contain(FormError(vatNumber, error_key))
+      formWithError.errors should contain(FormError(vatNumber, error_key2))
     }
 
     "validate that data containing less than 9 digits fails" in {
       val formWithError = vatNumberForm.bind(Map(vatNumber -> testVatNumber.drop(1)))
-      formWithError.errors should contain(FormError(vatNumber, error_key))
+      formWithError.errors should contain(FormError(vatNumber, error_key2))
     }
 
   }

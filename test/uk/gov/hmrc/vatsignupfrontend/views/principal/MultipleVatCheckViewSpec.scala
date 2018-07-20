@@ -85,7 +85,7 @@ class MultipleVatCheckViewSpec extends ViewSpec {
 
           lazy val optionLabel = doc.select("#no")
 
-          "have the id 'limited-company'" in {
+          "have the id 'no" in {
             optionLabel.attr("id") shouldEqual "no"
           }
 

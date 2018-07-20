@@ -35,7 +35,11 @@ object Patterns {
 
   val ninoRegex = """^((?!(BG|GB|KN|NK|NT|TN|ZZ)|(D|F|I|Q|U|V)[A-Z]|[A-Z](D|F|I|O|Q|U|V))[A-Z]{2})[0-9]{6}[A-D]$"""
 
+  val vatNumberLengthRegex = "{9}"
+
   val vatNumberRegex = "[0-9]{9}"
+
+  val vatNumberCharactersRegex = "[0-9]+"
 
   val companyUtrRegex = "[0-9]{10}"
 
