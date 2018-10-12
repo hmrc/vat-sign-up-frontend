@@ -561,6 +561,11 @@ principal.confirm_general_partnership_utr.heading                      = Is this
 principal.confirm_general_partnership_utr.line_1                       = We hold the following information:
 principal.confirm_general_partnership_utr.line_2                       = Unique Taxpayer Reference (UTR)
 
+## Capture Partnership Company Number
+principal.capture_partnership_company_number.title                     = What is your company number?
+principal.capture_partnership_company_number.heading                   = What is your company number?
+principal.capture_partnership_company_number.line_1                    = You can <a id="companiesHouse" href={0} target="_blank">search for your company number (opens in a window or tab)</a> on Companies House.
+
 ## Sign Up After This Date
 principal.sign_up_after_this_date.title                                = You must come back later to sign up
 principal.sign_up_after_this_date.heading                              = You must come back later to sign up

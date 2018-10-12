@@ -608,6 +608,13 @@ object MessageLookup {
     val line2 = "Unique Taxpayer Reference (UTR)"
   }
 
+  object PrincipalCapturePartnershipCompanyNumber {
+    val title = "What is your company number?"
+    val heading: String = title
+    val linkText = "search for your company number (opens in a window or tab)"
+    val line1 = s"You can $linkText on Companies House."
+  }
+
   object SignUpAfterThisDate {
     val title = "You must come back later to sign up"
     val heading = "You must come back later to sign up"

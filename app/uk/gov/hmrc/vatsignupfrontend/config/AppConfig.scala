@@ -69,6 +69,7 @@ class AppConfig @Inject()(val runModeConfiguration: Configuration, environment: 
 
   lazy val protectedMicroServiceUrl: String = baseUrl("vat-sign-up") + "/vat-sign-up"
   lazy val storeVatNumberUrl = s"$protectedMicroServiceUrl/subscription-request/vat-number"
+
   def vatNumberEligibilityUrl(vatNumber: String): String =
     s"$protectedMicroServiceUrl/subscription-request/vat-number/$vatNumber/mtdfb-eligibility"
 
@@ -77,10 +78,10 @@ class AppConfig @Inject()(val runModeConfiguration: Configuration, environment: 
   def storeEmailAddressUrl(vatNumber: String) = s"$protectedMicroServiceUrl/subscription-request/vat-number/$vatNumber/email"
 
   def storeTransactionEmailAddressUrl(vatNumber: String) =
-  s"$protectedMicroServiceUrl/subscription-request/vat-number/$vatNumber/transaction-email"
+    s"$protectedMicroServiceUrl/subscription-request/vat-number/$vatNumber/transaction-email"
 
   def storeIdentityVerificationUrl(vatNumber: String): String =
-  s"$protectedMicroServiceUrl/subscription-request/vat-number/$vatNumber/identity-verification"
+    s"$protectedMicroServiceUrl/subscription-request/vat-number/$vatNumber/identity-verification"
 
   def storePartnershipInformationUrl(vatNumber: String) =
     s"$protectedMicroServiceUrl/subscription-request/vat-number/$vatNumber/partnership-information"
@@ -139,5 +140,7 @@ class AppConfig @Inject()(val runModeConfiguration: Configuration, environment: 
   lazy val backendFeatureSwitchUrl: String = s"$protectedMicroServiceUrl/test-only/feature-switch"
 
   lazy val backendDDConfigUrl: String = s"$protectedMicroServiceUrl/test-only/dd-config"
+
+  lazy val companiesHouse: String = loadConfig("companies-house.url")
 
 }

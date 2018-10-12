@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.vatsignupfrontend.controllers.principal
 
-
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
 import play.api.mvc.AnyContentAsFormUrlEncoded
@@ -132,6 +131,7 @@ class CaptureVatNumberControllerSpec extends UnitSpec with GuiceOneAppPerSuite
                 status(result) shouldBe Status.SEE_OTHER
                 redirectLocation(result) shouldBe Some(routes.MigratableDatesController.show().url)
               }
+
             }
             "the vat eligibility is unsuccessful" should {
               "redirect to sign up between these dates page when the vat number is ineligible and two dates are available" in {
@@ -144,7 +144,7 @@ class CaptureVatNumberControllerSpec extends UnitSpec with GuiceOneAppPerSuite
                 status(result) shouldBe Status.SEE_OTHER
                 redirectLocation(result) shouldBe Some(routes.MigratableDatesController.show().url)
               }
-            }
+
             "redirect to Already Signed Up page when the vat number has already been subscribed" in {
               mockAuthRetrieveVatDecEnrolment(hasIRSAEnrolment = false)
               mockStoreVatNumberAlreadySubscribed(testVatNumber, isFromBta = Some(false))
@@ -192,13 +192,52 @@ class CaptureVatNumberControllerSpec extends UnitSpec with GuiceOneAppPerSuite
             retrievals = Retrievals.credentialRole and Retrievals.allEnrolments
           )(Future.successful(new ~(Some(Admin), Enrolments(Set()))))
           mockVatNumberIneligibleForMtd(testVatNumber)
-
+          
           val request = testPostRequest(testVatNumber)
-
+          
           val result = TestCaptureVatNumberController.submit(request)
           status(result) shouldBe Status.SEE_OTHER
           redirectLocation(result) shouldBe Some(routes.CannotUseServiceController.show().url)
         }
+        
+          "redirect to sign up after this date when the vat number is ineligible and one date is available" in {
+            mockAuthorise(
+              retrievals = Retrievals.credentialRole and Retrievals.allEnrolments
+            )(Future.successful(new ~(Some(Admin), Enrolments(Set()))))
+            mockVatNumberIneligibleForMtd(testVatNumber, migratableDates = MigratableDates(Some(testStartDate)))
+
+            val request = testPostRequest(testVatNumber)
+
+            val result = TestCaptureVatNumberController.submit(request)
+            status(result) shouldBe Status.SEE_OTHER
+            redirectLocation(result) shouldBe Some(routes.MigratableDatesController.show().url)
+          }
+
+          "redirect to sign up between these dates when the vat number is ineligible and two dates are available" in {
+            mockAuthorise(
+              retrievals = Retrievals.credentialRole and Retrievals.allEnrolments
+            )(Future.successful(new ~(Some(Admin), Enrolments(Set()))))
+            mockVatNumberIneligibleForMtd(testVatNumber, migratableDates = MigratableDates(Some(testStartDate), Some(testEndDate)))
+
+            val request = testPostRequest(testVatNumber)
+
+            val result = TestCaptureVatNumberController.submit(request)
+            status(result) shouldBe Status.SEE_OTHER
+            redirectLocation(result) shouldBe Some(routes.MigratableDatesController.show().url)
+          }
+
+          "redirect to Invalid Vat Number page when the vat number is invalid" in {
+            mockAuthorise(
+              retrievals = Retrievals.credentialRole and Retrievals.allEnrolments
+            )(Future.successful(new ~(Some(Admin), Enrolments(Set()))))
+            mockVatNumberEligibilityInvalid(testVatNumber)
+            
+            val request = testPostRequest(testVatNumber)
+            
+            val result = TestCaptureVatNumberController.submit(request)
+            status(result) shouldBe Status.SEE_OTHER
+            redirectLocation(result) shouldBe Some(routes.InvalidVatNumberController.show().url)
+
 
         "redirect to sign up after this date when the vat number is ineligible and one date is available" in {
           mockAuthorise(

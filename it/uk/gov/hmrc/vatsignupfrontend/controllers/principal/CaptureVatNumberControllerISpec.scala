@@ -160,11 +160,39 @@ class CaptureVatNumberControllerISpec extends ComponentSpecBase with CustomMatch
             )
           }
         }
+        
+          "redirect to the sign up after this date page" when {
+            "the vat number is ineligible for mtd vat and one date is available" in {
+              stubAuth(OK, successfulAuthResponse())
+              stubVatNumberIneligibleForMtd(testVatNumber, migratableDates = MigratableDates(Some(testStartDate)))
 
-        "throw an internal server error" when {
-          "any other failure occurs" in {
-            stubAuth(OK, successfulAuthResponse())
-            stubVatNumberEligibilityFailure(testVatNumber)
+              val res = post("/vat-number")(VatNumberForm.vatNumber -> testVatNumber)
+
+              res should have(
+                httpStatus(SEE_OTHER),
+                redirectUri(routes.MigratableDatesController.show().url)
+              )
+            }
+          }
+
+          "redirect to the sign up between these dates page" when {
+            "the vat number is ineligible for mtd vat and two dates are available" in {
+              stubAuth(OK, successfulAuthResponse())
+              stubVatNumberIneligibleForMtd(testVatNumber, migratableDates = MigratableDates(Some(testStartDate), Some(testEndDate)))
+
+              val res = post("/vat-number")(VatNumberForm.vatNumber -> testVatNumber)
+
+              res should have(
+                httpStatus(SEE_OTHER),
+                redirectUri(routes.MigratableDatesController.show().url)
+              )
+            }
+          }
+
+          "throw an internal server error" when {
+            "any other failure occurs" in {
+              stubAuth(OK, successfulAuthResponse())
+              stubVatNumberEligibilityFailure(testVatNumber)
 
             val res = post("/vat-number")(VatNumberForm.vatNumber -> testVatNumber)
 
@@ -274,11 +302,39 @@ class CaptureVatNumberControllerISpec extends ComponentSpecBase with CustomMatch
             )
           }
         }
+        
+          "redirect to the sign up after this date page" when {
+            "the vat number is ineligible for mtd vat and one date is available" in {
+              stubAuth(OK, successfulAuthResponse())
+              stubVatNumberIneligibleForMtd(testVatNumber, migratableDates = MigratableDates(Some(testStartDate)))
 
-        "throw an internal server error" when {
-          "any other failure occurs" in {
-            stubAuth(OK, successfulAuthResponse())
-            stubVatNumberEligibilityFailure(testVatNumber)
+              val res = post("/vat-number")(VatNumberForm.vatNumber -> testVatNumber)
+
+              res should have(
+                httpStatus(SEE_OTHER),
+                redirectUri(routes.MigratableDatesController.show().url)
+              )
+            }
+          }
+
+          "redirect to the sign up between these dates page" when {
+            "the vat number is ineligible for mtd vat and two dates are available" in {
+              stubAuth(OK, successfulAuthResponse())
+              stubVatNumberIneligibleForMtd(testVatNumber, migratableDates = MigratableDates(Some(testStartDate), Some(testEndDate)))
+
+              val res = post("/vat-number")(VatNumberForm.vatNumber -> testVatNumber)
+
+              res should have(
+                httpStatus(SEE_OTHER),
+                redirectUri(routes.MigratableDatesController.show().url)
+              )
+            }
+          }
+
+          "throw an internal server error" when {
+            "any other failure occurs" in {
+              stubAuth(OK, successfulAuthResponse())
+              stubVatNumberEligibilityFailure(testVatNumber)
 
             val res = post("/vat-number")(VatNumberForm.vatNumber -> testVatNumber)
 
