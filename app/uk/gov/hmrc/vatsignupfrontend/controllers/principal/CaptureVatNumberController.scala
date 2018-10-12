@@ -31,8 +31,9 @@ import uk.gov.hmrc.vatsignupfrontend.httpparsers.VatNumberEligibilityHttpParser.
 import uk.gov.hmrc.vatsignupfrontend.models.MigratableDates
 import uk.gov.hmrc.vatsignupfrontend.services.{StoreVatNumberService, VatNumberEligibilityService}
 import uk.gov.hmrc.vatsignupfrontend.utils.EnrolmentUtils._
-import uk.gov.hmrc.vatsignupfrontend.utils.VatNumberChecksumValidation
+import uk.gov.hmrc.vatsignupfrontend.utils.{SessionUtils, VatNumberChecksumValidation}
 import uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_vat_number
+import uk.gov.hmrc.vatsignupfrontend.utils.SessionUtils.ResultUtils
 
 import scala.concurrent.Future
 
@@ -70,7 +71,7 @@ class CaptureVatNumberController @Inject()(val controllerComponents: ControllerC
                   case Left(AlreadySubscribed) => Redirect(routes.AlreadySignedUpController.show())
                   case Left(IneligibleVatNumber(MigratableDates(None, None))) => Redirect(routes.CannotUseServiceController.show())
                   case Left(IneligibleVatNumber(migratableDates)) => Redirect(routes.MigratableDatesController.show())
-                    .addingToSession[MigratableDates](SessionKeys.migratableDatesKey -> migratableDates)
+                    .addingToSession(SessionKeys.migratableDatesKey, migratableDates)
                   case Left(_) =>
                     throw new InternalServerException("storeVatNumber failed")
                 }
@@ -81,7 +82,7 @@ class CaptureVatNumberController @Inject()(val controllerComponents: ControllerC
                   case Right(VatNumberEligible) => Redirect(routes.CaptureVatRegistrationDateController.show()).addingToSession(vatNumberKey -> formVatNumber)
                   case Left(IneligibleForMtdVatNumber(MigratableDates(None, None))) => Redirect(routes.CannotUseServiceController.show())
                   case Left(IneligibleForMtdVatNumber(migratableDates)) => Redirect(routes.MigratableDatesController.show())
-                    .addingToSession[MigratableDates](SessionKeys.migratableDatesKey -> migratableDates)
+                    .addingToSession(SessionKeys.migratableDatesKey, migratableDates)
                   case Left(InvalidVatNumber) => Redirect(routes.InvalidVatNumberController.show())
                   case Left(VatNumberAlreadySubscribed) => Redirect(routes.AlreadySignedUpController.show())
                   case Left(VatNumberEligibilityFailureResponse(status)) => {
