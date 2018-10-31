@@ -124,3 +124,7 @@ POST        /confirm-partnership-company   uk.gov.hmrc.vatsignupfrontend.control
 # Capture Partnership Company Number
 GET         /partnership-company-number    uk.gov.hmrc.vatsignupfrontend.controllers.agent.partnerships.AgentCapturePartnershipCompanyNumberController.show
 POST        /partnership-company-number    uk.gov.hmrc.vatsignupfrontend.controllers.agent.partnerships.AgentCapturePartnershipCompanyNumberController.submit
+
+# Check Your Answers Partnership
+GET         /check-your-answers            uk.gov.hmrc.vatsignupfrontend.controllers.agent.partnerships.CheckYourAnswersPartnershipController.show
+POST        /check-your-answers            uk.gov.hmrc.vatsignupfrontend.controllers.agent.partnerships.CheckYourAnswersPartnershipController.submit
