@@ -28,7 +28,7 @@ import uk.gov.hmrc.vatsignupfrontend.controllers.agent.{routes => agentRoutes}
 
 class NotALimitedPartnershipControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockControllerComponents {
 
-  object TestNotALimitedPartnershipControllerr extends NotALimitedPartnershipController(mockControllerComponents)
+  object TestNotALimitedPartnershipController extends NotALimitedPartnershipController(mockControllerComponents)
 
   lazy val testGetRequest = FakeRequest("GET", "/error/not-a-limited-partnership ")
 
@@ -50,7 +50,7 @@ class NotALimitedPartnershipControllerSpec extends UnitSpec with GuiceOneAppPerS
       mockAuthRetrieveAgentEnrolment()
       val request = testGetRequest
 
-      val result = TestNotALimitedPartnershipControllerr.show(request)
+      val result = TestNotALimitedPartnershipController.show(request)
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some("text/html")
       charset(result) shouldBe Some("utf-8")
@@ -61,9 +61,9 @@ class NotALimitedPartnershipControllerSpec extends UnitSpec with GuiceOneAppPerS
     "redirect to capture business entity page" in {
       mockAuthRetrieveAgentEnrolment()
 
-      val result = TestNotALimitedPartnershipControllerr.submit(testPostRequest)
+      val result = TestNotALimitedPartnershipController.submit(testPostRequest)
       status(result) shouldBe Status.SEE_OTHER
-      redirectLocation(result) should contain(agentRoutes.CaptureBusinessEntityController.show().url)
+      redirectLocation(result) should contain(routes.AgentCapturePartnershipCompanyNumberController.show().url)
     }
   }
 

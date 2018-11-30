@@ -24,6 +24,7 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.{GeneralPartnershipJourney, LimitedPartnershipJourney}
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockControllerComponents
+import uk.gov.hmrc.vatsignupfrontend.controllers.principal.routes.CaptureBusinessEntityController
 
 class CouldNotConfirmKnownFactsSpec extends UnitSpec with GuiceOneAppPerSuite with MockControllerComponents {
 
@@ -64,7 +65,7 @@ class CouldNotConfirmKnownFactsSpec extends UnitSpec with GuiceOneAppPerSuite wi
 
       val result = TestCouldNotConfirmKnownFactsController.submit(testPostRequest)
       status(result) shouldBe Status.SEE_OTHER
-      redirectLocation(result) should contain(routes.CapturePartnershipUtrController.show().url)
+      redirectLocation(result) should contain(CaptureBusinessEntityController.show().url)
     }
   }
 

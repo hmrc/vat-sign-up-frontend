@@ -42,7 +42,7 @@ class CouldNotConfirmLimitedPartnershipController @Inject()(val controllerCompon
   def submit: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       Future.successful(
-        Redirect(principalRoutes.CaptureBusinessEntityController.show())
+        Redirect(routes.CapturePartnershipCompanyNumberController.show())
       )
     }
   }

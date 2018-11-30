@@ -20,6 +20,7 @@ import play.api.http.Status._
 import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.{GeneralPartnershipJourney, LimitedPartnershipJourney}
 import uk.gov.hmrc.vatsignupfrontend.helpers.servicemocks.AuthStub._
 import uk.gov.hmrc.vatsignupfrontend.helpers.{ComponentSpecBase, CustomMatchers}
+import uk.gov.hmrc.vatsignupfrontend.controllers.principal.routes.CaptureBusinessEntityController
 
 class CouldNotConfirmKnownFactsControllerISpec extends ComponentSpecBase with CustomMatchers {
 
@@ -49,7 +50,7 @@ class CouldNotConfirmKnownFactsControllerISpec extends ComponentSpecBase with Cu
 
       res should have(
         httpStatus(SEE_OTHER),
-        redirectUri(routes.CapturePartnershipUtrController.show().url)
+        redirectUri(CaptureBusinessEntityController.show().url)
       )
     }
   }

@@ -24,6 +24,7 @@ import uk.gov.hmrc.vatsignupfrontend.config.auth.AdministratorRolePredicate
 import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.{GeneralPartnershipJourney, LimitedPartnershipJourney}
 import uk.gov.hmrc.vatsignupfrontend.controllers.AuthenticatedController
 import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.could_not_confirm_known_facts
+import uk.gov.hmrc.vatsignupfrontend.controllers.principal.routes.CaptureBusinessEntityController
 
 import scala.concurrent.Future
 
@@ -46,7 +47,7 @@ class CouldNotConfirmKnownFactsController @Inject()(val controllerComponents: Co
   def submit: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       Future.successful(
-        Redirect(routes.CapturePartnershipUtrController.show())
+        Redirect(CaptureBusinessEntityController.show())
       )
     }
   }

@@ -62,7 +62,7 @@ class NotALimitedPartnershipControllerISpec extends ComponentSpecBase with Custo
 
       res should have(
         httpStatus(SEE_OTHER),
-        redirectUri(agentRoutes.CaptureBusinessEntityController.show().url)
+        redirectUri(routes.AgentCapturePartnershipCompanyNumberController.show().url)
       )
     }
 

@@ -41,7 +41,7 @@ class NotALimitedPartnershipController @Inject()(val controllerComponents: Contr
 
   def submit: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
-      Future.successful(Redirect(agentRoutes.CaptureBusinessEntityController.show()))
+      Future.successful(Redirect(routes.AgentCapturePartnershipCompanyNumberController.show()))
     }
   }
 

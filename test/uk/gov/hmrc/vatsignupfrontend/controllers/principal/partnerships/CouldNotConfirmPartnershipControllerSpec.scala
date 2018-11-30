@@ -58,7 +58,7 @@ class CouldNotConfirmPartnershipControllerSpec extends UnitSpec with GuiceOneApp
 
       val result = TestCouldNotConfirmLimitedPartnershipController$.submit(testPostRequest)
       status(result) shouldBe Status.SEE_OTHER
-      redirectLocation(result) should contain(principalRoutes.CaptureBusinessEntityController.show().url)
+      redirectLocation(result) should contain(routes.CapturePartnershipCompanyNumberController.show().url)
     }
   }
 
