@@ -238,6 +238,8 @@ trait ViewSpec extends UnitSpec with GuiceOneAppPerSuite {
 
     def shouldHaveContinueToSignUpButton(): Unit = shouldHaveSubmitButton(common.continueToSignUp)
 
+    def shoudHaveSignUpClientButton(): Unit = shouldHaveSubmitButton(common.signUpClient)
+
     def shouldHaveSignUpAnotherClientButton(): Unit = shouldHaveSubmitButton(common.signUpAnotherClient)
 
     def shouldHaveTryAgainButton(): Unit = shouldHaveSubmitButton(common.tryAgain)
