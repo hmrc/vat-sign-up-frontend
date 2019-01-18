@@ -19,6 +19,7 @@ base.accept_and_continue                                               = Accept 
 base.continue_to_sign_up                                               = Continue to sign up
 base.error_heading                                                     = There''s a problem
 base.sign_out                                                          = Sign out
+base.sign_up_client                                                    = Sign up your client
 base.sign_up_another_client                                            = Sign up another client
 base.day                                                               = Day
 base.month                                                             = Month
@@ -363,6 +364,11 @@ agent.could_not_find_partnership.line_1                                = The com
 agent.could_not_confirm_partnership.title                              = We could not confirm your client''s Partnership
 agent.could_not_confirm_partnership.heading                            = We could not confirm your client''s Partnership
 agent.could_not_confirm_partnership.line_1                             = The information you provided does not match or is incorrect.
+
+# Agent wrong account type
+agent.wrong_account_type.title                                         = You have logged in with the wrong type of account
+agent.wrong_account_type.heading                                       = You have logged in with the wrong type of account
+agent.wrong_account_type.line_1                                        = If you are an agent signing up your client to Making Tax Digital for VAT you need to use the agent service.
 
 # Could not confirm business
 principal.could_not_confirm_business.title                             = We could not confirm your business

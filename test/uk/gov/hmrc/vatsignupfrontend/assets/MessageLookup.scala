@@ -36,6 +36,7 @@ object MessageLookup {
     val signOut = "Sign out"
     val signUp = "Sign up"
     val goBack = "Go back"
+    val signUpClient = "Sign up your client"
     val signUpAnotherClient = "Sign up another client"
     val day = "Day"
     val month = "Month"
@@ -69,6 +70,12 @@ object MessageLookup {
     val title = heading + ServiceName.agentSuffix
     val line1 = "Your client's business is not eligible at this time"
     val line2 = "Most businesses will be eligible after 21 January 2019. Try again then."
+  }
+
+  object AgentWrongAccountType {
+    val heading: String = "You have logged in with the wrong type of account"
+    val title = heading + ServiceName.agentSuffix
+    val line1 = "If you are an agent signing up your client to Making Tax Digital for VAT you need to use the agent service."
   }
 
   object CaptureVatNumber {
