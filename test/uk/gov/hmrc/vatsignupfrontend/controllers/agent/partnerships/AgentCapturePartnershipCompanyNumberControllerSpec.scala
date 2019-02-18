@@ -82,7 +82,6 @@ class AgentCapturePartnershipCompanyNumberControllerSpec extends UnitSpec with G
           session(result) get SessionKeys.companyNameKey should contain(testCompanyName)
         }
       }
-
       "get company name returned a NonPartnershipEntity" should {
         "Redirect to Not a limited Partnership page" in {
           mockAuthAdminRole()
@@ -97,7 +96,6 @@ class AgentCapturePartnershipCompanyNumberControllerSpec extends UnitSpec with G
           redirectLocation(result) shouldBe Some(routes.NotALimitedPartnershipController.show().url)
         }
       }
-
       "form unsuccessfully submitted" should {
         "reload the page with errors" in {
           mockAuthAdminRole()
@@ -108,50 +106,6 @@ class AgentCapturePartnershipCompanyNumberControllerSpec extends UnitSpec with G
           charset(result) shouldBe Some("utf-8")
         }
       }
-
-      "company number failed prefix validation" should {
-        "throw an InternalServerException" in {
-          mockAuthAdminRole()
-          // TODO Redirect to error page
-
-          val testCrn = "ZZ12345"
-          val request = testPostRequest(testCrn)
-
-          val result = TestAgentCapturePartnershipCompanyNumberController.submit(request)
-
-          intercept[InternalServerException](await(result))
-        }
-      }
-
-      "company number failed validation - invalid format" should {
-        "throw an InternalServerException" in {
-          mockAuthAdminRole()
-          // Redirect to error page
-
-          val testCrn = "123A456 A"
-          val request = testPostRequest(testCrn)
-
-          val result = TestAgentCapturePartnershipCompanyNumberController.submit(request)
-
-          intercept[InternalServerException](await(result))
-        }
-      }
-
-      "company number failed validation - zero is invalid" should {
-        "throw an InternalServerException" in {
-          mockAuthAdminRole()
-          // Redirect to error page
-
-          val testCrn = "0"
-          val request = testPostRequest(testCrn)
-
-          val result = TestAgentCapturePartnershipCompanyNumberController.submit(request)
-
-          intercept[InternalServerException](await(result))
-
-        }
-      }
-
       "get company name returned not found" should {
         "throw an InternalServerException" in {
           mockAuthAdminRole()
@@ -166,7 +120,6 @@ class AgentCapturePartnershipCompanyNumberControllerSpec extends UnitSpec with G
           redirectLocation(result) shouldBe Some(routes.CouldNotFindPartnershipController.show().url)
         }
       }
-
       "get company name fails" should {
         "throw an InternalServerException" in {
           mockAuthAdminRole()

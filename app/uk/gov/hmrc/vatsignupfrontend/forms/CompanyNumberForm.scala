@@ -40,8 +40,17 @@ object CompanyNumberForm {
   def crnNotEntered(isAgent: Boolean, isPartnership: Boolean): Constraint[String] = Constraint("companyNumber.notEntered")(
     companyNumber => {
 
-      val principalErrMsg = if (isPartnership) "error.principal.partnership_company_number_not_entered" else "error.principal.company_number_not_entered"
-      val agentErrMsg = if (isPartnership) "error.agent.partnership_company_number_not_entered" else "error.agent.company_number_not_entered"
+      val principalErrMsg =
+        if (isPartnership)
+          "error.principal.partnership_company_number_not_entered"
+        else
+          "error.principal.company_number_not_entered"
+
+      val agentErrMsg =
+        if (isPartnership)
+          "error.agent.partnership_company_number_not_entered"
+        else
+          "error.agent.company_number_not_entered"
 
       validate(
         constraint = companyNumber.isEmpty,

@@ -136,7 +136,6 @@ error.have_software.field                                              = Choose 
 error.have_software.summary                                            = Choose yes or no, if you have accounting software or not
 error.software_ready.field                                             = Choose yes or no, if your software is ready to submit your VAT Returns with Making Tax Digital for VAT
 error.software_ready.summary                                           = Choose yes or no, if your software is ready to submit with Making Tax Digital for VAT or not
-
 error.no_entry_registered_society_utr.field                            = Enter your registered society''s Unique Taxpayer Reference number
 error.no_entry_registered_society_utr.summary                          = Enter your registered society''s Unique Taxpayer Reference number
 error.character_limit_registered_society_utr.field                     = Registered society Unique Taxpayer Reference number must be 10 numbers

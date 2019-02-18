@@ -60,40 +60,4 @@ class GetCompanyNameServiceSpec extends UnitSpec with MockitoSugar {
     validation.get shouldBe companyNumber
   }
 
-  "padCompanyNumber" when {
-    import TestStoreVatNumberService.padCompanyNumber
-    val randomDigit = (Random.nextInt(9) + 1).toString
-    "the company number has no prefix" should {
-      "pad the number with leading zeros" in {
-        val needPaddingResult = padCompanyNumber(randomDigit)
-        needPaddingResult shouldBe "0" * 7 + randomDigit
-        validateCompanyNumber(needPaddingResult)
-
-        val noPaddingResult = padCompanyNumber(randomDigit * 8)
-        noPaddingResult shouldBe randomDigit * 8
-        validateCompanyNumber(noPaddingResult)
-      }
-    }
-    "the company number has a prefix" should {
-      "pad the number portion with leading zeros" in {
-        validCompanyNumberPrefixes.foreach { prefix =>
-          val needPaddingResult = padCompanyNumber(prefix + randomDigit)
-          needPaddingResult shouldBe prefix + "0" * 5 + randomDigit
-          validateCompanyNumber(needPaddingResult)
-
-          val noPaddingResult = padCompanyNumber(prefix + (randomDigit * 6))
-          noPaddingResult shouldBe prefix + (randomDigit * 6)
-          validateCompanyNumber(noPaddingResult)
-        }
-      }
-    }
-    "illegal company number" should {
-      "throw exception" in {
-        intercept[IllegalArgumentException] {
-          padCompanyNumber(randomDigit * 9)
-        }
-      }
-    }
-  }
-
 }

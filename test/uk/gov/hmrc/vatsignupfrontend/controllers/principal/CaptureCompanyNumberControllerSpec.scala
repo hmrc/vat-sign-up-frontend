@@ -56,7 +56,6 @@ class CaptureCompanyNumberControllerSpec extends UnitSpec with GuiceOneAppPerSui
   }
 
   "Calling the submit action of the Capture Company Number controller" when {
-
     "get company name returned successfully" should {
       "goto confirm company and store crn and name in session" in {
         mockAuthAdminRole()
@@ -73,7 +72,6 @@ class CaptureCompanyNumberControllerSpec extends UnitSpec with GuiceOneAppPerSui
         result.session(request).get(SessionKeys.companyNameKey) shouldBe Some(testCompanyName)
       }
     }
-
     "get company name returned successfully with partnership type" should {
       "goto confirm Partnership As Company Error page" in {
         mockAuthAdminRole()
@@ -87,56 +85,6 @@ class CaptureCompanyNumberControllerSpec extends UnitSpec with GuiceOneAppPerSui
         redirectLocation(result) shouldBe Some(routes.PartnershipAsCompanyErrorController.show().url)
       }
     }
-
-    "company number failed prefix validation" should {
-      "redirect to Company Name Not Found page" in {
-        mockAuthAdminRole()
-
-        val testCrn = "ZZ12345"
-        val request = testPostRequest(testCrn)
-
-        val result = TestCaptureCompanyNumberController.submit(request)
-        status(result) shouldBe Status.SEE_OTHER
-        redirectLocation(result) shouldBe Some(routes.CompanyNameNotFoundController.show().url)
-
-        result.session(request).get(SessionKeys.companyNumberKey) shouldBe None
-
-      }
-    }
-
-
-    "company number failed validation - invalid format" should {
-      "redirect to Company Name Not Found page" in {
-        mockAuthAdminRole()
-
-        val testCrn = "123A456 A"
-        val request = testPostRequest(testCrn)
-
-        val result = TestCaptureCompanyNumberController.submit(request)
-        status(result) shouldBe Status.SEE_OTHER
-        redirectLocation(result) shouldBe Some(routes.CompanyNameNotFoundController.show().url)
-
-        result.session(request).get(SessionKeys.companyNumberKey) shouldBe None
-
-      }
-    }
-
-    "company number failed validation - zero is invalid" should {
-      "redirect to Company Name Not Found page" in {
-        mockAuthAdminRole()
-
-        val testCrn = "0"
-        val request = testPostRequest(testCrn)
-
-        val result = TestCaptureCompanyNumberController.submit(request)
-        status(result) shouldBe Status.SEE_OTHER
-        redirectLocation(result) shouldBe Some(routes.CompanyNameNotFoundController.show().url)
-
-        result.session(request).get(SessionKeys.companyNumberKey) shouldBe None
-
-      }
-    }
-
     "get company name returned not found" should {
       "goto company name not found page" in {
         mockAuthAdminRole()
@@ -150,7 +98,6 @@ class CaptureCompanyNumberControllerSpec extends UnitSpec with GuiceOneAppPerSui
         redirectLocation(result) shouldBe Some(routes.CompanyNameNotFoundController.show().url)
       }
     }
-
     "get company name fails" should {
       "throw an InternalServerException" in {
         mockAuthAdminRole()

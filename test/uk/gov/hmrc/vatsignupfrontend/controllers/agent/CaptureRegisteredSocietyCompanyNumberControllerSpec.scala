@@ -81,52 +81,6 @@ class CaptureRegisteredSocietyCompanyNumberControllerSpec
         result.session(request).get(SessionKeys.registeredSocietyCompanyNumberKey) shouldBe Some(testCompanyNumber)
       }
     }
-
-    "company number failed prefix validation - invalid prefix" should {
-      "redirect to Company Name Not Found page" in {
-        mockAuthRetrieveAgentEnrolment()
-
-        val testCrn = "ZZ12345"
-        val request = testPostRequest(testCrn)
-
-        val result = TestCaptureRegisteredSocietyCompanyNumberController.submit(request)
-        status(result) shouldBe Status.SEE_OTHER
-        redirectLocation(result) shouldBe Some(routes.CompanyNameNotFoundController.show().url)
-
-        result.session(request).get(SessionKeys.registeredSocietyCompanyNumberKey) shouldBe None
-      }
-    }
-
-    "company number failed validation - invalid format" should {
-      "redirect to Company Name Not Found page" in {
-        mockAuthRetrieveAgentEnrolment()
-
-        val testCrn = "123A456 A"
-        val request = testPostRequest(testCrn)
-
-        val result = TestCaptureRegisteredSocietyCompanyNumberController.submit(request)
-        status(result) shouldBe Status.SEE_OTHER
-        redirectLocation(result) shouldBe Some(routes.CompanyNameNotFoundController.show().url)
-
-        result.session(request).get(SessionKeys.registeredSocietyCompanyNumberKey) shouldBe None
-      }
-    }
-
-    "company number failed validation - zero is invalid" should {
-      "redirect to Company Name Not Found page" in {
-        mockAuthRetrieveAgentEnrolment()
-
-        val testCrn = "0"
-        val request = testPostRequest(testCrn)
-
-        val result = TestCaptureRegisteredSocietyCompanyNumberController.submit(request)
-        status(result) shouldBe Status.SEE_OTHER
-        redirectLocation(result) shouldBe Some(routes.CompanyNameNotFoundController.show().url)
-
-        result.session(request).get(SessionKeys.registeredSocietyCompanyNumberKey) shouldBe None
-      }
-    }
-
     "company was not found" should {
       "redirect to Registered Society Company Name Not Found page" in {
 
@@ -142,7 +96,6 @@ class CaptureRegisteredSocietyCompanyNumberControllerSpec
         result.session(request).get(SessionKeys.registeredSocietyCompanyNumberKey) shouldBe None
       }
     }
-
     "company search failed" should {
       "throw Internal Server Exception" in {
 

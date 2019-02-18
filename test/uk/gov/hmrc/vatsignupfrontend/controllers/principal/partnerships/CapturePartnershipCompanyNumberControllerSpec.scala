@@ -84,7 +84,6 @@ class CapturePartnershipCompanyNumberControllerSpec extends UnitSpec with GuiceO
         session(result) get SessionKeys.companyNameKey should contain(testCompanyName)
       }
     }
-
     "form unsuccessfully submitted" should {
       "reload the page with errors" in {
         mockAuthAdminRole()
@@ -93,48 +92,6 @@ class CapturePartnershipCompanyNumberControllerSpec extends UnitSpec with GuiceO
         status(result) shouldBe Status.BAD_REQUEST
         contentType(result) shouldBe Some("text/html")
         charset(result) shouldBe Some("utf-8")
-      }
-    }
-
-    "company number failed prefix validation" should {
-      "redirect to Could Not Confirm Company page" in {
-        mockAuthAdminRole()
-
-        val testCrn = "ZZ12345"
-        val request = testPostRequest(testCrn)
-
-        val result = TestCaptureCompanyNumberController.submit(request)
-
-        status(result) shouldBe SEE_OTHER
-        redirectLocation(result) shouldBe Some(routes.CouldNotConfirmCompanyController.show().url)
-      }
-    }
-
-    "company number failed validation - invalid format" should {
-      "redirect to Could Not Confirm Company page" in {
-        mockAuthAdminRole()
-
-        val testCrn = "123A456 A"
-        val request = testPostRequest(testCrn)
-
-        val result = TestCaptureCompanyNumberController.submit(request)
-
-        status(result) shouldBe SEE_OTHER
-        redirectLocation(result) shouldBe Some(routes.CouldNotConfirmCompanyController.show().url)
-      }
-    }
-
-    "company number failed validation - zero is invalid" should {
-      "redirect to Could Not Confirm Company page" in {
-        mockAuthAdminRole()
-
-        val testCrn = "0"
-        val request = testPostRequest(testCrn)
-
-        val result = TestCaptureCompanyNumberController.submit(request)
-
-        status(result) shouldBe SEE_OTHER
-        redirectLocation(result) shouldBe Some(routes.CouldNotConfirmCompanyController.show().url)
       }
     }
     "get company name returned not found" should {

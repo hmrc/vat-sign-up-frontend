@@ -67,7 +67,7 @@ object Patterns {
       "NC", "R0", "NI", "EN",
       "IP", "SP", "IC", "SI",
       "NP", "NV", "RC", "SR",
-      "NR", "NO"//, "BR" TODO: Enable BR prefix when NonUK with UK established ready for E2E testing
+      "NR", "NO", "BR"
     )
   }
 
