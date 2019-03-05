@@ -20,7 +20,6 @@ import org.scalatest.Matchers._
 import org.scalatestplus.play.PlaySpec
 import play.api.data.FormError
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstantsGenerator
-import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstantsGenerator._
 
 class CompanyNumberFormSpec extends PlaySpec {
 
@@ -75,6 +74,24 @@ class CompanyNumberFormSpec extends PlaySpec {
       val testCrn = "1"
       val actual = validateCompanyNumberForm.bind(Map(companyNumber -> testCrn)).value
       actual shouldBe Some(testCrn)
+    }
+
+    "validate that the a CRN that starts with a blocked prefix fails validation" in {
+      val testCrn = TestConstantsGenerator.randomBlockedCrn
+      val result = isBlockedCrn(testCrn)
+      result shouldBe(true)
+    }
+
+    "validate that the a CRN that starts with a valid prefix passes validation" in {
+      val testCrn = TestConstantsGenerator.randomCrnAlphaNumeric
+      val result = isBlockedCrn(testCrn)
+      result shouldBe(false)
+    }
+
+    "validate that the a CRN that starts with no prefix passes validation" in {
+      val testCrn = TestConstantsGenerator.randomCrnNumeric
+      val result = isBlockedCrn(testCrn)
+      result shouldBe(false)
     }
   }
 

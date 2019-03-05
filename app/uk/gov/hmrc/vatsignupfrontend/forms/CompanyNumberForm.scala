@@ -23,6 +23,7 @@ import uk.gov.hmrc.vatsignupfrontend.forms.prevalidation.{PreprocessedForm, Prev
 import uk.gov.hmrc.vatsignupfrontend.forms.validation.utils.ConstraintUtil._
 import uk.gov.hmrc.vatsignupfrontend.forms.validation.utils.MappingUtil._
 import uk.gov.hmrc.vatsignupfrontend.forms.validation.utils.Patterns.alphanumericRegex
+import uk.gov.hmrc.vatsignupfrontend.forms.validation.utils.Patterns.CompanyNumber.blockedCompanyNumberPrefixes
 import uk.gov.hmrc.vatsignupfrontend.forms.validation.utils.ValidationHelper._
 
 object CompanyNumberForm {
@@ -69,6 +70,7 @@ object CompanyNumberForm {
     )
   )
 
+  def isBlockedCrn(crn: String): Boolean = blockedCompanyNumberPrefixes exists crn.startsWith
 
   private def companyNumberValidationForm(isAgent: Boolean, isPartnership: Boolean) = Form(
     single(

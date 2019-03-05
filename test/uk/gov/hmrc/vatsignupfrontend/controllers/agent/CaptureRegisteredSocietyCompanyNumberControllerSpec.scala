@@ -28,6 +28,7 @@ import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.RegisteredSocietyJourn
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.forms.CompanyNumberForm._
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants.testCompanyNumber
+import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstantsGenerator
 import uk.gov.hmrc.vatsignupfrontend.models.companieshouse.NonPartnershipEntity
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.MockGetCompanyNameService
 
@@ -86,7 +87,7 @@ class CaptureRegisteredSocietyCompanyNumberControllerSpec
       "redirect to Company Name Not Found page" in {
         mockAuthRetrieveAgentEnrolment()
 
-        val testCrn = "BR12345"
+        val testCrn = TestConstantsGenerator.randomBlockedCrn
         val request = testPostRequest(testCrn)
 
         val result = TestCaptureRegisteredSocietyCompanyNumberController.submit(request)

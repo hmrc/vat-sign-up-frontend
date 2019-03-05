@@ -28,6 +28,7 @@ import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.RegisteredSocietyJourn
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.forms.CompanyNumberForm._
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
+import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstantsGenerator
 import uk.gov.hmrc.vatsignupfrontend.models.companieshouse
 import uk.gov.hmrc.vatsignupfrontend.models.companieshouse.NonPartnershipEntity
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.MockGetCompanyNameService
@@ -101,7 +102,7 @@ class CaptureRegisteredSocietyCompanyNumberControllerSpec extends UnitSpec with 
       "redirect to the 'Could not confirm business' page" in {
         mockAuthAdminRole()
 
-        val testCrn = "BR12345"
+        val testCrn = TestConstantsGenerator.randomBlockedCrn
         val request = testPostRequest(testCrn)
 
         val result = TestCaptureRegisteredSocietyCompanyNumberController.submit(request)

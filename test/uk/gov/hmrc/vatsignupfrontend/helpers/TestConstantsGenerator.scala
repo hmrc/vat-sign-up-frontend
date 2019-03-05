@@ -59,13 +59,19 @@ object TestConstantsGenerator {
 
   private lazy val prefixes = validCompanyNumberPrefixes.toList
 
+  private lazy val blockedPrefixes = blockedCompanyNumberPrefixes.toList
+
   def randomPrefix: String = prefixes(rand.nextInt(prefixes.size)).toLowerCase
+
+  def randomBlockedPrefix: String = blockedPrefixes(rand.nextInt(blockedPrefixes.size))
 
   def randomCrnNumeric: String = "%08d".format(rand.nextInt(UPPER_BOUND_8_DIGIT_NUMBER) + 1)
 
   def randomCrnNumericNoLeadingZeros: String = "%8d".format(rand.nextInt(UPPER_BOUND_7_DIGIT_NUMBER) + 1)
 
   def randomCrnAlphaNumeric: String = randomPrefix + "%06d".format(rand.nextInt(UPPER_BOUND_6_DIGIT_NUMBER) + 1)
+
+  def randomBlockedCrn: String = randomBlockedPrefix + "%06d".format(rand.nextInt(UPPER_BOUND_6_DIGIT_NUMBER) + 1)
 
   private def randomString(alphabet: String)(max: Int, min: Int = 1): String = {
     val rdm = rand.nextInt(max) + 1

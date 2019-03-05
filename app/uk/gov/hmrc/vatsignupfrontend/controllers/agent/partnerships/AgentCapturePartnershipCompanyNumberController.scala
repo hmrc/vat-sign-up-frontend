@@ -76,7 +76,7 @@ class AgentCapturePartnershipCompanyNumberController @Inject()(val controllerCom
               ))
             ),
           companyNumber =>
-            if (companyNumber.startsWith("BR")) {
+            if (isBlockedCrn(companyNumber)) {
               Future.successful(
                 throw new InternalServerException("Invalid CRN")
                 // TODO Redirect to error page

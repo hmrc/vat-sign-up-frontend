@@ -63,15 +63,18 @@ object Patterns {
 
     // https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/426891/uniformResourceIdentifiersCustomerGuide.pdf
     lazy val validCompanyNumberPrefixes = Set(
-      "AC", "ZC", "FC", "GE",
-      "LP", "OC", "SE", "SA",
-      "SZ", "SF", "GS", "SL",
-      "SO", "SC", "ES", "NA",
-      "NZ", "NF", "GN", "NL",
-      "NC", "R0", "NI", "EN",
-      "IP", "SP", "IC", "SI",
-      "NP", "NV", "RC", "SR",
-      "NR", "NO"//, "BR" TODO: Enable BR prefix when NonUK with UK established ready for E2E testing
+      "AC", "ZC", "GE", "LP",
+      "OC", "SE", "SA", "SZ",
+      "GS", "SL", "SO", "SC",
+      "ES", "NA", "NZ", "GN",
+      "NL", "NC", "R0", "NI",
+      "EN", "IP", "SP", "IC",
+      "SI", "NP", "NV", "RC",
+      "SR", "NR", "NO"
+    )
+
+    lazy val blockedCompanyNumberPrefixes = Set(
+      "BR", "FC", "SF", "NF"
     )
   }
 

@@ -65,7 +65,7 @@ class CaptureRegisteredSocietyCompanyNumberController @Inject()(val controllerCo
               ))
             ),
           companyNumber =>
-            if (companyNumber.startsWith("BR")) {
+            if (isBlockedCrn(companyNumber)) {
               Future.successful(
                 Redirect(routes.RegisteredSocietyCompanyNameNotFoundController.show())
               )
