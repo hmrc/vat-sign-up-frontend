@@ -21,6 +21,7 @@ import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
 import uk.gov.hmrc.vatsignupfrontend.config.ControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.config.auth.AdministratorRolePredicate
+import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.AdditionalKnownFacts
 import uk.gov.hmrc.vatsignupfrontend.controllers.AuthenticatedController
 import uk.gov.hmrc.vatsignupfrontend.forms.VatRegistrationDateForm._
 import uk.gov.hmrc.vatsignupfrontend.models.Overseas
@@ -54,7 +55,10 @@ class CaptureVatRegistrationDateController @Inject()(val controllerComponents: C
         vatRegistrationDate => {
           optBusinessEntity match {
             case Some(entity) if entity == Overseas.toString =>
-              Future.successful(Redirect(routes.PreviousVatReturnController.show().url))
+              if (isEnabled(AdditionalKnownFacts))
+                Future.successful(Redirect(routes.PreviousVatReturnController.show().url))
+              else
+                Future.successful(Redirect(routes.CheckYourAnswersController.show()))
             case _ =>
               Future.successful(Redirect(routes.BusinessPostCodeController.show().url))
           }

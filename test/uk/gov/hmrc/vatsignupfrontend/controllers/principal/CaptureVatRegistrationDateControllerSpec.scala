@@ -26,7 +26,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
-import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.FeatureSwitching
+import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.{AdditionalKnownFacts, FeatureSwitching}
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.forms.VatRegistrationDateForm._
 import uk.gov.hmrc.vatsignupfrontend.models.{DateModel, Overseas}
@@ -74,25 +74,51 @@ class CaptureVatRegistrationDateControllerSpec extends UnitSpec with GuiceOneApp
       }
      }
     "form successfully submitted with Overseas business entity in session" should {
-      "redirect to the Previous Vat return page" in {
-        mockAuthAdminRole()
+      "redirect to the Previous Vat return page" when {
+        "the additional known facts feature switch is enabled" in {
+          mockAuthAdminRole()
+          enable(AdditionalKnownFacts)
 
-        def testPostRequest(registrationDate: DateModel, entity: String): FakeRequest[AnyContentAsFormUrlEncoded] =
-          FakeRequest("POST", "/vat-registration-date")
-            .withFormUrlEncodedBody(vatRegistrationDate + ".dateDay" -> registrationDate.day,
-              vatRegistrationDate + ".dateMonth" -> registrationDate.month,
-              vatRegistrationDate + ".dateYear" -> registrationDate.year
-            ).withSession(SessionKeys.businessEntityKey -> entity)
+          def testPostRequest(registrationDate: DateModel, entity: String): FakeRequest[AnyContentAsFormUrlEncoded] =
+            FakeRequest("POST", "/vat-registration-date")
+              .withFormUrlEncodedBody(vatRegistrationDate + ".dateDay" -> registrationDate.day,
+                vatRegistrationDate + ".dateMonth" -> registrationDate.month,
+                vatRegistrationDate + ".dateYear" -> registrationDate.year
+              ).withSession(SessionKeys.businessEntityKey -> entity)
 
-        val yesterday = DateModel.dateConvert(LocalDate.now().minusDays(1))
-        val request = testPostRequest(yesterday, Overseas.toString)
+          val yesterday = DateModel.dateConvert(LocalDate.now().minusDays(1))
+          val request = testPostRequest(yesterday, Overseas.toString)
 
-        val result = TestCaptureVatNumberController.submit(request)
-        status(result) shouldBe Status.SEE_OTHER
-        redirectLocation(result) shouldBe Some(routes.PreviousVatReturnController.show().url)
+          val result = TestCaptureVatNumberController.submit(request)
+          status(result) shouldBe Status.SEE_OTHER
+          redirectLocation(result) shouldBe Some(routes.PreviousVatReturnController.show().url)
 
-        Json.parse(result.session(request).get(SessionKeys.vatRegistrationDateKey).get).validate[DateModel].get shouldBe yesterday
-        result.session(request).get(SessionKeys.businessEntityKey).get shouldBe Overseas.toString
+          Json.parse(result.session(request).get(SessionKeys.vatRegistrationDateKey).get).validate[DateModel].get shouldBe yesterday
+          result.session(request).get(SessionKeys.businessEntityKey).get shouldBe Overseas.toString
+        }
+      }
+      "redirect to the check your answers page" when {
+        "the additional known facts feature switch is not enabled" in {
+          mockAuthAdminRole()
+          disable(AdditionalKnownFacts)
+
+          def testPostRequest(registrationDate: DateModel, entity: String): FakeRequest[AnyContentAsFormUrlEncoded] =
+            FakeRequest("POST", "/vat-registration-date")
+              .withFormUrlEncodedBody(vatRegistrationDate + ".dateDay" -> registrationDate.day,
+                vatRegistrationDate + ".dateMonth" -> registrationDate.month,
+                vatRegistrationDate + ".dateYear" -> registrationDate.year
+              ).withSession(SessionKeys.businessEntityKey -> entity)
+
+          val yesterday = DateModel.dateConvert(LocalDate.now().minusDays(1))
+          val request = testPostRequest(yesterday, Overseas.toString)
+
+          val result = TestCaptureVatNumberController.submit(request)
+          status(result) shouldBe Status.SEE_OTHER
+          redirectLocation(result) shouldBe Some(routes.CheckYourAnswersController.show().url)
+
+          Json.parse(result.session(request).get(SessionKeys.vatRegistrationDateKey).get).validate[DateModel].get shouldBe yesterday
+          result.session(request).get(SessionKeys.businessEntityKey).get shouldBe Overseas.toString
+        }
       }
     }
 

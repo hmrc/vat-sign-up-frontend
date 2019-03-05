@@ -21,6 +21,7 @@ import java.time.LocalDate
 import play.api.http.Status._
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys.{businessEntityKey, vatRegistrationDateKey}
+import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.AdditionalKnownFacts
 import uk.gov.hmrc.vatsignupfrontend.forms.VatRegistrationDateForm._
 import uk.gov.hmrc.vatsignupfrontend.helpers.servicemocks.AuthStub._
 import uk.gov.hmrc.vatsignupfrontend.helpers.{ComponentSpecBase, CustomMatchers, SessionCookieCrumbler}
@@ -62,9 +63,10 @@ class CaptureVatRegistrationControllerISpec extends ComponentSpecBase with Custo
         session.keys should contain(vatRegistrationDateKey)
       }
     }
-    "user is overseas" when {
+    "user is overseas and the additional known facts feature switch is enabled" when {
       "redirects to Previous VAT return page" in {
         stubAuth(OK, successfulAuthResponse())
+        enable(AdditionalKnownFacts)
 
         val yesterday = DateModel.dateConvert(LocalDate.now().minusDays(1))
 
@@ -84,8 +86,31 @@ class CaptureVatRegistrationControllerISpec extends ComponentSpecBase with Custo
         val session = SessionCookieCrumbler.getSessionMap(res)
         session.keys should contain(vatRegistrationDateKey)
         session.keys should contain(businessEntityKey)
+      }
+    }
+    "user is overseas and the additional known facts feature switch is not enabled" when {
+      "redirects to Check Your Answers page" in {
+        stubAuth(OK, successfulAuthResponse())
+        disable(AdditionalKnownFacts)
 
+        val yesterday = DateModel.dateConvert(LocalDate.now().minusDays(1))
 
+        val res = post(
+          "/vat-registration-date",
+          Map(SessionKeys.businessEntityKey -> Overseas.toString))(
+          vatRegistrationDate + ".dateDay" -> yesterday.day,
+          vatRegistrationDate + ".dateMonth" -> yesterday.month,
+          vatRegistrationDate + ".dateYear" -> yesterday.year
+        )
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectUri(routes.CheckYourAnswersController.show().url)
+        )
+
+        val session = SessionCookieCrumbler.getSessionMap(res)
+        session.keys should contain(vatRegistrationDateKey)
+        session.keys should contain(businessEntityKey)
       }
     }
   }
