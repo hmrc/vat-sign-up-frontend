@@ -18,31 +18,26 @@ package uk.gov.hmrc.vatsignupfrontend.controllers.principal
 
 import javax.inject.Inject
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.http.NotFoundException
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
 import uk.gov.hmrc.vatsignupfrontend.config.ControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.config.auth.AdministratorRolePredicate
+import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.DirectDebitTermsJourney
 import uk.gov.hmrc.vatsignupfrontend.controllers.AuthenticatedController
 
 import scala.concurrent.Future
 
 class DirectDebitResolverController @Inject()(val controllerComponents: ControllerComponents)
   extends AuthenticatedController(
-    retrievalPredicate = AdministratorRolePredicate,
-    featureSwitches = Set(???)
-  ) {
+    retrievalPredicate = AdministratorRolePredicate) {
 
-  override protected def featureEnabled[T](func: => T): T =
-    if (featureSwitches exists isEnabled) func
-    else throw new NotFoundException(featureSwitchError)
-
-  def resolve: Action[AnyContent] = Action.async { implicit request =>
+  def show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
-      val directDebitFlag: Boolean = request.session.get(SessionKeys.directDebitKey).getOrElse("false").toBoolean
+      val directDebitFlagFromSession: Boolean = request.session.get(SessionKeys.directDebitKey).getOrElse("false").toBoolean
+      val directDebitFeatureSwitch: Boolean = isEnabled(DirectDebitTermsJourney)
 
-      if (directDebitFlag)
-        ??? // Not implemented
-      else Future.successful(Redirect(???)) // Email
+      if (directDebitFlagFromSession && directDebitFeatureSwitch)
+        Future.successful(???) // TODO: Not implemented
+      else Future.successful(Redirect(???)) // TODO: Email
     }
   }
 

@@ -17,19 +17,63 @@
 package uk.gov.hmrc.vatsignupfrontend.controllers.principal
 
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import uk.gov.hmrc.play.test.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.SessionKeys._
+import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.DirectDebitTermsJourney
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockControllerComponents
 
 class DirectDebitResolverControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockControllerComponents {
 
-  object DirectDebitResolverController extends DirectDebitResolverController(mockControllerComponents)
+  object TestDirectDebitResolverController extends DirectDebitResolverController(mockControllerComponents)
 
-  lazy val testGetRequest = FakeRequest("", "")
+  private def sessionValues(directDebitFlag: Option[String]): Iterable[(String, String)] = directDebitFlag map(directDebitKey -> _)
 
-  "" should {
-    "" in {
+  def testGetRequest(directDebitFlag: Option[String]): FakeRequest[AnyContentAsEmpty.type] = {
+    FakeRequest("GET", "")
+      .withSession(sessionValues(directDebitFlag).toSeq: _*)
+  }
 
+  "Calling the show action of the Direct Debit Resolver controller" when {
+    "all prerequisite data are in session" when {
+      "the feature switch has been enabled show" should {
+        "respond with Not Implemented" in { // TODO: Once implementation for views has been completed, test can be adapted.
+          mockAuthEmptyRetrieval()
+          enable(DirectDebitTermsJourney)
+
+          val result = TestDirectDebitResolverController.show(
+            testGetRequest(directDebitFlag = Some("true")))
+
+          status(result) shouldBe ???
+        }
+      }
+
+      "the feature switch has been disabled" should {
+        "redirect to the email template" in { // TODO: Once implementation for views has been completed, test can be adapted.
+          mockAuthEmptyRetrieval()
+          disable(DirectDebitTermsJourney)
+
+          val result = TestDirectDebitResolverController.show(
+            testGetRequest(directDebitFlag = Some("true")))
+
+          status(result) shouldBe ???
+        }
+      }
+    }
+
+    "prerequisite data are missing from session" when {
+      "the feature switch has been enabled" should {
+        "redirect to the email template" in { // TODO: Once implementation for views has been completed, test can be adapted.
+          mockAuthEmptyRetrieval()
+          enable(DirectDebitTermsJourney)
+
+          val result = TestDirectDebitResolverController.show(
+            testGetRequest(directDebitFlag = None))
+
+          status(result) shouldBe ???
+        }
+      }
     }
   }
 }
