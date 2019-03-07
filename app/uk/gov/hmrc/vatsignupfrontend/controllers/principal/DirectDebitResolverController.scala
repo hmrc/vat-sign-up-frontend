@@ -36,8 +36,8 @@ class DirectDebitResolverController @Inject()(val controllerComponents: Controll
       val directDebitFeatureSwitch: Boolean = isEnabled(DirectDebitTermsJourney)
 
       if (directDebitFlagFromSession && directDebitFeatureSwitch)
-        Future.successful(???) // TODO: Not implemented
-      else Future.successful(Redirect(???)) // TODO: Email
+        Future.successful(NotImplemented) // TODO: Not implemented
+      else Future.successful(Redirect("")) // TODO: Email
     }
   }
 
