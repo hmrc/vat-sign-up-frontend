@@ -24,42 +24,76 @@ import uk.gov.hmrc.vatsignupfrontend.helpers.{ComponentSpecBase, CustomMatchers}
 
 class DirectDebitResolverControllerISpec extends ComponentSpecBase with CustomMatchers {
 
-  "GET /direct-debit-resolver" should { // TODO: Once implementation for views has been completed, test can be adapted.
-    "return an 501 NotImplemented" in {
+  "GET /direct-debit-resolver" when {
 
-      enable(DirectDebitTermsJourney)
+    "the user has a direct debit hasDirectDebitKey -> true" when {
 
-      stubAuth(OK, successfulAuthResponse())
+      "the direct debit feature is enabled" should {
 
-      val result = get("/direct-debit-resolver",
-        Map(SessionKeys.directDebitKey -> "true")
-      )
+        "redirect to the Direct Debit T&Cs Agree page" in {
 
-      result should have(httpStatus(NOT_IMPLEMENTED))
+          enable(DirectDebitTermsJourney)
+          stubAuth(OK, successfulAuthResponse())
+
+          val result = get("/direct-debit-resolver", Map(SessionKeys.directDebitKey -> "true"))
+
+          result should have(
+            httpStatus(SEE_OTHER),
+            redirectUri(routes.DirectDebitTermsAndConditionsController.show().url)
+          )
+        }
+      }
+
+      "the direct debit feature is disabled" should {
+
+        "redirect to the Agree Email Capture page" in {
+
+          disable(DirectDebitTermsJourney)
+          stubAuth(OK, successfulAuthResponse())
+
+          val result = get("/direct-debit-resolver", Map(SessionKeys.directDebitKey -> "true"))
+
+          result should have(
+            httpStatus(SEE_OTHER),
+            redirectUri(routes.AgreeCaptureEmailController.show().url)
+          )
+        }
+      }
     }
 
-    "return an 303 Redirect when the feature switch is disabled" in {
+    "the user does not have direct debit" when {
 
-      disable(DirectDebitTermsJourney)
+      "the direct debit feature is enabled" should {
 
-      stubAuth(OK, successfulAuthResponse())
+        "redirect to the Agree Email Capture page" in {
 
-      val result = get("/direct-debit-resolver",
-        Map(SessionKeys.directDebitKey -> "true")
-      )
+          enable(DirectDebitTermsJourney)
+          stubAuth(OK, successfulAuthResponse())
 
-      result should have(httpStatus(SEE_OTHER))
-    }
+          val result = get("/direct-debit-resolver")
 
-    "return an 303 Redirect when the session flag is not in session" in {
+          result should have(
+            httpStatus(SEE_OTHER),
+            redirectUri(routes.AgreeCaptureEmailController.show().url)
+          )
+        }
+      }
 
-      enable(DirectDebitTermsJourney)
+      "the direct debit feature is disabled" should {
 
-      stubAuth(OK, successfulAuthResponse())
+        "redirect to the Agree Email Capture page" in {
 
-      val result = get("/direct-debit-resolver")
+          disable(DirectDebitTermsJourney)
+          stubAuth(OK, successfulAuthResponse())
 
-      result should have(httpStatus(SEE_OTHER))
+          val result = get("/direct-debit-resolver")
+
+          result should have(
+            httpStatus(SEE_OTHER),
+            redirectUri(routes.AgreeCaptureEmailController.show().url)
+          )
+        }
+      }
     }
   }
 }

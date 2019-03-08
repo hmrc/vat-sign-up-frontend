@@ -17,13 +17,14 @@
 package uk.gov.hmrc.vatsignupfrontend.controllers.principal
 
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.http.Status.SEE_OTHER
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
+import play.api.test.Helpers._
 import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys._
 import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.DirectDebitTermsJourney
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockControllerComponents
-import play.api.http.Status.{NOT_IMPLEMENTED, SEE_OTHER}
 
 class DirectDebitResolverControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockControllerComponents {
 
@@ -31,48 +32,79 @@ class DirectDebitResolverControllerSpec extends UnitSpec with GuiceOneAppPerSuit
 
   private def sessionValues(directDebitFlag: Option[String]): Iterable[(String, String)] = directDebitFlag map(directDebitKey -> _)
 
-  def testGetRequest(directDebitFlag: Option[String]): FakeRequest[AnyContentAsEmpty.type] = {
+  def testGetRequest(directDebitFlag: Option[String] = None): FakeRequest[AnyContentAsEmpty.type] = {
     FakeRequest("GET", "/direct-debit-resolver")
       .withSession(sessionValues(directDebitFlag).toSeq: _*)
   }
 
   "Calling the show action of the Direct Debit Resolver controller" when {
+
     "all prerequisite data are in session" when {
+
       "the feature switch has been enabled show" should {
-        "respond with Not Implemented" in { // TODO: Once implementation for views has been completed, test can be adapted.
+
+        lazy val result = TestDirectDebitResolverController.show(testGetRequest(directDebitFlag = Some("true")))
+
+        "return status SEE_OTHER (303)" in {
           mockAuthAdminRole()
           enable(DirectDebitTermsJourney)
 
-          val result = TestDirectDebitResolverController.show(
-            testGetRequest(directDebitFlag = Some("true")))
+          status(result) shouldBe SEE_OTHER
+        }
 
-          status(result) shouldBe NOT_IMPLEMENTED
+        "redirect to the Direct Debit T&Cs Agree page" in {
+          redirectLocation(result) shouldBe Some(routes.DirectDebitTermsAndConditionsController.show().url)
         }
       }
 
       "the feature switch has been disabled" should {
-        "redirect to the email template" in { // TODO: Once implementation for views has been completed, test can be adapted.
+
+        lazy val result = TestDirectDebitResolverController.show(testGetRequest(directDebitFlag = Some("true")))
+
+        "return status SEE_OTHER (303)" in {
           mockAuthAdminRole()
           disable(DirectDebitTermsJourney)
 
-          val result = TestDirectDebitResolverController.show(
-            testGetRequest(directDebitFlag = Some("true")))
-
           status(result) shouldBe SEE_OTHER
+        }
+
+        "redirect to the Agree Capture Email page" in {
+          redirectLocation(result) shouldBe Some(routes.AgreeCaptureEmailController.show().url)
         }
       }
     }
 
-    "prerequisite data are missing from session" when {
+    "prerequisite data is missing from session" when {
+
       "the feature switch has been enabled" should {
-        "redirect to the email template" in { // TODO: Once implementation for views has been completed, test can be adapted.
+
+        lazy val result = TestDirectDebitResolverController.show(testGetRequest())
+
+        "return status SEE_OTHER (303)" in {
           mockAuthAdminRole()
           enable(DirectDebitTermsJourney)
 
-          val result = TestDirectDebitResolverController.show(
-            testGetRequest(directDebitFlag = None))
+          status(result) shouldBe SEE_OTHER
+        }
+
+        "redirect to the Agree Capture Email page" in {
+          redirectLocation(result) shouldBe Some(routes.AgreeCaptureEmailController.show().url)
+        }
+      }
+
+      "the feature switch has been disabled" should {
+
+        lazy val result = TestDirectDebitResolverController.show(testGetRequest())
+
+        "return status SEE_OTHER (303)" in {
+          mockAuthAdminRole()
+          disable(DirectDebitTermsJourney)
 
           status(result) shouldBe SEE_OTHER
+        }
+
+        "redirect to the Agree Capture Email page" in {
+          redirectLocation(result) shouldBe Some(routes.AgreeCaptureEmailController.show().url)
         }
       }
     }

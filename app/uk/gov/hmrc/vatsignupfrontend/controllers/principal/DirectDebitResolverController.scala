@@ -33,11 +33,10 @@ class DirectDebitResolverController @Inject()(val controllerComponents: Controll
   def show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       val directDebitFlagFromSession: Boolean = request.session.get(SessionKeys.directDebitKey).getOrElse("false").toBoolean
-      val directDebitFeatureSwitch: Boolean = isEnabled(DirectDebitTermsJourney)
 
-      if (directDebitFlagFromSession && directDebitFeatureSwitch)
-        Future.successful(NotImplemented) // TODO: Not implemented
-      else Future.successful(Redirect("")) // TODO: Email
+      if (directDebitFlagFromSession && isEnabled(DirectDebitTermsJourney))
+        Future.successful(Redirect(routes.DirectDebitTermsAndConditionsController.show()))
+      else Future.successful(Redirect(routes.AgreeCaptureEmailController.show()))
     }
   }
 
