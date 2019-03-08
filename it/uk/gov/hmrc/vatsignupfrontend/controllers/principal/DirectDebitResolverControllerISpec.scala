@@ -35,7 +35,7 @@ class DirectDebitResolverControllerISpec extends ComponentSpecBase with CustomMa
           enable(DirectDebitTermsJourney)
           stubAuth(OK, successfulAuthResponse())
 
-          val result = get("/direct-debit-resolver", Map(SessionKeys.directDebitKey -> "true"))
+          val result = get("/direct-debit-resolver", Map(SessionKeys.hasDirectDebitKey -> "true"))
 
           result should have(
             httpStatus(SEE_OTHER),
@@ -51,7 +51,7 @@ class DirectDebitResolverControllerISpec extends ComponentSpecBase with CustomMa
           disable(DirectDebitTermsJourney)
           stubAuth(OK, successfulAuthResponse())
 
-          val result = get("/direct-debit-resolver", Map(SessionKeys.directDebitKey -> "true"))
+          val result = get("/direct-debit-resolver", Map(SessionKeys.hasDirectDebitKey -> "true"))
 
           result should have(
             httpStatus(SEE_OTHER),

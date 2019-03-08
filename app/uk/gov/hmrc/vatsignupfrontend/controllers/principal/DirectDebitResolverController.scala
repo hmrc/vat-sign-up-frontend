@@ -32,7 +32,7 @@ class DirectDebitResolverController @Inject()(val controllerComponents: Controll
 
   def show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
-      val directDebitFlagFromSession: Boolean = request.session.get(SessionKeys.directDebitKey).getOrElse("false").toBoolean
+      val directDebitFlagFromSession: Boolean = request.session.get(SessionKeys.hasDirectDebitKey).getOrElse("false").toBoolean
 
       if (directDebitFlagFromSession && isEnabled(DirectDebitTermsJourney))
         Future.successful(Redirect(routes.DirectDebitTermsAndConditionsController.show()))

@@ -30,7 +30,7 @@ class DirectDebitResolverControllerSpec extends UnitSpec with GuiceOneAppPerSuit
 
   object TestDirectDebitResolverController extends DirectDebitResolverController(mockControllerComponents)
 
-  private def sessionValues(directDebitFlag: Option[String]): Iterable[(String, String)] = directDebitFlag map(directDebitKey -> _)
+  private def sessionValues(directDebitFlag: Option[String]): Iterable[(String, String)] = directDebitFlag map(hasDirectDebitKey -> _)
 
   def testGetRequest(directDebitFlag: Option[String] = None): FakeRequest[AnyContentAsEmpty.type] = {
     FakeRequest("GET", "/direct-debit-resolver")

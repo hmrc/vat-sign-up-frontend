@@ -295,6 +295,9 @@ POST        /last-vat-return-date                               uk.gov.hmrc.vats
 GET         /box-5-figure                                       uk.gov.hmrc.vatsignupfrontend.controllers.principal.CaptureBox5FigureController.show
 POST        /box-5-figure                                       uk.gov.hmrc.vatsignupfrontend.controllers.principal.CaptureBox5FigureController.submit
 
+# Direct Debit Resolver
+GET         /direct-debit-resolver                              uk.gov.hmrc.vatsignupfrontend.controllers.principal.DirectDebitResolverController.show
+
 ## Cancel direct debit page
 GET         /cancel-direct-debit                                uk.gov.hmrc.vatsignupfrontend.controllers.principal.CancelDirectDebitController.show
 
