@@ -305,3 +305,7 @@ GET         /cancel-direct-debit                                uk.gov.hmrc.vats
 # Direct Debit Terms and Conditions
 GET         /direct-debit-terms-and-conditions                  uk.gov.hmrc.vatsignupfrontend.controllers.principal.DirectDebitTermsAndConditionsController.show
 POST        /direct-debit-terms-and-conditions                  uk.gov.hmrc.vatsignupfrontend.controllers.principal.DirectDebitTermsAndConditionsController.submit
+
+# Receive Email Notification
+GET         /receive-email-notifications                        uk.gov.hmrc.vatsignupfrontend.controllers.principal.ReceiveEmailNotificationsController.show
+POST        /receive-email-notifications                        uk.gov.hmrc.vatsignupfrontend.controllers.principal.ReceiveEmailNotificationsController.submit
