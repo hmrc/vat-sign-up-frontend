@@ -25,9 +25,9 @@ import uk.gov.hmrc.vatsignupfrontend.config.auth.AdministratorRolePredicate
 import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.ContactPrefencesJourney
 import uk.gov.hmrc.vatsignupfrontend.controllers.AuthenticatedController
 import uk.gov.hmrc.vatsignupfrontend.forms.ReceiveEmailNotificationForm._
-import uk.gov.hmrc.vatsignupfrontend.models.{Digital, No, Yes}
+import uk.gov.hmrc.vatsignupfrontend.models._
 import uk.gov.hmrc.vatsignupfrontend.services.StoreContactPreferenceService
-import uk.gov.hmrc.vatsignupfrontend.views.html.principal.{receive_email_notifications, software_ready}
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.receive_email_notifications
 
 import scala.concurrent.Future
 
@@ -38,10 +38,10 @@ class ReceiveEmailNotificationsController @Inject()(val controllerComponents: Co
   extends AuthenticatedController(AdministratorRolePredicate, featureSwitches = Set(ContactPrefencesJourney)) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
+    authorised() {
 
     val optEmail = request.session.get(SessionKeys.emailKey).filter(_.nonEmpty)
 
-    authorised()
       optEmail match {
         case Some(email) =>
           Future.successful(
@@ -56,45 +56,49 @@ class ReceiveEmailNotificationsController @Inject()(val controllerComponents: Co
             Redirect(routes.CaptureEmailController.show())
           )
       }
+    }
   }
 
   val submit: Action[AnyContent] = Action.async { implicit request =>
+    authorised() {
 
-    val optEmail = request.session.get(SessionKeys.emailKey).filter(_.nonEmpty)
-    val optVatNumber = request.session.get(SessionKeys.vatNumberKey).filter(_.nonEmpty)
+      val optEmail = request.session.get(SessionKeys.emailKey).filter(_.nonEmpty)
+      val optVatNumber = request.session.get(SessionKeys.vatNumberKey).filter(_.nonEmpty)
 
-    receiveEmailNotificationForm.bindFromRequest.fold(
-      formWithErrors =>
-        optEmail match {
+      def storeContactPreference(contactPreference: ContactPreference) = {
+        optVatNumber match {
+          case Some(vatNumber) =>
+            storeContactPreferenceService.storeContactPreference(vatNumber, contactPreference) map {
+              case Right(_) => Redirect(routes.TermsController.show())
+              case Left(status) => throw new InternalServerException(s"Store contact preference failed with status = $status")
+            }
+          case None =>
+            Future.successful(
+              Redirect(routes.ResolveVatNumberController.resolve())
+            )
+        }
+      }
+
+      receiveEmailNotificationForm.bindFromRequest.fold(
+        formWithErrors => optEmail match {
           case Some(email) =>
-        Future.successful(
-          BadRequest(receive_email_notifications(
-            email,
-            formWithErrors,
-            routes.ReceiveEmailNotificationsController.submit()
-          ))
-        )
+            Future.successful(
+              BadRequest(receive_email_notifications(
+                email,
+                formWithErrors,
+                routes.ReceiveEmailNotificationsController.submit()
+              ))
+            )
           case None =>
             Future.successful(
               Redirect(routes.CaptureEmailController.show())
             )
         }, {
-        case Yes => optVatNumber match {
-          case Some(vatNumber) =>
-          storeContactPreferenceService.storeContactPreference(vatNumber, Digital) map {
-            case Right(_) => Redirect(routes.TermsController.show())
-            case Left(status) => throw new InternalServerException(s"Store contact preference failed with status = $status")
-          }
-          case None =>
-            Future.successful(
-              Redirect(routes.ResolveVatNumberController.resolve())
-            )
+          case Yes => storeContactPreference(Digital)
 
-
-        case No =>
-          Future.successful(Redirect(routes.TermsController.show()))
-      }
-
-    )
+          case No => storeContactPreference(Paper)
+        }
+      )
+    }
   }
 }
