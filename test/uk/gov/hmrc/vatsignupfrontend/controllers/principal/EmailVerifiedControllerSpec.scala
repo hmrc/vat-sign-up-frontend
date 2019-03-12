@@ -52,9 +52,8 @@ class EmailVerifiedControllerSpec extends UnitSpec with GuiceOneAppPerSuite with
 
         val result = TestEmailVerifiedController.submit(testPostRequest)
 
-        status(result) shouldBe Status.NOT_IMPLEMENTED
-        result.session(testPostRequest).get(SessionKeys.emailVerifiedKey) shouldBe Some("true")
-        //TODO: redirect to contact preferences page
+        status(result) shouldBe Status.SEE_OTHER
+        redirectLocation(result) shouldBe Some(routes.ReceiveEmailNotificationsController.show().url)
       }
     }
     "redirect to Terms controller" when {

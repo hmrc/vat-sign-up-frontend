@@ -43,9 +43,7 @@ class EmailVerifiedController @Inject()(val controllerComponents: ControllerComp
     authorised() {
       if (isEnabled(ContactPreferencesJourney)) {
         Future.successful(
-          NotImplemented
-            .addingToSession(SessionKeys.emailVerifiedKey -> "true")
-          // TODO: redirect to contact preferences page.
+         Redirect(routes.ReceiveEmailNotificationsController.show())
         )
       } else {
         Future.successful(

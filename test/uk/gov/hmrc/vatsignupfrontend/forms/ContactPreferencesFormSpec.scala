@@ -25,7 +25,7 @@ class ContactPreferencesFormSpec extends UnitSpec {
   "contactPreferencesForm" should {
 
     val agentContactPreferencesErrorKey = "error.agent.contact-preference"
-    val principalContactPreferencesErrorKey = "error.principal.contact-preference"
+    val principalContactPreferencesErrorKey = "error.principal.receive_email_notifications"
     val validateContactPreferencesForm = contactPreferencesForm(isAgent = false)
 
     "successfully parse digital" in {

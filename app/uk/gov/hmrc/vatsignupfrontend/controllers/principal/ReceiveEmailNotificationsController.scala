@@ -22,10 +22,9 @@ import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
 import uk.gov.hmrc.vatsignupfrontend.config.ControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.config.auth.AdministratorRolePredicate
-import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.ContactPrefencesJourney
+import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.ContactPreferencesJourney
 import uk.gov.hmrc.vatsignupfrontend.controllers.AuthenticatedController
-import uk.gov.hmrc.vatsignupfrontend.forms.ReceiveEmailNotificationForm._
-import uk.gov.hmrc.vatsignupfrontend.models._
+import uk.gov.hmrc.vatsignupfrontend.forms.ContactPreferencesForm._
 import uk.gov.hmrc.vatsignupfrontend.services.StoreContactPreferenceService
 import uk.gov.hmrc.vatsignupfrontend.views.html.principal.receive_email_notifications
 
@@ -35,19 +34,19 @@ import scala.concurrent.Future
 class ReceiveEmailNotificationsController @Inject()(val controllerComponents: ControllerComponents,
                                                     storeContactPreferenceService: StoreContactPreferenceService
                                                    )
-  extends AuthenticatedController(AdministratorRolePredicate, featureSwitches = Set(ContactPrefencesJourney)) {
+  extends AuthenticatedController(AdministratorRolePredicate, featureSwitches = Set(ContactPreferencesJourney)) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
 
-    val optEmail = request.session.get(SessionKeys.emailKey).filter(_.nonEmpty)
+      val optEmail = request.session.get(SessionKeys.emailKey).filter(_.nonEmpty)
 
       optEmail match {
         case Some(email) =>
           Future.successful(
             Ok(receive_email_notifications(
               email,
-              receiveEmailNotificationForm,
+              contactPreferencesForm(isAgent = false),
               routes.ReceiveEmailNotificationsController.submit()
             ))
           )
@@ -65,21 +64,7 @@ class ReceiveEmailNotificationsController @Inject()(val controllerComponents: Co
       val optEmail = request.session.get(SessionKeys.emailKey).filter(_.nonEmpty)
       val optVatNumber = request.session.get(SessionKeys.vatNumberKey).filter(_.nonEmpty)
 
-      def storeContactPreference(contactPreference: ContactPreference) = {
-        optVatNumber match {
-          case Some(vatNumber) =>
-            storeContactPreferenceService.storeContactPreference(vatNumber, contactPreference) map {
-              case Right(_) => Redirect(routes.TermsController.show())
-              case Left(status) => throw new InternalServerException(s"Store contact preference failed with status = $status")
-            }
-          case None =>
-            Future.successful(
-              Redirect(routes.ResolveVatNumberController.resolve())
-            )
-        }
-      }
-
-      receiveEmailNotificationForm.bindFromRequest.fold(
+      contactPreferencesForm(isAgent = false).bindFromRequest.fold(
         formWithErrors => optEmail match {
           case Some(email) =>
             Future.successful(
@@ -94,9 +79,18 @@ class ReceiveEmailNotificationsController @Inject()(val controllerComponents: Co
               Redirect(routes.CaptureEmailController.show())
             )
         }, {
-          case Yes => storeContactPreference(Digital)
-
-          case No => storeContactPreference(Paper)
+          contactPreference =>
+            optVatNumber match {
+              case (Some(vatNumber)) =>
+                storeContactPreferenceService.storeContactPreference(vatNumber, contactPreference) map {
+                  case Right(_) => Redirect(routes.TermsController.show())
+                  case Left(status) => throw new InternalServerException(s"Store contact preference failed with status = $status")
+                }
+              case None =>
+                Future.successful(
+                  Redirect(routes.ResolveVatNumberController.resolve())
+                )
+            }
         }
       )
     }

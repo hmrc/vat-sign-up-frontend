@@ -961,11 +961,11 @@ object MessageLookup {
     val title = heading + ServiceName.principalSuffix
     val line1 = "We can email you when the business has a new message about VAT in their HMRC account."
     val line2 = "In some cases we will need to send you letters, even if you have chosen emails only."
-    val radioYes: String = "yes"
-    val radioNo: String = "no"
+    val radioDigital: String = "digital"
+    val radioPaper: String = "paper"
 
     def radioButtonEmail(email: String) = s"Send emails to $email"
-    val no: String = "Send letters only"
+    val paper: String = "Send letters only"
   }
 
   object AgentReceiveEmailNotifications {

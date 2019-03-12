@@ -44,7 +44,8 @@ class EmailVerifiedControllerISpec extends ComponentSpecBase with CustomMatchers
         val res = post("/email-verified")()
 
         res should have(
-          httpStatus(NOT_IMPLEMENTED)
+          httpStatus(SEE_OTHER),
+          redirectUri(routes.ReceiveEmailNotificationsController.show().url)
         )
       }
     }

@@ -24,20 +24,20 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.http.{InternalServerException, NotFoundException}
 import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
-import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.ContactPrefencesJourney
+import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.ContactPreferencesJourney
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockControllerComponents
-import uk.gov.hmrc.vatsignupfrontend.forms.ConfirmGeneralPartnershipForm.confirmPartnershipForm
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.models._
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.MockStoreContactPreferenceService
+import uk.gov.hmrc.vatsignupfrontend.forms.ContactPreferencesForm._
 
 
-class ReceiveEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockControllerComponents
+class ReceiveEmailNotificationsControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockControllerComponents
   with MockStoreContactPreferenceService {
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    enable(ContactPrefencesJourney)
+    enable(ContactPreferencesJourney)
   }
 
   object TestReceiveEmailController extends ReceiveEmailNotificationsController(
@@ -47,8 +47,8 @@ class ReceiveEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite with 
 
   val testGetRequest = FakeRequest("GET", "/receive-email-notifications")
 
-  def testPostRequest(answer: YesNo = Yes): FakeRequest[AnyContentAsFormUrlEncoded] =
-    FakeRequest("POST", "/confirm-partnership-utr").withFormUrlEncodedBody(confirmPartnershipForm.fill(answer).data.toSeq: _*)
+  def testPostRequest(answer: String): FakeRequest[AnyContentAsFormUrlEncoded] =
+    FakeRequest("POST", "/receive-email-notifications").withFormUrlEncodedBody(contactPreference -> answer)
 
   "Calling the show action of the Receive Email Notifications Controller" when {
     "there is an email in session" should {
@@ -65,7 +65,7 @@ class ReceiveEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite with 
       }
     }
     "there isn't a email in session" should {
-      "go to the captur email page" in {
+      "go to the capture email page" in {
         mockAuthAdminRole()
 
         val result = TestReceiveEmailController.show(testGetRequest)
@@ -78,25 +78,27 @@ class ReceiveEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite with 
       "return Not Found exception" in {
         mockAuthAdminRole()
 
-        disable(ContactPrefencesJourney)
+        disable(ContactPreferencesJourney)
         intercept[NotFoundException] {
-          await(TestReceiveEmailController.submit(testPostRequest().withSession(
+          await(TestReceiveEmailController.submit(testPostRequest("digital").withSession(
             SessionKeys.emailKey -> testEmail
           )))
         }
       }
     }
 
-    "Calling the submit action of the Confirm Limited Partnership controller" when {
+    "Calling the submit action of the Receive Email Notifications controller" when {
       "vat number is in session" when {
         "User answered Yes" should {
-          "go to the 'agree to receive emails' page" in {
+          "go to the 'terms' page" in {
             mockAuthAdminRole()
+
             mockStoreContactPreferenceSuccess(
               vatNumber = testVatNumber,
               contactPreference = Digital
             )
-            val result = TestReceiveEmailController.submit(testPostRequest().withSession(
+
+            val result = TestReceiveEmailController.submit(testPostRequest("digital").withSession(
               SessionKeys.vatNumberKey -> testVatNumber,
               SessionKeys.emailKey -> testEmail
             ))
@@ -105,13 +107,15 @@ class ReceiveEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite with 
           }
         }
         "User answered No" should {
-          "go to 'sign in with different details partnership' page" in {
+          "go to terms page" in {
             mockAuthAdminRole()
+
             mockStoreContactPreferenceSuccess(
               vatNumber = testVatNumber,
               contactPreference = Paper
             )
-            val result = TestReceiveEmailController.submit(testPostRequest().withSession(
+
+            val result = TestReceiveEmailController.submit(testPostRequest("paper").withSession(
               SessionKeys.vatNumberKey -> testVatNumber,
               SessionKeys.emailKey -> testEmail
             ))
@@ -125,7 +129,7 @@ class ReceiveEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite with 
       "go to resolve vat number controller" in {
         mockAuthAdminRole()
 
-        val result = TestReceiveEmailController.submit(testPostRequest().withSession(
+        val result = TestReceiveEmailController.submit(testPostRequest("digital").withSession(
           SessionKeys.emailKey -> testEmail
         ))
         status(result) shouldBe Status.SEE_OTHER
@@ -137,7 +141,7 @@ class ReceiveEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite with 
     "redirect to capture your email page" in {
       mockAuthAdminRole()
 
-      val result = TestReceiveEmailController.submit(testPostRequest().withSession(
+      val result = TestReceiveEmailController.submit(testPostRequest("").withSession(
         SessionKeys.vatNumberKey -> testVatNumber
       ))
       status(result) shouldBe Status.SEE_OTHER
@@ -151,10 +155,12 @@ class ReceiveEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite with 
         vatNumber = testVatNumber,
         contactPreference = Paper
       )
-      val result = TestReceiveEmailController.submit(testPostRequest().withSession(
+
+      val result = TestReceiveEmailController.submit(testPostRequest("paper").withSession(
         SessionKeys.vatNumberKey -> testVatNumber,
-        SessionKeys.emailKey -> testEmail
-      ))
+        SessionKeys.emailKey -> testEmail)
+      )
+
       intercept[InternalServerException](
         await(result)
       )

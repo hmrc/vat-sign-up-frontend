@@ -31,7 +31,7 @@ object ContactPreferencesForm {
 
   val agentContactPreferenceError: String = "error.agent.contact-preference"
 
-  val principalContactPreferenceError: String = "error.principal.contact-preference"
+  val principalContactPreferenceError: String = "error.principal.receive_email_notifications"
 
   private def formatter(isAgent: Boolean): Formatter[ContactPreference] = new Formatter[ContactPreference] {
     override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], ContactPreference] = {

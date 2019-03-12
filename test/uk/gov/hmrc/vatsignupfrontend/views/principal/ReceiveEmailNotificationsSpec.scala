@@ -23,22 +23,22 @@ import play.api.test.FakeRequest
 import play.api.{Configuration, Environment}
 import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{ReceiveEmailNotifications => messages}
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
-import uk.gov.hmrc.vatsignupfrontend.forms.ReceiveEmailNotificationForm._
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.forms.ContactPreferencesForm._
 
 
 class ReceiveEmailNotificationsSpec extends ViewSpec {
 
   val env = Environment.simple()
   val configuration = Configuration.load(env)
-  val error = "error.software_ready"
+  val error = "error.principal.receive_email_notifications"
 
   lazy val messagesApi = app.injector.instanceOf[MessagesApi]
 
   lazy val page = uk.gov.hmrc.vatsignupfrontend.views.html.principal.receive_email_notifications(
     testEmail,
-    receiveEmailNotificationForm,
+    contactPreferencesForm(isAgent = false),
     postAction = testCall)(
     FakeRequest(),
     applicationMessages,
@@ -59,18 +59,18 @@ class ReceiveEmailNotificationsSpec extends ViewSpec {
     "have a set of radio inputs" which {
       lazy val doc = Jsoup.parse(page.body)
 
-      "for the option 'Yes'" should {
+      "for the option 'Digital'" should {
 
         "have the text 'Send email to'" in {
-          doc.select(s"label[for=${messages.radioYes}]").text() shouldEqual messages.radioButtonEmail(testEmail)
+          doc.select(s"label[for=${messages.radioDigital}]").text() shouldEqual messages.radioButtonEmail(testEmail)
         }
 
         "have an input under the label that" should {
 
-          lazy val optionLabel = doc.select("#yes")
+          lazy val optionLabel = doc.select("#digital")
 
           "have the id 'yes'" in {
-            optionLabel.attr("id") shouldEqual "yes"
+            optionLabel.attr("id") shouldEqual "digital"
           }
 
           "be of type radio" in {
@@ -82,15 +82,15 @@ class ReceiveEmailNotificationsSpec extends ViewSpec {
       "for the option 'No'" should {
 
         "have the text 'no'" in {
-          doc.select(s"label[for=${messages.radioNo}]").text()  shouldEqual messages.no
+          doc.select(s"label[for=${messages.radioPaper}]").text()  shouldEqual messages.paper
         }
 
         "have an input under the label that" should {
 
-          lazy val optionLabel = doc.select("#no")
+          lazy val optionLabel = doc.select("#paper")
 
           "have the id 'no" in {
-            optionLabel.attr("id") shouldEqual "no"
+            optionLabel.attr("id") shouldEqual "paper"
           }
 
           "be of type radio" in {

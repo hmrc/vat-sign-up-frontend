@@ -23,8 +23,6 @@ object StoreContactPreferenceHttpParser {
 
   type StoreContactPreferenceResponse = Either[StoreContactPreferenceFailure, StoreContactPreferenceSuccess.type]
 
-  val EmailVerifiedKey = "emailVerified"
-
   implicit object StoreContactPreferenceHttpReads extends HttpReads[StoreContactPreferenceResponse] {
     override def read(method: String, url: String, response: HttpResponse): StoreContactPreferenceResponse = {
       response.status match {
