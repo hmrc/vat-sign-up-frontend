@@ -17,12 +17,12 @@
 package uk.gov.hmrc.vatsignupfrontend.controllers.principal
 
 import javax.inject.{Inject, Singleton}
-
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
 import uk.gov.hmrc.vatsignupfrontend.config.ControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.config.auth.AdministratorRolePredicate
+import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.ContactPreferencesJourney
 import uk.gov.hmrc.vatsignupfrontend.controllers.AuthenticatedController
 import uk.gov.hmrc.vatsignupfrontend.httpparsers.StoreEmailAddressHttpParser.StoreEmailAddressSuccess
 import uk.gov.hmrc.vatsignupfrontend.services.StoreEmailAddressService
@@ -68,7 +68,8 @@ class ConfirmEmailController @Inject()(val controllerComponents: ControllerCompo
             case Right(StoreEmailAddressSuccess(false)) =>
               Redirect(routes.VerifyEmailController.show().url)
             case Right(StoreEmailAddressSuccess(true)) =>
-              Redirect(routes.TermsController.show())
+              if(isEnabled(ContactPreferencesJourney)) Redirect(routes.ReceiveEmailNotificationsController.show())
+              else Redirect(routes.TermsController.show())
             case Left(errResponse) =>
               throw new InternalServerException("storeEmailAddress failed: status=" + errResponse.status)
           }
