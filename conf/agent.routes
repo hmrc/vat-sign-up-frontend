@@ -176,3 +176,7 @@ POST        /joint-venture-or-property-partnership              uk.gov.hmrc.vats
 
 # Resolve Partnership
 GET         /resolve-partnership                                uk.gov.hmrc.vatsignupfrontend.controllers.agent.partnerships.ResolvePartnershipController.resolve
+
+# Does Your Client Have a Utr
+GET         /does-your-client-have-a-utr                        uk.gov.hmrc.vatsignupfrontend.controllers.agent.partnerships.DoesYourClientHaveAUtrController.show
+POST        /does-your-client-have-a-utr                        uk.gov.hmrc.vatsignupfrontend.controllers.agent.partnerships.DoesYourClientHaveAUtrController.submit

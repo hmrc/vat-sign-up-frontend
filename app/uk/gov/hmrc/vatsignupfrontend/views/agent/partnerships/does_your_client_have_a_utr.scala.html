@@ -1,0 +1,51 @@
+@*
+ * Copyright 2019 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.play.views.html.helpers.form
+@import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
+@import uk.gov.hmrc.vatsignupfrontend.forms.DoYouHaveAUtrForm._
+@import uk.gov.hmrc.vatsignupfrontend.forms.submapping.YesNoMapping._
+@import uk.gov.hmrc.vatsignupfrontend.models.YesNo
+@import uk.gov.hmrc.vatsignupfrontend.views.html._
+@import uk.gov.hmrc.vatsignupfrontend.views.html.helpers.{summaryErrorHelper, radioHelper, continueButton}
+
+@(doYouHaveAUtrForm: Form[YesNo], postAction: Call)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+
+@agent_main_template(title = Messages("agent.partnership.does_your_client_have_a_utr.title"), bodyClasses = None, showSignOutLink = true, form = Some(doYouHaveAUtrForm)) {
+
+    @summaryErrorHelper(doYouHaveAUtrForm)
+
+    <h1 class="heading-large">@Messages("agent.partnership.does_your_client_have_a_utr.heading")</h1>
+
+    <p>@Messages("agent.partnership.does_your_client_have_a_utr.line")</p>
+
+    @form(action = postAction) {
+
+        @radioHelper(
+            parentForm = doYouHaveAUtrForm,
+            inline = true,
+            options = Seq(
+                (option_yes, Messages("base.yes")),
+                (option_no, Messages("base.no"))
+            ),
+            legend = Messages("agent.partnership.does_your_client_have_a_utr.heading"),
+            field = doYouHaveAUtrForm(yesNo)
+        )
+
+        @continueButton()
+    }
+
+}

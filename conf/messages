@@ -171,9 +171,9 @@ agent.not_enrolled_to_agent_services.heading                           = You can
 agent.not_enrolled_to_agent_services.line_1                            = To use this service, you need to <a href="{0}">set up an agent services account</a>.
 
 ## Agent Cannot Use Service Yet page
-agent.cannot_use_service.title                                         = You can sign up your client after 7 April 2019.
-agent.cannot_use_service.heading                                       = You can sign up your client after 7 April 2019.
-agent.cannot_use_service.line                                          = We cannot set up your client for Making Tax Digital for VAT during a busy filing period.
+agent.cannot_use_service.title                                         = Your client''s business is not eligible at this time
+agent.cannot_use_service.heading                                       = Your client''s business is not eligible at this time
+agent.cannot_use_service.line                                          = Try again later.
 
 ## No agent client relationship page
 agent.no_agent_client_relationship.title                               = You can''t sign up this client yet
@@ -650,9 +650,9 @@ principal.failed_matching.line_1                                       = The inf
 principal.failed_matching.try_again                                    = Try again
 
 ## Principal Cannot Use Service Yet page
-principal.cannot_use_service.title                                     = You can sign up after 7 April 2019.
-principal.cannot_use_service.heading                                   = You can sign up after 7 April 2019.
-principal.cannot_use_service.line                                      = We cannot set you up for Making Tax Digital for VAT during a busy filing period.
+principal.cannot_use_service.title                                     = Your business is not eligible at this time
+principal.cannot_use_service.heading                                   = Your business is not eligible at this time
+principal.cannot_use_service.line                                      = Try again later.
 
 ## Principal Already Signed Up page
 principal.already_signed_up.title                                      = You''ve already signed up
@@ -945,3 +945,8 @@ agent.partnership.joint_venture_or_property.heading                   = Is your 
 principal.partnership.do_you_have_a_utr.title                         = Does your partnership have a Self Assessment Unique Taxpayer Reference (UTR) number?
 principal.partnership.do_you_have_a_utr.heading                       = Does your partnership have a Self Assessment Unique Taxpayer Reference (UTR) number?
 principal.partnership.do_you_have_a_utr.line                          = This is a 10-digit number. You can find it on letters to the partnership from HMRC.
+
+## Agent - Does Your Client Have a UTR
+agent.partnership.does_your_client_have_a_utr.title                   = Does your client''s partnership have a Self Assessment Unique Taxpayer Reference (UTR) number?
+agent.partnership.does_your_client_have_a_utr.heading                 = Does your client''s partnership have a Self Assessment Unique Taxpayer Reference (UTR) number?
+agent.partnership.does_your_client_have_a_utr.line                    = This is a 10-digit number. You can find it on letters to the partnership from HMRC.

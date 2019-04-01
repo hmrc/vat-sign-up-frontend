@@ -69,9 +69,9 @@ object MessageLookup {
   }
 
   object CannotUseServiceYet {
-    val heading: String = "You can sign up your client after 7 April 2019."
+    val heading: String = "Your client's business is not eligible at this time"
     val title = heading + ServiceName.agentSuffix
-    val line1 = "We cannot set up your client for Making Tax Digital for VAT during a busy filing period."
+    val line1 = "Try again later."
   }
 
   object CaptureVatNumber {
@@ -443,9 +443,9 @@ object MessageLookup {
   }
 
   object PrincipalCannotUseServiceYet {
-    val heading: String = "You can sign up after 7 April 2019."
+    val heading: String = "Your business is not eligible at this time"
     val title = heading + ServiceName.principalSuffix
-    val line1 = "We cannot set you up for Making Tax Digital for VAT during a busy filing period."
+    val line1 = "Try again later."
   }
 
   object PrincipalCaptureEmail {
@@ -1008,6 +1008,12 @@ object MessageLookup {
   object PrincipalDoYouHaveAUtr {
     val heading: String = "Does your partnership have a Self Assessment Unique Taxpayer Reference (UTR) number?"
     val title: String = heading + ServiceName.principalSuffix
+    val line: String = "This is a 10-digit number. You can find it on letters to the partnership from HMRC."
+  }
+
+  object AgentDoesYourClientHaveAUtr {
+    val heading: String = "Does your client's partnership have a Self Assessment Unique Taxpayer Reference (UTR) number?"
+    val title: String = heading + ServiceName.agentSuffix
     val line: String = "This is a 10-digit number. You can find it on letters to the partnership from HMRC."
   }
 }
