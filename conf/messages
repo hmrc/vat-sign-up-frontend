@@ -171,8 +171,8 @@ agent.not_enrolled_to_agent_services.heading                           = You can
 agent.not_enrolled_to_agent_services.line_1                            = To use this service, you need to <a href="{0}">set up an agent services account</a>.
 
 ## Agent Cannot Use Service Yet page
-agent.cannot_use_service.title                                         = You can sign up your client after 7 April 2019
-agent.cannot_use_service.heading                                       = You can sign up your client after 7 April 2019
+agent.cannot_use_service.title                                         = You can sign up your client after 7 April 2019.
+agent.cannot_use_service.heading                                       = You can sign up your client after 7 April 2019.
 agent.cannot_use_service.line                                          = We cannot set up your client for Making Tax Digital for VAT during a busy filing period.
 
 ## No agent client relationship page

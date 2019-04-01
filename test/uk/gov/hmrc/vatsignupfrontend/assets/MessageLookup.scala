@@ -69,7 +69,7 @@ object MessageLookup {
   }
 
   object CannotUseServiceYet {
-    val heading: String = "You can sign up your client after 7 April 2019"
+    val heading: String = "You can sign up your client after 7 April 2019."
     val title = heading + ServiceName.agentSuffix
     val line1 = "We cannot set up your client for Making Tax Digital for VAT during a busy filing period."
   }
