@@ -36,7 +36,7 @@ class CaptureAgentEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite 
   def testPostRequest(emailAddress: String): FakeRequest[AnyContentAsFormUrlEncoded] =
     FakeRequest("POST", "/your-email-address").withFormUrlEncodedBody(email -> emailAddress)
 
-  "Calling the show action of the Capture Agent Email controller" should {
+  "Calling the show action of the Capture Agent Email controller without a submitted Email" should {
     "go to the Capture Agent Email page" in {
       mockAuthRetrieveAgentEnrolment()
 
@@ -45,6 +45,17 @@ class CaptureAgentEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite 
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some("text/html")
       charset(result) shouldBe Some("utf-8")
+    }
+  }
+
+  "Calling the show action of the Capture Agent Email controller with a submitted Email" should {
+    "go to the Capture Agent Email page" in {
+      mockAuthRetrieveAgentEnrolment()
+
+      val result = TestCaptureAgentEmailController.show(testGetRequest.withSession(SessionKeys.transactionEmailKey -> "test@test.com"))
+
+      status(result) shouldBe Status.SEE_OTHER
+      redirectLocation(result) shouldBe Some(routes.ConfirmAgentEmailController.show().url)
     }
   }
 
