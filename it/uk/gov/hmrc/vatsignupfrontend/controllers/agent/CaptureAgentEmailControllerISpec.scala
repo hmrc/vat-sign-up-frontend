@@ -46,7 +46,7 @@ class CaptureAgentEmailControllerISpec extends ComponentSpecBase with CustomMatc
       val res = get("/client/email-address-change")
 
       res should have(
-        httpStatus(OK)
+        httpStatus(SEE_OTHER)
       )
     }
   }

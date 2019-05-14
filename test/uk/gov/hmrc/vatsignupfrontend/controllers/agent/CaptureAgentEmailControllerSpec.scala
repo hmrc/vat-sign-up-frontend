@@ -65,21 +65,22 @@ class CaptureAgentEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite 
 
       val result = TestCaptureAgentEmailController.change(testGetRequest)
 
-      status(result) shouldBe Status.OK
-      contentType(result) shouldBe Some("text/html")
-      charset(result) shouldBe Some("utf-8")
+      status(result) shouldBe Status.SEE_OTHER
+      session(result).get(SessionKeys.transactionEmailKey) shouldBe None
+
     }
   }
 
   "Calling the change action of the Capture Agent Email controller with a submitted Email" should {
     "go to the Capture Agent Email page" in {
       mockAuthRetrieveAgentEnrolment()
+      val request = testGetRequest.withSession(SessionKeys.transactionEmailKey -> "test@test.com")
 
-      val result = TestCaptureAgentEmailController.change(testGetRequest.withSession(SessionKeys.transactionEmailKey -> "test@test.com"))
+      val result = TestCaptureAgentEmailController.change(request)
 
-      status(result) shouldBe Status.OK
-      contentType(result) shouldBe Some("text/html")
-      charset(result) shouldBe Some("utf-8")
+      status(result) shouldBe Status.SEE_OTHER
+      session(result).get(SessionKeys.transactionEmailKey) shouldBe None
+
     }
   }
 
