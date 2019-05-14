@@ -46,6 +46,14 @@ class CaptureAgentEmailController @Inject()(val controllerComponents: Controller
     }
   }
 
+  val change: Action[AnyContent] = Action.async { implicit request =>
+    authorised() {
+        Future.successful(
+          Ok(capture_agent_email(validateEmailForm.form, routes.CaptureAgentEmailController.submit()))
+        )
+    }
+  }
+
   val submit: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       validateEmailForm.bindFromRequest.fold(

@@ -74,6 +74,7 @@ POST        /client-email-address                               uk.gov.hmrc.vats
 
 #Capture Agent Email
 GET         /email-address                                      uk.gov.hmrc.vatsignupfrontend.controllers.agent.CaptureAgentEmailController.show
+GET         /email-address-change                               uk.gov.hmrc.vatsignupfrontend.controllers.agent.CaptureAgentEmailController.change
 POST        /email-address                                      uk.gov.hmrc.vatsignupfrontend.controllers.agent.CaptureAgentEmailController.submit
 
 #Confirm Email

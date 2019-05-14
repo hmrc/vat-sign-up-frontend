@@ -25,11 +25,25 @@ import uk.gov.hmrc.vatsignupfrontend.helpers.{ComponentSpecBase, CustomMatchers,
 
 class CaptureAgentEmailControllerISpec extends ComponentSpecBase with CustomMatchers {
 
+
+
   "GET /email-address" should {
     "return an OK" in {
       stubAuth(OK, successfulAuthResponse(agentEnrolment))
 
       val res = get("/client/email-address")
+
+      res should have(
+        httpStatus(OK)
+      )
+    }
+  }
+
+  "GET /email-address-change" should {
+    "return an OK" in {
+      stubAuth(OK, successfulAuthResponse(agentEnrolment))
+
+      val res = get("/client/email-address-change")
 
       res should have(
         httpStatus(OK)

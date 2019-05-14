@@ -58,7 +58,7 @@ class ConfirmAgentEmailSpec extends ViewSpec {
     testPage.shouldHaveALink(
       id = "changeLink",
       text = messages.link,
-      href = uk.gov.hmrc.vatsignupfrontend.controllers.agent.routes.CaptureAgentEmailController.show().url
+      href = uk.gov.hmrc.vatsignupfrontend.controllers.agent.routes.CaptureAgentEmailController.change().url
     )
   }
 
