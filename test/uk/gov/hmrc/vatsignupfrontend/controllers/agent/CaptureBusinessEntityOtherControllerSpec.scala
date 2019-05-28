@@ -25,25 +25,25 @@ import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
 import uk.gov.hmrc.vatsignupfrontend.config.featureswitch._
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockControllerComponents
-import uk.gov.hmrc.vatsignupfrontend.forms.BusinessEntityForm._
+import uk.gov.hmrc.vatsignupfrontend.forms.OtherBusinessEntityForm._
 import uk.gov.hmrc.vatsignupfrontend.models.BusinessEntity.BusinessEntitySessionFormatter
 import uk.gov.hmrc.vatsignupfrontend.models._
 
-class CaptureBusinessEntityControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockControllerComponents {
+class CaptureBusinessEntityOtherControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockControllerComponents {
 
-  object TestCaptureBusinessEntityController extends CaptureBusinessEntityController(mockControllerComponents)
+  object TestCaptureBusinessEntityOtherController extends CaptureBusinessEntityOtherController(mockControllerComponents)
 
-  implicit val testGetRequest = FakeRequest("GET", "/business-type")
+  implicit val testGetRequest = FakeRequest("GET", "/business-type-other")
 
   def testPostRequest(entityTypeVal: String): FakeRequest[AnyContentAsFormUrlEncoded] =
-    FakeRequest("POST", "/business-type").withFormUrlEncodedBody(businessEntity -> entityTypeVal)
+    FakeRequest("POST", "/business-type-other").withFormUrlEncodedBody(businessEntity -> entityTypeVal)
 
 
   "Calling the show action of the Capture Entity Type controller" should {
     "go to the Capture Entity Type page" in {
       mockAuthRetrieveAgentEnrolment()
 
-      val result = TestCaptureBusinessEntityController.show(testGetRequest)
+      val result = TestCaptureBusinessEntityOtherController.show(testGetRequest)
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some("text/html")
       charset(result) shouldBe Some("utf-8")
@@ -54,85 +54,11 @@ class CaptureBusinessEntityControllerSpec extends UnitSpec with GuiceOneAppPerSu
   "Calling the submit action of the Capture Business Entity controller" when {
     "form successfully submitted" should {
 
-      "go to the capture company number page" when {
-        "the business entity is limited company" in {
-          mockAuthRetrieveAgentEnrolment()
-
-          val result = TestCaptureBusinessEntityController.submit(testPostRequest(limitedCompany))
-          status(result) shouldBe Status.SEE_OTHER
-          redirectLocation(result) shouldBe Some(routes.CaptureCompanyNumberController.show().url)
-
-          result.session get SessionKeys.businessEntityKey should contain(BusinessEntitySessionFormatter.toString(LimitedCompany))
-        }
-      }
-
-      "go to the capture NINO page" when {
-        "the business entity is sole trader and the skip CID check feature switch is enabled" in {
-          enable(SkipCidCheck)
-          mockAuthRetrieveAgentEnrolment()
-
-          val result = TestCaptureBusinessEntityController.submit(testPostRequest(soleTrader))
-          status(result) shouldBe Status.SEE_OTHER
-          redirectLocation(result) shouldBe Some(soletrader.routes.CaptureNinoController.show().url)
-
-          result.session get SessionKeys.businessEntityKey should contain(BusinessEntitySessionFormatter.toString(SoleTrader))
-        }
-      }
-
-      "go to the capture client details page" when {
-        "the business entity is sole trader" in {
-          mockAuthRetrieveAgentEnrolment()
-
-          val result = TestCaptureBusinessEntityController.submit(testPostRequest(soleTrader))
-          status(result) shouldBe Status.SEE_OTHER
-          redirectLocation(result) shouldBe Some(routes.CaptureClientDetailsController.show().url)
-
-          result.session get SessionKeys.businessEntityKey should contain(BusinessEntitySessionFormatter.toString(SoleTrader))
-        }
-      }
-
-      "redirect to resolve partnership" when {
-        "the business entity is general partnership" in {
-          mockAuthRetrieveAgentEnrolment()
-          val result = TestCaptureBusinessEntityController.submit(testPostRequest(generalPartnership))
-          status(result) shouldBe Status.SEE_OTHER
-          redirectLocation(result) shouldBe Some(partnerships.routes.ResolvePartnershipController.resolve().url)
-
-          result.session get SessionKeys.businessEntityKey should contain(BusinessEntitySessionFormatter.toString(GeneralPartnership))
-        }
-      }
-
-      "redirect to resolve partnership when the joint venture or property feature switch" when {
-        "the business entity is general partnership" in {
-          mockAuthRetrieveAgentEnrolment()
-          enable(OptionalSautrJourney)
-
-          val result = TestCaptureBusinessEntityController.submit(testPostRequest(generalPartnership))
-          status(result) shouldBe Status.SEE_OTHER
-          redirectLocation(result) shouldBe Some(partnerships.routes.ResolvePartnershipController.resolve().url)
-
-          result.session get SessionKeys.businessEntityKey should contain(BusinessEntitySessionFormatter.toString(GeneralPartnership))
-        }
-      }
-
-      "redirect to resolve partnership" when {
-        "the business entity is limited partnership" in {
-          mockAuthRetrieveAgentEnrolment()
-
-          val result = TestCaptureBusinessEntityController.submit(testPostRequest(limitedPartnership))
-          status(result) shouldBe Status.SEE_OTHER
-          redirectLocation(result) shouldBe Some(partnerships.routes.ResolvePartnershipController.resolve().url)
-
-          result.session get SessionKeys.businessEntityKey should contain(BusinessEntitySessionFormatter.toString(LimitedPartnership))
-
-        }
-      }
-
       "the business entity is vat group" when {
         "redirect to Vat Group Resolver page" in {
           mockAuthRetrieveAgentEnrolment()
 
-          val result = await(TestCaptureBusinessEntityController.submit(testPostRequest(vatGroup)))
+          val result = await(TestCaptureBusinessEntityOtherController.submit(testPostRequest(vatGroup)))
           status(result) shouldBe Status.SEE_OTHER
           redirectLocation(result) shouldBe Some(routes.VatGroupResolverController.resolve().url)
           result.session get SessionKeys.businessEntityKey should contain(BusinessEntitySessionFormatter.toString(VatGroup))
@@ -144,7 +70,7 @@ class CaptureBusinessEntityControllerSpec extends UnitSpec with GuiceOneAppPerSu
           mockAuthRetrieveAgentEnrolment()
 
           enable(DivisionJourney)
-          val result = await(TestCaptureBusinessEntityController.submit(testPostRequest(division)))
+          val result = await(TestCaptureBusinessEntityOtherController.submit(testPostRequest(division)))
           status(result) shouldBe Status.SEE_OTHER
           redirectLocation(result) shouldBe Some(routes.DivisionResolverController.resolve().url)
           result.session get SessionKeys.businessEntityKey should contain(BusinessEntitySessionFormatter.toString(Division))
@@ -156,7 +82,7 @@ class CaptureBusinessEntityControllerSpec extends UnitSpec with GuiceOneAppPerSu
           mockAuthRetrieveAgentEnrolment()
 
           enable(UnincorporatedAssociationJourney)
-          val result = await(TestCaptureBusinessEntityController.submit(testPostRequest(unincorporatedAssociation)))
+          val result = await(TestCaptureBusinessEntityOtherController.submit(testPostRequest(unincorporatedAssociation)))
           status(result) shouldBe Status.SEE_OTHER
           redirectLocation(result) shouldBe Some(routes.UnincorporatedAssociationResolverController.resolve().url)
           result.session get SessionKeys.businessEntityKey should contain(BusinessEntitySessionFormatter.toString(UnincorporatedAssociation))
@@ -168,7 +94,7 @@ class CaptureBusinessEntityControllerSpec extends UnitSpec with GuiceOneAppPerSu
           mockAuthRetrieveAgentEnrolment()
           enable(TrustJourney)
 
-          val result = await(TestCaptureBusinessEntityController.submit(testPostRequest(trust)))
+          val result = await(TestCaptureBusinessEntityOtherController.submit(testPostRequest(trust)))
           status(result) shouldBe Status.SEE_OTHER
           redirectLocation(result) shouldBe Some(routes.TrustResolverController.resolve().url)
           result.session get SessionKeys.businessEntityKey should contain(BusinessEntitySessionFormatter.toString(Trust))
@@ -180,7 +106,7 @@ class CaptureBusinessEntityControllerSpec extends UnitSpec with GuiceOneAppPerSu
           mockAuthRetrieveAgentEnrolment()
           enable(RegisteredSocietyJourney)
 
-          val result = await(TestCaptureBusinessEntityController.submit(testPostRequest(registeredSociety)))
+          val result = await(TestCaptureBusinessEntityOtherController.submit(testPostRequest(registeredSociety)))
           status(result) shouldBe Status.SEE_OTHER
           redirectLocation(result) shouldBe Some(routes.CaptureRegisteredSocietyCompanyNumberController.show().url)
           result.session get SessionKeys.businessEntityKey should contain(BusinessEntitySessionFormatter.toString(RegisteredSociety))
@@ -191,7 +117,7 @@ class CaptureBusinessEntityControllerSpec extends UnitSpec with GuiceOneAppPerSu
         "redirect to the charity resolver controller" in {
           mockAuthRetrieveAgentEnrolment()
 
-          val result = await(TestCaptureBusinessEntityController.submit(testPostRequest(charity)))
+          val result = await(TestCaptureBusinessEntityOtherController.submit(testPostRequest(charity)))
           status(result) shouldBe Status.SEE_OTHER
           redirectLocation(result) shouldBe Some(routes.CharityResolverController.resolve().url)
           result.session get SessionKeys.businessEntityKey should contain(BusinessEntitySessionFormatter.toString(Charity))
@@ -203,7 +129,7 @@ class CaptureBusinessEntityControllerSpec extends UnitSpec with GuiceOneAppPerSu
           mockAuthRetrieveAgentEnrolment()
           enable(GovernmentOrganisationJourney)
 
-          val result = await(TestCaptureBusinessEntityController.submit(testPostRequest(governmentOrganisation)))
+          val result = await(TestCaptureBusinessEntityOtherController.submit(testPostRequest(governmentOrganisation)))
           status(result) shouldBe Status.SEE_OTHER
           redirectLocation(result) shouldBe Some(routes.GovernmentOrganisationResolverController.resolve().url)
           result.session get SessionKeys.businessEntityKey should contain(BusinessEntitySessionFormatter.toString(GovernmentOrganisation))
@@ -215,7 +141,7 @@ class CaptureBusinessEntityControllerSpec extends UnitSpec with GuiceOneAppPerSu
       "reload the page with errors" in {
         mockAuthRetrieveAgentEnrolment()
 
-        val result = TestCaptureBusinessEntityController.submit(testPostRequest("invalid"))
+        val result = TestCaptureBusinessEntityOtherController.submit(testPostRequest("invalid"))
         status(result) shouldBe Status.BAD_REQUEST
         contentType(result) shouldBe Some("text/html")
         charset(result) shouldBe Some("utf-8")

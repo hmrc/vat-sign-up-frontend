@@ -53,6 +53,10 @@ POST        /confirm-company                                    uk.gov.hmrc.vats
 GET         /business-type                                      uk.gov.hmrc.vatsignupfrontend.controllers.agent.CaptureBusinessEntityController.show
 POST        /business-type                                      uk.gov.hmrc.vatsignupfrontend.controllers.agent.CaptureBusinessEntityController.submit
 
+#Capture Business Type Other
+GET         /business-type-other                                uk.gov.hmrc.vatsignupfrontend.controllers.agent.CaptureBusinessEntityOtherController.show
+POST        /business-type-other                                uk.gov.hmrc.vatsignupfrontend.controllers.agent.CaptureBusinessEntityOtherController.submit
+
 # Could not confirm VAT Number
 GET         /could-not-confirm-VAT-number                       uk.gov.hmrc.vatsignupfrontend.controllers.agent.CouldNotConfirmVatNumberController.show
 POST        /could-not-confirm-VAT-number                       uk.gov.hmrc.vatsignupfrontend.controllers.agent.CouldNotConfirmVatNumberController.submit
