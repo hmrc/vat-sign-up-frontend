@@ -18,7 +18,7 @@ You will need [sbt](http://www.scala-sbt.org/)
 2) **Start the MTD VAT sign up services:**
 
    `sm --start VAT_SIGN_UP_ALL -f`
- 
+
 
 3) **Clone the frontend service:**
 
