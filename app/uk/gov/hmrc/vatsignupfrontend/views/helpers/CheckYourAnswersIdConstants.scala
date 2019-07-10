@@ -24,7 +24,12 @@ object CheckYourAnswersIdConstants {
   val VatLastReturnMonthId = "last-return-month-period"
   val BusinessPostCodeId = "business-post-code"
   val BusinessEntityId = "business-entity"
+  val NinoId = "nino"
   val CrnId = "company-number"
+  val CompanyNameId = "company-name"
   val UtrId = "utr"
   val PreviousVatReturnId = "previous-vat-return"
+  val EmailAddressId = "email"
+  val ContactPreferenceId = "contact-preference"
+
 }

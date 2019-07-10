@@ -981,3 +981,19 @@ principal.confirm_nino.summary.nino                                   = Beth yw'
 principal.partnership.do_you_have_a_utr.title                         = A oes gan eich partneriaeth Gyfeirnod Unigryw y Trethdalwr (UTR) ar gyfer Hunanasesiad?
 principal.partnership.do_you_have_a_utr.heading                       = A oes gan eich partneriaeth Gyfeirnod Unigryw y Trethdalwr (UTR) ar gyfer Hunanasesiad?
 principal.partnership.do_you_have_a_utr.line                          = Rhif 10 digid yw hwn. Mae hwn i''w weld ar lythyrau i''r bartneriaeth oddi wrth CThEM.
+
+
+#Check your answers final
+principal.check_your_answers_final.title                              = Gwiriwch eich atebion cyn anfon
+principal.check_your_answers_final.heading                            = Gwiriwch eich atebion cyn anfon
+principal.check_your_answers_final.vat_number                         = Rhif TAW
+principal.check_your_answers_final.business_entity                    = Math o fusnes
+principal.check_your_answers_final.nino                               = Rhif Yswiriant Gwladol
+principal.check_your_answers_final.partnership_utr                    = UTR Partneriaeth
+principal.check_your_answers_final.partnership_number                 = Rhif Cofrestru''r Cwmni Partneriaeth
+principal.check_your_answers_final.partnership_name                   = Enw''r Cwmni Partneriaeth
+principal.check_your_answers_final.registered_society_name            = Enw cwmni''r gymdeithas gofrestredig
+principal.check_your_answers_final.company_number                     = Rhif cofrestru''r cwmni
+principal.check_your_answers_final.company_name                       = Enw''r cwmni
+principal.check_your_answers_final.email_address                      = Cyfeiriad e-bost y busnes
+principal.check_your_answers_final.contact_preference                 = Sut y byddwn yn cysylltu â chi

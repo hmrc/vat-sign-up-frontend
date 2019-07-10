@@ -18,7 +18,7 @@ package uk.gov.hmrc.vatsignupfrontend.controllers.principal
 
 import play.api.http.Status._
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
-import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.ContactPreferencesJourney
+import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.{ContactPreferencesJourney, FinalCheckYourAnswer}
 import uk.gov.hmrc.vatsignupfrontend.forms.ContactPreferencesForm
 import uk.gov.hmrc.vatsignupfrontend.helpers.IntegrationTestConstants._
 import uk.gov.hmrc.vatsignupfrontend.helpers.servicemocks.AuthStub._
@@ -156,7 +156,47 @@ class ReceiveEmailNotificationsISpec extends ComponentSpecBase with CustomMatche
         }
       }
     }
+    "FinalCheckYourAnswers is enabled" when {
+      "the choice is paper and user has Direct Debit" should{
+        "redirect to the check your answers final page" in {
+          enable(FinalCheckYourAnswer)
+          stubAuth(OK, successfulAuthResponse())
+          stubStoreContactPreferenceSuccess(Paper)
+          stubStoreEmailAddressSuccess(true)
 
+
+          val res = post("/receive-email-notifications",
+            Map(
+              SessionKeys.vatNumberKey -> testVatNumber,
+              SessionKeys.emailKey -> testEmail,
+              SessionKeys.hasDirectDebitKey -> "true"
+            ))(ContactPreferencesForm.contactPreference -> ContactPreferencesForm.paper)
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectUri(routes.CheckYourAnswersFinalController.show().url)
+          )
+        }
+      }
+      "the choice is paper" should {
+        "redirect to the check your answers final page" in {
+          enable(FinalCheckYourAnswer)
+          stubAuth(OK, successfulAuthResponse())
+          stubStoreContactPreferenceSuccess(Paper)
+
+          val res = post("/receive-email-notifications",
+            Map(
+              SessionKeys.vatNumberKey -> testVatNumber,
+              SessionKeys.emailKey -> testEmail
+            ))(ContactPreferencesForm.contactPreference -> ContactPreferencesForm.paper)
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectUri(routes.CheckYourAnswersFinalController.show().url)
+          )
+        }
+      }
+    }
     "ContactPreferencesJourney is enabled and vat number is in session" when {
       "the choice is paper and the user has Direct Debit" should {
         "redirect to the terms page" in {
@@ -179,7 +219,6 @@ class ReceiveEmailNotificationsISpec extends ComponentSpecBase with CustomMatche
         }
       }
     }
-
     "ContactPreferencesJourney is enabled and vat number is in session" when {
       "the Store Email Address service returns a failure" should {
         "throw an internal server error" in {

@@ -1,0 +1,50 @@
+@*
+ * Copyright 2019 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@(field1: String, question1: String, answer1: String, changeUrl1: Option[String],
+ field2: String, question2: String, answer2: String, changeUrl2: Option[String],
+ enableHtml: Boolean = false)(implicit messages: Messages)
+<div>
+    <div class="tabular-data__entry--grouped tabular-data__entry divider--top--thick" id="@field1-row">
+        <span class="tabular-data__heading tabular-data__heading--label" id="@field1-question">@question1</span>
+        <div class="tabular-data__data-1" id="@field1-answer">@if(enableHtml) {@Html(answer1)} else {@answer1}</div>
+        @changeUrl1 match {
+            case Some(url) => {
+                <a class="tabular-data__data-2" href="@url" id="@field1-edit">@Messages("base.change")
+                    <span class="visuallyhidden">@question1</span>
+                </a>
+            }
+            case _ => {
+                <div class="tabular-data__data-2"></div>
+            }
+        }
+        </div>
+    <div class="tabular-data__entry--grouped  tabular-data__entry" id="@field2-row">
+
+        <span class="tabular-data__heading tabular-data__heading--label" id="@field2-question">@question2</span>
+        <div class="tabular-data__data-1" id="@field2-answer">@if(enableHtml) {@Html(answer2)} else {@answer2}</div>
+        @changeUrl2 match {
+            case Some(url) => {
+                <a class="tabular-data__data-2" href="@url" id="@field2-edit">@Messages("base.change")
+                    <span class="visuallyhidden">@question2</span>
+                </a>
+            }
+            case _ => {
+                <div class="tabular-data__data-2"></div>
+            }
+        }
+    </div>
+</div>

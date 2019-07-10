@@ -22,7 +22,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
-import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.ContactPreferencesJourney
+import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.{ContactPreferencesJourney, FinalCheckYourAnswer}
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockControllerComponents
 
 class EmailVerifiedControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockControllerComponents {
@@ -56,17 +56,34 @@ class EmailVerifiedControllerSpec extends UnitSpec with GuiceOneAppPerSuite with
         redirectLocation(result) shouldBe Some(routes.ReceiveEmailNotificationsController.show().url)
       }
     }
-    "redirect to Terms controller" when {
-      "the contact preferences feature switch is disabled" in {
-        mockAuthAdminRole()
-        disable(ContactPreferencesJourney)
+    "the final CYA feature switch is disabled" when {
+      "redirect to Terms controller" when {
+        "the contact preferences feature switch is disabled" in {
+          mockAuthAdminRole()
+          disable(ContactPreferencesJourney)
 
-        val result = TestEmailVerifiedController.submit(testPostRequest)
+          val result = TestEmailVerifiedController.submit(testPostRequest)
 
-        status(result) shouldBe Status.SEE_OTHER
-        redirectLocation(result) shouldBe Some(routes.TermsController.show().url)
+          status(result) shouldBe Status.SEE_OTHER
+          redirectLocation(result) shouldBe Some(routes.TermsController.show().url)
+        }
       }
     }
+    "the final CYA feature switch is enabled" when {
+      "redirect to check your answers final controller" when {
+        "the contact preferences feature switch is disabled" in {
+          mockAuthAdminRole()
+          enable(FinalCheckYourAnswer)
+          disable(ContactPreferencesJourney)
+
+          val result = TestEmailVerifiedController.submit(testPostRequest)
+
+          status(result) shouldBe Status.SEE_OTHER
+          redirectLocation(result) shouldBe Some(routes.CheckYourAnswersFinalController.show().url)
+        }
+      }
+    }
+
   }
 
 }

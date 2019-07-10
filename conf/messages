@@ -988,3 +988,18 @@ agent.confirm_nino.title                                              = Confirm 
 agent.confirm_nino.heading                                            = Confirm your client''s details
 agent.confirm_nino.summary.business_type                              = What type of business or group is your client?
 agent.confirm_nino.summary.nino                                       = What is your client''s National Insurance number?
+
+#Check your answers final
+principal.check_your_answers_final.title                              = Check your answers before sending
+principal.check_your_answers_final.heading                            = Check your answers before sending
+principal.check_your_answers_final.vat_number                         = VAT Number
+principal.check_your_answers_final.business_entity                    = Type of Business
+principal.check_your_answers_final.nino                               = National Insurance Number
+principal.check_your_answers_final.partnership_utr                    = Partnership UTR
+principal.check_your_answers_final.partnership_number                 = Partnership Company Registration Number
+principal.check_your_answers_final.partnership_name                   = Partnership Company Name
+principal.check_your_answers_final.registered_society_name            = Registered Society Company Name
+principal.check_your_answers_final.company_number                     = Company Registration Number
+principal.check_your_answers_final.company_name                       = Company Name
+principal.check_your_answers_final.email_address                      = Business Email Address
+principal.check_your_answers_final.contact_preference                 = How we contact you

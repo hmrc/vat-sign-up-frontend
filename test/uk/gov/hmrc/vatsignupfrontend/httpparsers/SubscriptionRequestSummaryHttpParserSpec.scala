@@ -31,7 +31,9 @@ class SubscriptionRequestSummaryHttpParserSpec extends UnitSpec with LogCapturin
   val validJson = Json.parse(
     s"""{
        |  "vatNumber": "vatNumberFoo",
-       |  "businessEntity": "limited-company",
+       |  "businessEntity": {
+       |    "entityType": "limitedCompany"
+       |  },
        |  "transactionEmail": "transEmail",
        |  "optSignUpEmail": "emailSignFoo",
        |  "contactPreference": "Digital"
@@ -40,7 +42,9 @@ class SubscriptionRequestSummaryHttpParserSpec extends UnitSpec with LogCapturin
   val invalidJsonWrongContactPreference = Json.parse(
     s"""{
       |  "vatNumber": "vatNumberFoo",
-      |  "businessEntity": "limited-company",
+      |  "businessEntity": {
+      |    "entityType": "limitedCompany"
+      |  },
       |  "transactionEmail": "transEmail",
       |  "optSignUpEmail": "emailSignFoo",
       |  "contactPreference": "FOO this is incorrect"
@@ -49,7 +53,9 @@ class SubscriptionRequestSummaryHttpParserSpec extends UnitSpec with LogCapturin
   val invalidJsonWrongBusinessEntityType = Json.parse(
    s"""{
       |  "vatNumber": "vatNumberFoo",
-      |  "businessEntity": "FOO this is incorrect",
+      |  "businessEntity": {
+      |    "entityType": "FOO this is incorrect"
+      |  },
       |  "transactionEmail": "transEmail",
       |  "optSignUpEmail": "emailSignFoo",
       |  "contactPreference": "Digital"

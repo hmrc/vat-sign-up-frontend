@@ -31,7 +31,7 @@ object SubscriptionRequestSummary {
     override def reads(json: JsValue): JsResult[SubscriptionRequestSummary] = {
       for {
         vatNumber         <- (json \ "vatNumber").validate[String]
-        businessEntity    <- (json \ "businessEntity").validate[BusinessEntity] (BusinessEntity.jsonReads)
+        businessEntity    <- (json \ "businessEntity" \ "entityType").validate[BusinessEntity] (BusinessEntity.jsonReadsFromBackend)
         optSignUpEmail    <- (json \ "optSignUpEmail").validateOpt[String]
         transactionEmail  <- (json \ "transactionEmail").validate[String]
         contactPreference <- (json \ "contactPreference").validate[ContactPreference] (ContactPreference.jsonReads)

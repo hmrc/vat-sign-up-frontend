@@ -22,7 +22,7 @@ import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
 import uk.gov.hmrc.vatsignupfrontend.config.ControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.config.auth.AdministratorRolePredicate
-import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.ContactPreferencesJourney
+import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.{ContactPreferencesJourney, FinalCheckYourAnswer}
 import uk.gov.hmrc.vatsignupfrontend.controllers.AuthenticatedController
 import uk.gov.hmrc.vatsignupfrontend.forms.ContactPreferencesForm._
 import uk.gov.hmrc.vatsignupfrontend.models.Digital
@@ -91,7 +91,8 @@ class ReceiveEmailNotificationsController @Inject()(storeContactPreferenceServic
                       case Some(email) =>
                         storeEmailAddressService.storeEmailAddress(vatNumber, email) map {
                           case Right(_) =>
-                            Redirect(routes.TermsController.show())
+                            if (isEnabled(FinalCheckYourAnswer)) Redirect(routes.CheckYourAnswersFinalController.show())
+                            else Redirect(routes.TermsController.show())
                           case Left(status) =>
                             throw new InternalServerException(s"Store email address service failed with status= $status")
                         }
@@ -101,9 +102,14 @@ class ReceiveEmailNotificationsController @Inject()(storeContactPreferenceServic
                         )
                     }
                   case Right(_) =>
-                    Future.successful(
-                      Redirect(routes.TermsController.show())
-                    )
+                    if (isEnabled(FinalCheckYourAnswer))
+                      Future.successful(
+                        Redirect(routes.CheckYourAnswersFinalController.show())
+                      )
+                    else
+                      Future.successful(
+                        Redirect(routes.TermsController.show())
+                      )
                   case Left(status) => throw new InternalServerException(s"Store contact preference failed with status = $status")
                 }
               case None =>

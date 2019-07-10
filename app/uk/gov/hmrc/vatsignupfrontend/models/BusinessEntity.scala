@@ -91,7 +91,7 @@ object BusinessEntity {
   val GovernmentOrganisationKey = "government-organisation"
   val OtherKey = "other"
 
-   private def stringToOptBusinessEntity(businessEntity:String): Option[BusinessEntity] = businessEntity match {
+  private def stringToOptBusinessEntity(businessEntity:String): Option[BusinessEntity] = businessEntity match {
     case LimitedCompanyKey => Some(LimitedCompany)
     case SoleTraderKey => Some(SoleTrader)
     case GeneralPartnershipKey => Some(GeneralPartnership)
@@ -110,6 +110,52 @@ object BusinessEntity {
     case _ => None
   }
 
+  private def backendToFrontendBusinessEntity(businessEntity: String): Option[BusinessEntity] = businessEntity match {
+    case "limitedCompany" => Some(LimitedCompany)
+    case "soleTrader" => Some(SoleTrader)
+    case "generalPartnership" => Some(GeneralPartnership)
+    case "limitedPartnership" => Some(LimitedPartnership)
+    case "limitedLiabilityPartnershipKey" => Some(LimitedLiabilityPartnership)
+    case "scottishLimitedPartnershipKey" => Some(ScottishLimitedPartnership)
+    case "vatGroup" => Some(VatGroup)
+    case "administrativeDivision" => Some(Division)
+    case "unincorporatedAssociation" => Some(UnincorporatedAssociation)
+    case "trust" => Some(Trust)
+    case "registeredSociety" => Some(RegisteredSociety)
+    case "charity" => Some(Charity)
+    case "nonUKCompanyWithUKEstablishment" => Some(Overseas)
+    case "nonUKCompanyNoUKEstablishment" => Some(Overseas)
+    case "governmentOrganisation" => Some(GovernmentOrganisation)
+    case _ => None
+  }
+
+  def frontendToBackendBusinessEntity(businessEntity: BusinessEntity): String = businessEntity match {
+    case LimitedCompany => "limitedCompany"
+    case SoleTrader => "soleTrader"
+    case GeneralPartnership => "generalPartnership"
+    case LimitedPartnership => "limitedPartnership"
+    case LimitedLiabilityPartnership => "limitedLiabilityPartnershipKey"
+    case ScottishLimitedPartnership => "scottishLimitedPartnershipKey"
+    case VatGroup => "vatGroup"
+    case Division => "administrativeDivision"
+    case UnincorporatedAssociation => "unincorporatedAssociation"
+    case Trust => "trust"
+    case RegisteredSociety => "registeredSociety"
+    case Charity => "charity"
+    case Overseas => "nonUKCompanyWithUKEstablishment"
+    case GovernmentOrganisation => "governmentOrganisation"
+  }
+
+
+  val jsonReadsFromBackend: Reads[BusinessEntity] = new Reads[BusinessEntity] {
+    override def reads(json: JsValue): JsResult[BusinessEntity] =
+      json.validate[String] map backendToFrontendBusinessEntity match {
+        case JsSuccess(Some(businessEntity), _) => JsSuccess(businessEntity)
+        case JsSuccess(None, _) => JsError("Is not a valid BusinessEntity")
+        case JsError(errors) => JsError(errors)
+      }
+  }
+
   val jsonReads: Reads[BusinessEntity] = new Reads[BusinessEntity] {
     override def reads(json: JsValue): JsResult[BusinessEntity] =
       json.validate[String] map stringToOptBusinessEntity match {
@@ -117,7 +163,6 @@ object BusinessEntity {
         case JsSuccess(None, _) => JsError("Is not a valid BusinessEntity")
         case JsError(errors) => JsError(errors)
       }
-
   }
 
   implicit object BusinessEntitySessionFormatter extends SessionFormatter[BusinessEntity] {

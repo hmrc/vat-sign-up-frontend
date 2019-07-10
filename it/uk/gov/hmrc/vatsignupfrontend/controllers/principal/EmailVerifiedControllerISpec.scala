@@ -17,7 +17,7 @@
 package uk.gov.hmrc.vatsignupfrontend.controllers.principal
 
 import play.api.http.Status.{NOT_IMPLEMENTED, OK, SEE_OTHER}
-import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.ContactPreferencesJourney
+import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.{ContactPreferencesJourney, FinalCheckYourAnswer}
 import uk.gov.hmrc.vatsignupfrontend.helpers.servicemocks.AuthStub._
 import uk.gov.hmrc.vatsignupfrontend.helpers.{ComponentSpecBase, CustomMatchers}
 
@@ -59,6 +59,22 @@ class EmailVerifiedControllerISpec extends ComponentSpecBase with CustomMatchers
         res should have(
           httpStatus(SEE_OTHER),
           redirectUri(routes.TermsController.show().url)
+        )
+      }
+    }
+
+    "redirect to check your answers final page" when {
+      "the contact preferences feature switch is not enabled and final check your answers is enabled" in {
+        enable(FinalCheckYourAnswer)
+        disable(ContactPreferencesJourney)
+        stubAuth(OK, successfulAuthResponse())
+        disable(ContactPreferencesJourney)
+
+        val res = post("/email-verified")()
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectUri(routes.CheckYourAnswersFinalController.show().url)
         )
       }
     }

@@ -19,7 +19,7 @@ package uk.gov.hmrc.vatsignupfrontend.controllers.principal
 import play.api.http.Status._
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys.emailKey
-import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.ContactPreferencesJourney
+import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.{ContactPreferencesJourney, FinalCheckYourAnswer}
 import uk.gov.hmrc.vatsignupfrontend.forms.EmailForm
 import uk.gov.hmrc.vatsignupfrontend.helpers.IntegrationTestConstants._
 import uk.gov.hmrc.vatsignupfrontend.helpers.servicemocks.AuthStub._
@@ -113,6 +113,24 @@ class ConfirmEmailControllerISpec extends ComponentSpecBase with CustomMatchers 
       }
     }
 
+    "redirect to check your answers final page" when {
+      "Final chec your answers is enabled and contact preference journey is disabled" in {
+        enable(FinalCheckYourAnswer)
+        disable(ContactPreferencesJourney)
+        stubAuth(OK, successfulAuthResponse())
+        stubStoreEmailAddressSuccess(emailVerified = true)
+
+        val res = post("/confirm-email", Map(SessionKeys.emailKey -> testEmail, SessionKeys.vatNumberKey -> testVatNumber))(EmailForm.email -> testEmail)
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectUri(routes.CheckYourAnswersFinalController.show().url)
+        )
+
+        val session = SessionCookieCrumbler.getSessionMap(res)
+        session.keys should contain(emailKey)
+      }
+    }
     "throw an internal server error" when {
       "storing the email has been unsuccessful" in {
         stubAuth(OK, successfulAuthResponse())

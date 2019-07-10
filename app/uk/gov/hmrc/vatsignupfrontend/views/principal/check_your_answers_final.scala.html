@@ -1,0 +1,123 @@
+@*
+ * Copyright 2019 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.vatsignupfrontend.views.html._
+@import uk.gov.hmrc.play.views.html.helpers.form
+@import uk.gov.hmrc.vatsignupfrontend.views.html.helpers.{continueButton, summaryRowHelper, summaryDoubleRowHelper}
+@import uk.gov.hmrc.play.views.helpers._
+@import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
+@import uk.gov.hmrc.vatsignupfrontend.models._
+@import uk.gov.hmrc.vatsignupfrontend.utils.StringUtils._
+@import uk.gov.hmrc.vatsignupfrontend.views.helpers.BusinessEntityHelper.getBusinessEntityName
+@import uk.gov.hmrc.vatsignupfrontend.views.helpers.ContactPreferenceHelper.getContactPreferenceName
+
+
+@(vatNumber: String,
+businessEntity: BusinessEntity,
+optNino: Option[String],
+optPartnershipUtr: Option[String],
+optCompanyNumber: Option[String],
+optCompanyName: Option[String],
+emailAddress: String,
+contactPreference: ContactPreference,
+postAction: Call
+)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+
+@import _root_.uk.gov.hmrc.vatsignupfrontend.views.helpers.CheckYourAnswersIdConstants._
+
+@yourVatNumber() = @{
+    val rowQuestion = Messages("principal.check_your_answers_final.vat_number")
+    val rowAnswer = vatNumber
+    val rowUrl = uk.gov.hmrc.vatsignupfrontend.controllers.principal.routes.CaptureVatNumberController.show().url
+    summaryRowHelper(VatNumberId, rowQuestion, rowAnswer, Some(rowUrl))
+}
+
+@yourBusinessEntity() = @{
+    val rowQuestion = Messages("principal.check_your_answers_final.business_entity")
+    val rowAnswer = getBusinessEntityName(businessEntity)
+    val rowUrl = uk.gov.hmrc.vatsignupfrontend.controllers.principal.routes.CaptureBusinessEntityController.show().url
+    summaryRowHelper(BusinessEntityId, rowQuestion, rowAnswer, Some(rowUrl))
+}
+
+@yourNino() = @{ optNino.map { nino =>
+    val rowQuestion = Messages("principal.check_your_answers_final.nino")
+    val rowAnswer = nino
+    val rowUrl = uk.gov.hmrc.vatsignupfrontend.controllers.principal.soletrader.routes.CaptureNinoController.show().url
+    summaryRowHelper(NinoId, rowQuestion, rowAnswer, Some(rowUrl))
+}}
+
+@yourPartnershipUtr() = @{ optPartnershipUtr.map { partnershipUtr =>
+    val rowQuestion = Messages("principal.check_your_answers_final.partnership_utr")
+    val rowAnswer = partnershipUtr
+    val rowUrl = uk.gov.hmrc.vatsignupfrontend.controllers.principal.partnerships.routes.CapturePartnershipUtrController.show().url
+    summaryRowHelper(UtrId, rowQuestion, rowAnswer, Some(rowUrl))
+}}
+
+
+@yourCompanyNumber() = @{ optCompanyNumber.map { companyNumber =>
+    val rowQuestion1 = businessEntity match {
+        case LimitedPartnership => Messages("principal.check_your_answers_final.partnership_number")
+        case _ => Messages("principal.check_your_answers_final.company_number")
+    }
+    val rowAnswer1 = companyNumber
+    val rowUrl1 = businessEntity match {
+        case LimitedCompany => uk.gov.hmrc.vatsignupfrontend.controllers.principal.routes.CaptureCompanyNumberController.show().url
+        case LimitedPartnership => uk.gov.hmrc.vatsignupfrontend.controllers.principal.partnerships.routes.CapturePartnershipCompanyNumberController.show().url
+        case RegisteredSociety => uk.gov.hmrc.vatsignupfrontend.controllers.principal.routes.CaptureRegisteredSocietyCompanyNumberController.show().url
+    }
+    optCompanyName.map{ companyName =>
+        val rowQuestion2 = businessEntity match {
+            case LimitedCompany => Messages("principal.check_your_answers_final.company_name")
+            case LimitedPartnership => Messages("principal.check_your_answers_final.partnership_name")
+            case RegisteredSociety => Messages("principal.check_your_answers_final.registered_society_name")
+        }
+    val rowAnswer2 = companyName
+    summaryDoubleRowHelper(CrnId, rowQuestion1, rowAnswer1, Some(rowUrl1), CompanyNameId, rowQuestion2, rowAnswer2, None)
+}}}
+
+@yourEmailAddress() = @{
+    val rowQuestion = Messages("principal.check_your_answers_final.email_address")
+    val rowAnswer = emailAddress
+    val rowUrl = uk.gov.hmrc.vatsignupfrontend.controllers.principal.routes.CaptureEmailController.show().url
+    summaryRowHelper(EmailAddressId, rowQuestion, rowAnswer, Some(rowUrl))
+}
+
+@yourContactPreference() = @{
+    val rowQuestion = Messages("principal.check_your_answers_final.contact_preference")
+    val rowAnswer = getContactPreferenceName(contactPreference)
+    val rowUrl = uk.gov.hmrc.vatsignupfrontend.controllers.principal.routes.ReceiveEmailNotificationsController.show().url
+    summaryRowHelper(ContactPreferenceId, rowQuestion, rowAnswer, Some(rowUrl))
+}
+
+@principal_main_template(title = Messages("principal.check_your_answers_final.title")) {
+
+<h1 class="heading-large">@Messages("principal.check_your_answers_final.heading")</h1>
+
+<div class="form-group">
+    @yourVatNumber()
+    @yourBusinessEntity()
+    @yourNino()
+    @yourPartnershipUtr()
+    @yourCompanyNumber()
+    @yourEmailAddress()
+    @yourContactPreference()
+    <div class="divider--top--thick"></div>
+</div>
+
+@form(action = postAction) {
+    @continueButton(Some(Messages("base.accept_and_send")))
+}
+}

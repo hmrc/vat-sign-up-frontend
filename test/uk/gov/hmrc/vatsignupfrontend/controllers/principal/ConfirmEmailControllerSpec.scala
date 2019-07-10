@@ -24,7 +24,7 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
-import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.ContactPreferencesJourney
+import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.{ContactPreferencesJourney, FinalCheckYourAnswer}
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.MockStoreEmailAddressService
@@ -131,17 +131,34 @@ class ConfirmEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite with 
 
             }
           }
-          "email is verified" should {
-            "redirect to Terms page" in {
-              mockAuthAdminRole()
-              mockStoreEmailAddressSuccess(vatNumber = testVatNumber, email = testEmail)(emailVerified = true)
+          "email is verified" when {
+            "the final CYA feature switch is disabled" should {
+              "redirect to Terms page" in {
+                mockAuthAdminRole()
+                mockStoreEmailAddressSuccess(vatNumber = testVatNumber, email = testEmail)(emailVerified = true)
 
-              val result = TestConfirmEmailController.submit(testPostRequest.withSession(SessionKeys.emailKey -> testEmail,
-                SessionKeys.vatNumberKey -> testVatNumber))
+                val result = TestConfirmEmailController.submit(testPostRequest.withSession(SessionKeys.emailKey -> testEmail,
+                  SessionKeys.vatNumberKey -> testVatNumber))
 
-              status(result) shouldBe Status.SEE_OTHER
-              redirectLocation(result) shouldBe Some(routes.TermsController.show().url)
+                status(result) shouldBe Status.SEE_OTHER
+                redirectLocation(result) shouldBe Some(routes.TermsController.show().url)
 
+              }
+            }
+
+            "the final CYA feature switch is enabled" should {
+              "redirect to check your answers final page" in {
+                enable(FinalCheckYourAnswer)
+                mockAuthAdminRole()
+                mockStoreEmailAddressSuccess(vatNumber = testVatNumber, email = testEmail)(emailVerified = true)
+
+                val result = TestConfirmEmailController.submit(testPostRequest.withSession(SessionKeys.emailKey -> testEmail,
+                  SessionKeys.vatNumberKey -> testVatNumber))
+
+                status(result) shouldBe Status.SEE_OTHER
+                redirectLocation(result) shouldBe Some(routes.CheckYourAnswersFinalController.show().url)
+
+              }
             }
           }
         }

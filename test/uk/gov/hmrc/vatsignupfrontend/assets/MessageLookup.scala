@@ -749,7 +749,9 @@ object MessageLookup {
     val linkText = "Making Tax Digital guidance"
     val line1 = "We're unable to set you up for Making Tax Digital for VAT at present. Either this is because:"
     val line2 = "If you submit monthly returns and are now unable to sign up in time to file your May return by the deadline do not worry. Please submit your return using the old method and come back after the date below to sign up in time to submit your June return. We will not charge a penalty in this instance."
+
     def line3(date: String) = s"You'll be able to sign up for this service after $date."
+
     val line4 = s"For the latest information and rules to follow go to $linkText"
     val bullet1 = "a Direct Debit payment is due shortly"
     val bullet2 = "you are very close to a busy filing period"
@@ -761,7 +763,9 @@ object MessageLookup {
     val linkText = "Making Tax Digital guidance"
     val line1 = "We're unable to set you up for Making Tax Digital for VAT at present. Either this is because:"
     val line2 = "If you submit monthly returns and are now unable to sign up in time to file your May return by the deadline do not worry. Please submit your return using the old method and come back after the date below to sign up in time to submit your June return. We will not charge a penalty in this instance."
+
     def line3(startDate: String, endDate: String) = s"You'll be able to sign up for this service between $startDate and $endDate."
+
     val line4 = s"For the latest information and rules to follow go to $linkText"
     val bullet1 = "a Direct Debit payment is due shortly"
     val bullet2 = "you are very close to a busy filing period"
@@ -773,7 +777,9 @@ object MessageLookup {
     val linkText = "Making Tax Digital guidance"
     val line1 = "We're unable to set your client up for Making Tax Digital for VAT at present. Either this is because:"
     val line2 = "If you submit monthly returns for your client and are now unable to sign up in time to file the May return by the deadline do not worry. Please submit the return using the old method and come back after the date below to sign up in time to submit the June return. We will not charge a penalty in this instance."
+
     def line3(date: String) = s"You'll be able to sign up your client for this service after $date."
+
     val line4 = s"For the latest information and rules to follow go to $linkText"
     val bullet1 = "a Direct Debit payment is due shortly"
     val bullet2 = "you are very close to a busy filing period"
@@ -785,7 +791,9 @@ object MessageLookup {
     val linkText = "Making Tax Digital guidance"
     val line1 = "We're unable to set your client up for Making Tax Digital for VAT at present. Either this is because:"
     val line2 = "If you submit monthly returns for your client and are now unable to sign up in time to file the May return by the deadline do not worry. Please submit the return using the old method and come back after the date below to sign up in time to submit the June return. We will not charge a penalty in this instance."
+
     def line3(startDate: String, endDate: String) = s"You'll be able to sign up your client for this service between $startDate and $endDate."
+
     val line4 = s"For the latest information and rules to follow go to $linkText"
     val bullet1 = "a Direct Debit payment is due shortly"
     val bullet2 = "you are very close to a busy filing period"
@@ -994,6 +1002,7 @@ object MessageLookup {
     val radioPaper: String = "paper"
 
     def radioButtonEmail(email: String) = s"Send emails to $email"
+
     val paper: String = "Send letters only"
     val error = "Select if you want to be contacted by email or letters only"
   }
@@ -1036,4 +1045,23 @@ object MessageLookup {
     val title: String = heading + ServiceName.agentSuffix
     val line: String = "This is a 10-digit number. You can find it on letters to the partnership from HMRC."
   }
+
+  object PrincipalCheckYourAnswersFinal {
+    val heading: String = "Check your answers before sending"
+    val title: String = heading + ServiceName.principalSuffix
+    val vat_number: String = "VAT Number"
+    val business_entity: String = "Type of Business"
+    val nino: String = "National Insurance Number"
+    val partnership_utr: String = "Partnership UTR"
+    val partnership_number: String = "Partnership Company Registration Number"
+    val partnership_name: String = "Partnership Company Name"
+    val registered_society_name: String = "Registered Society Company Name"
+    val company_number: String = "Company Registration Number"
+    val company_name: String = "Company Name"
+    val email_address: String = "Business Email Address"
+    val contact_preference: String = "How we contact you"
+    val digital: String = "Emails"
+    val letter: String = "Letters"
+  }
+
 }

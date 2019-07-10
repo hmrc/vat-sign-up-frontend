@@ -24,7 +24,7 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.http.{InternalServerException, NotFoundException}
 import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
-import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.ContactPreferencesJourney
+import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.{ContactPreferencesJourney, FinalCheckYourAnswer}
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.models._
@@ -112,6 +112,25 @@ class ReceiveEmailNotificationsControllerSpec extends UnitSpec with GuiceOneAppP
             status(result) shouldBe Status.SEE_OTHER
             redirectLocation(result) shouldBe Some(routes.TermsController.show().url)
           }
+          "go to the 'check your answers final' page" in {
+            mockAuthAdminRole()
+            enable(FinalCheckYourAnswer)
+            mockStoreContactPreferenceSuccess(
+              vatNumber = testVatNumber,
+              contactPreference = Digital
+            )
+            mockStoreEmailAddressSuccess(
+              vatNumber = testVatNumber,
+              email = testEmail
+            )(emailVerified = true)
+
+            val result = TestReceiveEmailController.submit(testPostRequest("digital").withSession(
+              SessionKeys.vatNumberKey -> testVatNumber,
+              SessionKeys.emailKey -> testEmail
+            ))
+            status(result) shouldBe Status.SEE_OTHER
+            redirectLocation(result) shouldBe Some(routes.CheckYourAnswersFinalController.show().url)
+          }
         }
         "User answered Paper" should {
           "go to terms page" in {
@@ -128,6 +147,21 @@ class ReceiveEmailNotificationsControllerSpec extends UnitSpec with GuiceOneAppP
             ))
             status(result) shouldBe Status.SEE_OTHER
             redirectLocation(result) shouldBe Some(routes.TermsController.show().url)
+          }
+          "go to check your answers final page" in {
+            mockAuthAdminRole()
+            enable(FinalCheckYourAnswer)
+            mockStoreContactPreferenceSuccess(
+              vatNumber = testVatNumber,
+              contactPreference = Paper
+            )
+
+            val result = TestReceiveEmailController.submit(testPostRequest("paper").withSession(
+              SessionKeys.vatNumberKey -> testVatNumber,
+              SessionKeys.emailKey -> testEmail
+            ))
+            status(result) shouldBe Status.SEE_OTHER
+            redirectLocation(result) shouldBe Some(routes.CheckYourAnswersFinalController.show().url)
           }
         }
         "User answered Paper with Direct Debit in session" should {
@@ -150,6 +184,26 @@ class ReceiveEmailNotificationsControllerSpec extends UnitSpec with GuiceOneAppP
             ))
             status(result) shouldBe Status.SEE_OTHER
             redirectLocation(result) shouldBe Some(routes.TermsController.show().url)
+          }
+          "go to check your answers final page" in {
+            mockAuthAdminRole()
+            enable(FinalCheckYourAnswer)
+            mockStoreContactPreferenceSuccess(
+              vatNumber = testVatNumber,
+              contactPreference = Paper
+            )
+            mockStoreEmailAddressSuccess(
+              vatNumber = testVatNumber,
+              email = testEmail
+            )(emailVerified = true)
+
+            val result = TestReceiveEmailController.submit(testPostRequest("paper").withSession(
+              SessionKeys.vatNumberKey -> testVatNumber,
+              SessionKeys.emailKey -> testEmail,
+              SessionKeys.hasDirectDebitKey -> "true"
+            ))
+            status(result) shouldBe Status.SEE_OTHER
+            redirectLocation(result) shouldBe Some(routes.CheckYourAnswersFinalController.show().url)
           }
         }
       }

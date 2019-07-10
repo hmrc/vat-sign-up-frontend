@@ -102,6 +102,10 @@ POST        /business-type-other                                uk.gov.hmrc.vats
 GET         /check-your-answers                                 uk.gov.hmrc.vatsignupfrontend.controllers.principal.CheckYourAnswersController.show
 POST        /check-your-answers                                 uk.gov.hmrc.vatsignupfrontend.controllers.principal.CheckYourAnswersController.submit
 
+# Check your answers final
+GET         /check-your-answers-final                           uk.gov.hmrc.vatsignupfrontend.controllers.principal.CheckYourAnswersFinalController.show
+POST        /check-your-answers-final                           uk.gov.hmrc.vatsignupfrontend.controllers.principal.CheckYourAnswersFinalController.submit
+
 GET         /identity-verified                                  uk.gov.hmrc.vatsignupfrontend.controllers.principal.IdentityVerificationCallbackController.continue
 
 # Could not confirm business
