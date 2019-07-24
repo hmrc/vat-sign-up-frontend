@@ -188,6 +188,8 @@ error.principal.partnership.do_you_have_a_utr.summary                  = Select 
 error.agent.partnership.do_you_have_a_utr.field                        = Select yes if you have your client''s Unique Taxpayer Reference number
 error.agent.partnership.do_you_have_a_utr.summary                      = Select yes if you have your client''s Unique Taxpayer Reference number
 
+error.principal.are_you_ready_submit_software.summary                  = Select yes if you''re ready to submit your next VAT return using compatible software
+error.principal.are_you_ready_submit_software.field                    = Select yes if you''re ready to submit your next VAT return using compatible software
 ## Not enrolled to Agent Services page
 agent.not_enrolled_to_agent_services.title                             = You can''t use this service yet
 agent.not_enrolled_to_agent_services.heading                           = You can''t use this service yet
@@ -862,6 +864,12 @@ principal.check_your_answers_partnerships.company_utr                  = UTR Par
 principal.check_your_answers_partnerships.post_code                    = Where is the partnership registered for Self Assessment?
 principal.check_your_answers_partnerships.has_optional_sautr           = Does your partnership have a Self Assessment Unique Taxpayer Reference (UTR) number?
 principal.check_your_answers_partnerships.no_sautr                     = I do not have one
+
+## Are You Ready Submit Software
+principal.are_you_ready_submit_software.title                          = Are you ready to submit your next VAT Return using software compatible with Making Tax Digital?
+principal.are_you_ready_submit_software.heading                        = Are you ready to submit your next VAT Return using software compatible with Making Tax Digital?
+principal.are_you_ready_submit_software.line_1                         = Once you''ve signed up for Making Tax Digital, you can only send in your VAT Return using software.
+principal.are_you_ready_submit_software.line_2                          = If you''re not ready to use software yet, you should send your next VAT Return using your usual method.
 
 ## Verify Software Error Page
 principal.verify_software_error.title                                  = Making Tax Digital for VAT: verify your software

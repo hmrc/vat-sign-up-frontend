@@ -21,13 +21,13 @@ import play.api.data.Forms._
 import uk.gov.hmrc.vatsignupfrontend.forms.submapping.YesNoMapping._
 import uk.gov.hmrc.vatsignupfrontend.models.YesNo
 
-object HaveSoftwareForm {
+object AreYouReadySubmitSoftwareForm {
 
   val yesNo: String = "yes_no"
 
-  val haveSoftwareForm: Form[YesNo] = Form(
+  val areYouReadySubmitSoftwareForm: Form[YesNo] = Form(
     single(
-      yesNo -> of(yesNoMapping("error.have_software"))
+      yesNo -> of(yesNoMapping("error.principal.are_you_ready_submit_software"))
     )
   )
 }

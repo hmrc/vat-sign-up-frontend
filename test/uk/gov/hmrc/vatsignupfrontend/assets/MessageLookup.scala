@@ -936,6 +936,13 @@ object MessageLookup {
     val returnToGovUK = "Return to GOV.UK"
   }
 
+  object AreYouReadySubmitSoftware {
+    val heading = "Are you ready to submit your next VAT Return using software compatible with Making Tax Digital?"
+    val title = heading + ServiceName.principalSuffix
+    val line1 = "Once you've signed up for Making Tax Digital, you can only send in your VAT Return using software."
+    val line2 = "If you're not ready to use software yet, you should send your next VAT Return using your usual method."
+    val errorMessage = "Select yes if you're ready to submit your next VAT return using compatible software"
+  }
   object AgentConfirmRegisteredSociety {
     val heading: String = "Confirm your client's registered society"
     val title = heading + ServiceName.agentSuffix

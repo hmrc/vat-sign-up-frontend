@@ -179,7 +179,8 @@ error.agent.partnership.do_you_have_a_utr.field                        = Dewiswc
 error.agent.partnership.do_you_have_a_utr.summary                      = Dewiswch ''Iawn'' os oes gennych Gyfeirnod Unigryw y Trethdalwr (UTR) ar gyfer eich cleient
 error.principal.partnership.do_you_have_a_utr.field                    = Dewiswch ''Iawn'' os oes gennych Gyfeirnod Unigryw y Trethdalwr ar gyfer Hunanasesiad
 error.principal.partnership.do_you_have_a_utr.summary                  = Dewiswch ''Iawn'' os oes gennych Gyfeirnod Unigryw y Trethdalwr ar gyfer Hunanasesiad
-
+error.principal.are_you_ready_submit_software.summary                  = Select yes if you''re ready to submit your next VAT return using compatible software
+error.principal.are_you_ready_submit_software.field                    = Select yes if you''re ready to submit your next VAT return using compatible software
 ## unused?
 error.principal.partnership.joint_venture_or_property.field            = Dewiswch ''Iawn'' os ydych yn Fenter ar y Cyd neu''n Bartneriaeth Eiddo
 error.principal.partnership.joint_venture_or_property.summary          = Dewiswch os ydych yn Fenter ar y Cyd neu''n Bartneriaeth Eiddo
@@ -843,6 +844,12 @@ unplanned_outage.line2                                                 = Yn y cy
 unplanned_outage.bullet1                                               = ewch i weld ein <a id="vatServices" href="{0}"">rhestr lawn o wasanaethau TAW</a>
 unplanned_outage.bullet2                                               = darllenwch ein <a id="help" href="{0}"">'''''help a chymorth ar gyfer TAW'''</a>
 unplanned_outage.bullet3                                               = ewch i weld <a id="mtdReady" href="{0}"">sut y gall busnesau TAW baratoi</a> ar gyfer y rhaglen Troi Treth yn Ddigidol
+
+## Are You Ready Submit Software
+principal.are_you_ready_submit_software.title                          = Ydych chi''n barod i gyflwyno''ch Ffurflen TAW nesaf drwy ddefnyddio meddalwedd sy''n cydweddu â''r cynllun Troi Treth yn Ddigidol?
+principal.are_you_ready_submit_software.heading                        = Ydych chi''n barod i gyflwyno''ch Ffurflen TAW nesaf drwy ddefnyddio meddalwedd sy''n cydweddu â''r cynllun Troi Treth yn Ddigidol?
+principal.are_you_ready_submit_software.line_1                         = Ar ôl i chi gofrestru ar gyfer Troi Treth yn Ddigidol, gallwch ond anfon eich Ffurflen TAW drwy ddefnyddio meddalwedd.
+principal.are_you_ready_submit_software.line_2                          = Os nad ydych yn barod i ddefnyddio meddalwedd eto, dylech anfon eich Ffurflen TAW nesaf drwy’ch dull arferol.
 
 ## Verify Software Error Page
 principal.verify_software_error.title                                  = Troi Treth yn Ddigidol ar gyfer TAW: dilysu''ch meddalwedd
