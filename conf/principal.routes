@@ -6,6 +6,9 @@ GET         /                                                   uk.gov.hmrc.vats
 # Index Resolver
 GET         /index                                              uk.gov.hmrc.vatsignupfrontend.controllers.principal.IndexResolverController.resolve
 
+# Eligibility Use Spreadsheets
+GET         /interruption/use-spreadsheets                     uk.gov.hmrc.vatsignupfrontend.controllers.principal.eligibility.UseSpreadsheetsController.show
+
 # Verify Software Error page
 GET         /error/verify-software                              uk.gov.hmrc.vatsignupfrontend.controllers.principal.VerifySoftwareErrorController.show
 POST        /error/verify-software                              uk.gov.hmrc.vatsignupfrontend.controllers.principal.VerifySoftwareErrorController.submit

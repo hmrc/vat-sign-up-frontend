@@ -39,11 +39,11 @@ class ReceiveEmailNotificationsISpec extends ComponentSpecBase with CustomMatche
 
   "GET /receive-email-notifications" when {
     "return an NOT_FOUND" in {
-      val res = get("/receive-email-notifications")
+        val res = get("/receive-email-notifications")
 
-      res should have(
-        httpStatus(NOT_FOUND)
-      )
+        res should have(
+          httpStatus(NOT_FOUND)
+        )
     }
 
     "email is in session" should {
