@@ -142,8 +142,8 @@ error.partnership_postcode.invalid.summary                             = Nodwch 
 error.partnership_postcode.invalid.field                               = Nodwch god post dilys
 error.partnership_postcode.invalid_characters.summary                  = Nodwch god post gan ddefnyddio llythrennau a rhifau yn unig
 error.partnership_postcode.invalid_characters.field                    = Nodwch god post gan ddefnyddio llythrennau a rhifau yn unig
-error.principal.partnership_postcode.not_entered.summary               = Rhowch wybod i ni ymhle mae''r bartneriaeth wedi''i chofrestru ar gyfer Hunanasesiad
-error.principal.partnership_postcode.not_entered.field                 = Rhowch wybod i ni ymhle mae''r bartneriaeth wedi''i chofrestru ar gyfer Hunanasesiad
+error.principal.partnership_postcode.not_entered.summary               = Nodwch y cod post lle mae’r bartneriaeth wedi’i chofrestru ar gyfer Hunanasesiad
+error.principal.partnership_postcode.not_entered.field                 = Nodwch y cod post lle mae’r bartneriaeth wedi’i chofrestru ar gyfer Hunanasesiad
 error.agent.partnership_postcode.not_entered.summary                   = Nodwch god post prif leoliad busnes y cleient
 error.agent.partnership_postcode.not_entered.field                     = Nodwch god post prif leoliad busnes y cleient
 error.character_limit_partnership_utr.summary                          = Nodwch Gyfeirnod Unigryw y Trethdalwr (UTR) sydd â 10 rhif
@@ -744,9 +744,9 @@ principal.capture_partnership_company_number.heading                   = Beth yw
 principal.capture_partnership_company_number.line_1                    = Gallwch <a id="companiesHouse" href={0} target="_blank">chwilio am eich rhif cwmni (yn agor ffenestr neu dab newydd)</a> ar wefan Tŷ''r Cwmnïau.
 
 ## Principal Partnership Postcode
-principal.partnership_postcode.title                                   = Ymhle mae''r bartneriaeth wedi''i chofrestru ar gyfer Hunanasesiad?
-principal.partnership_postcode.heading                                 = Ymhle mae''r bartneriaeth wedi''i chofrestru ar gyfer Hunanasesiad?
-principal.partnership_postcode.label                                   = Cod post yn y DU
+principal.partnership_postcode.title                                   = Beth yw''r cod post lle mae'r bartneriaeth wedi'i chofrestru ar gyfer Hunanasesiad?
+principal.partnership_postcode.heading                                 = Beth yw''r cod post lle mae'r bartneriaeth wedi'i chofrestru ar gyfer Hunanasesiad?
+principal.partnership_postcode.label                                   = Er enghraifft, 123456789
 
 ## Confirm Partnership Company Name
 principal.confirm_partnership.title                                    = Cadarnhau''r bartneriaeth

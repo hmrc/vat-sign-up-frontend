@@ -875,9 +875,9 @@ object MessageLookup {
   }
 
   object PartnershipPrincipalPlaceOfBusiness {
-    val heading = "Where is the partnership registered for Self Assessment?"
+    val heading = "What is the postcode where the partnership is registered for Self Assessment?"
     val title = heading + ServiceName.principalSuffix
-    val label = "UK postcode"
+    val label = "For example, 123456789"
   }
 
   object PartnershipsCYA {

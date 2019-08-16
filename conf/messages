@@ -148,8 +148,8 @@ error.partnership_postcode.invalid.summary                             = Enter a
 error.partnership_postcode.invalid.field                               = Enter a valid postcode
 error.partnership_postcode.invalid_characters.summary                  = Enter a postcode using only letters and numbers
 error.partnership_postcode.invalid_characters.field                    = Enter a postcode using only letters and numbers
-error.principal.partnership_postcode.not_entered.summary               = Tell us where the partnership is registered for Self Assessment
-error.principal.partnership_postcode.not_entered.field                 = Tell us where the partnership is registered for Self Assessment
+error.principal.partnership_postcode.not_entered.summary               = Enter the postcode where the partnership is registered for Self Assessment
+error.principal.partnership_postcode.not_entered.field                 = Enter the postcode where the partnership is registered for Self Assessment
 error.agent.partnership_postcode.not_entered.summary                   = Enter the postcode of the client''s principal place of business
 error.agent.partnership_postcode.not_entered.field                     = Enter the postcode of the client''s principal place of business
 error.character_limit_partnership_utr.summary                          = Enter a UTR that has 10 numbers
@@ -764,9 +764,9 @@ principal.capture_partnership_company_number.heading                   = What is
 principal.capture_partnership_company_number.line_1                    = You can <a id="companiesHouse" href={0} target="_blank">search for your company number (opens in a new window or tab)</a> on Companies House.
 
 ## Principal Partnership Postcode
-principal.partnership_postcode.title                                   = Where is the partnership registered for Self Assessment?
-principal.partnership_postcode.heading                                 = Where is the partnership registered for Self Assessment?
-principal.partnership_postcode.label                                   = UK postcode
+principal.partnership_postcode.title                                   = What is the postcode where the partnership is registered for Self Assessment?
+principal.partnership_postcode.heading                                 = What is the postcode where the partnership is registered for Self Assessment?
+principal.partnership_postcode.label                                   = For example, 123456789
 
 ## Confirm Partnership Company Name
 principal.confirm_partnership.title                                    = Confirm the partnership
