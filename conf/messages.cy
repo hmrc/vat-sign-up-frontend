@@ -1025,7 +1025,6 @@ agent.confirm_nino.heading                                            = Cadarnha
 agent.confirm_nino.summary.business_type                              = Pa fath o fusnes neu grŵp yw''ch cleient?
 agent.confirm_nino.summary.nino                                       = Beth yw rhif Yswiriant Gwladol eich cleient?
 
-principal.confirm_nino.title                                          = Gwirio''ch atebion
 principal.confirm_nino.heading                                        = Gwirio''ch atebion
 principal.confirm_nino.summary.sub_heading                            = Yr hyn rydych wedi rhoi gwybod i ni amdano
 principal.confirm_nino.summary.business_type                          = Y math o fusnes sydd gennych
