@@ -28,9 +28,9 @@ import uk.gov.hmrc.vatsignupfrontend.controllers.AuthenticatedController
 import uk.gov.hmrc.vatsignupfrontend.forms.VatNumberForm._
 import uk.gov.hmrc.vatsignupfrontend.httpparsers.VatNumberEligibilityHttpParser
 import uk.gov.hmrc.vatsignupfrontend.httpparsers.VatNumberEligibilityHttpParser._
-import uk.gov.hmrc.vatsignupfrontend.models.{BusinessEntity, MigratableDates, Overseas}
+import uk.gov.hmrc.vatsignupfrontend.models.{MigratableDates, Overseas}
 import uk.gov.hmrc.vatsignupfrontend.services.StoreVatNumberService._
-import uk.gov.hmrc.vatsignupfrontend.services.{StoreVatNumberService, VatNumberEligibilityService}
+import uk.gov.hmrc.vatsignupfrontend.services.{AdministrativeDivisionLookupService, StoreVatNumberService, VatNumberEligibilityService}
 import uk.gov.hmrc.vatsignupfrontend.utils.EnrolmentUtils._
 import uk.gov.hmrc.vatsignupfrontend.utils.SessionUtils.ResultUtils
 import uk.gov.hmrc.vatsignupfrontend.utils.VatNumberChecksumValidation
@@ -41,7 +41,8 @@ import scala.concurrent.Future
 @Singleton
 class CaptureVatNumberController @Inject()(val controllerComponents: ControllerComponents,
                                            vatNumberEligibilityService: VatNumberEligibilityService,
-                                           storeVatNumberService: StoreVatNumberService)
+                                           storeVatNumberService: StoreVatNumberService,
+                                           administrativeDivisionLookupService: AdministrativeDivisionLookupService)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   private val validateVatNumberForm = vatNumberForm(isAgent = false)
@@ -117,6 +118,19 @@ class CaptureVatNumberController @Inject()(val controllerComponents: ControllerC
     }
   }
 
+  private def checkVatDivision(formVatNumber: String,
+                               isDirectDebit: Boolean)(implicit request: Request[AnyContent]): Result = {
+    if(administrativeDivisionLookupService.isAdministrativeDivision(formVatNumber)) {
+      Redirect(routes.DivisionResolverController.resolve())
+        .addingToSession(SessionKeys.vatNumberKey -> formVatNumber)
+        .addingToSession(SessionKeys.hasDirectDebitKey, isDirectDebit)
+    } else {
+      Redirect(routes.CaptureBusinessEntityController.show())
+        .addingToSession(SessionKeys.vatNumberKey -> formVatNumber)
+        .addingToSession(SessionKeys.hasDirectDebitKey, isDirectDebit)
+    }
+  }
+
   private def storeVatNumber(formVatNumber: String)(implicit request: Request[AnyContent]): Future[Result] = {
     storeVatNumberService.storeVatNumber(formVatNumber, isFromBta = false) map {
       case Right(VatNumberStored(isOverseas, isDirectDebit)) if isOverseas =>
@@ -124,9 +138,7 @@ class CaptureVatNumberController @Inject()(val controllerComponents: ControllerC
           .addingToSession(vatNumberKey -> formVatNumber)
           .addingToSession(SessionKeys.hasDirectDebitKey, isDirectDebit)
       case Right(VatNumberStored(_, isDirectDebit)) =>
-        Redirect(routes.CaptureBusinessEntityController.show())
-          .addingToSession(SessionKeys.vatNumberKey -> formVatNumber)
-          .addingToSession(SessionKeys.hasDirectDebitKey, isDirectDebit)
+          checkVatDivision(formVatNumber, isDirectDebit)
       case Right(SubscriptionClaimed) =>
         Redirect(routes.SignUpCompleteClientController.show())
       case Left(IneligibleVatNumber(MigratableDates(None, None))) =>
