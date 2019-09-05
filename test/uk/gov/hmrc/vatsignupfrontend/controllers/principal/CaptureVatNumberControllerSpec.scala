@@ -36,18 +36,20 @@ import uk.gov.hmrc.vatsignupfrontend.forms.VatNumberForm
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstantsGenerator
 import uk.gov.hmrc.vatsignupfrontend.models.{DateModel, MigratableDates, Overseas, Yes}
-import uk.gov.hmrc.vatsignupfrontend.services.mocks.{MockStoreVatNumberService, MockVatNumberEligibilityService}
+import uk.gov.hmrc.vatsignupfrontend.services.mocks.{MockAdministrativeDivisionLookupService, MockStoreVatNumberService,
+  MockVatNumberEligibilityService}
 
 import scala.concurrent.Future
 
-
 class CaptureVatNumberControllerSpec extends UnitSpec with GuiceOneAppPerSuite
-  with MockControllerComponents with MockVatNumberEligibilityService with MockStoreVatNumberService with FeatureSwitching {
+  with MockControllerComponents with MockVatNumberEligibilityService
+  with MockStoreVatNumberService with MockAdministrativeDivisionLookupService with FeatureSwitching {
 
   object TestCaptureVatNumberController extends CaptureVatNumberController(
     mockControllerComponents,
     mockVatNumberEligibilityService,
-    mockStoreVatNumberService
+    mockStoreVatNumberService,
+    mockAdministrativeDivisionLookupService
   )
 
   lazy val testGetRequest = FakeRequest("GET", "/vat-number")
@@ -74,15 +76,30 @@ class CaptureVatNumberControllerSpec extends UnitSpec with GuiceOneAppPerSuite
         "the user has a VAT-DEC enrolment" when {
           "the vat eligibility is successful" when {
             "the inserted vat number matches the enrolment one" when {
-              "the VAT number is not overseas and is stored successfully" should {
+              "the VAT number is not overseas and is not a VAT division and is stored successfully" should {
                 "redirect to the business entity type page" in {
                   mockAuthRetrieveVatDecEnrolment(hasIRSAEnrolment = false)
                   mockStoreVatNumberSuccess(testVatNumber, isFromBta = false)
+                  mockIsAdministrativeDivision(testVatNumber)(false)
 
                   val result = TestCaptureVatNumberController.submit(testPostRequest(testVatNumber))
 
                   status(result) shouldBe Status.SEE_OTHER
                   redirectLocation(result) shouldBe Some(routes.CaptureBusinessEntityController.show().url)
+                  session(result) get vatNumberKey should contain(testVatNumber)
+                }
+              }
+
+              "the VAT number is not overseas but is a VAT division and is stored successfully" should {
+                "redirect to the division resolver controller resolve action" in {
+                  mockAuthRetrieveVatDecEnrolment(hasIRSAEnrolment = false)
+                  mockStoreVatNumberSuccess(testVatNumber, isFromBta = false)
+                  mockIsAdministrativeDivision(testVatNumber)(true)
+
+                  val result = TestCaptureVatNumberController.submit(testPostRequest(testVatNumber))
+
+                  status(result) shouldBe Status.SEE_OTHER
+                  redirectLocation(result) shouldBe Some(routes.DivisionResolverController.resolve().url)
                   session(result) get vatNumberKey should contain(testVatNumber)
                 }
               }
