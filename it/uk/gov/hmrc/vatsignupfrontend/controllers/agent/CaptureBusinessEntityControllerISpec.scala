@@ -17,11 +17,13 @@
 package uk.gov.hmrc.vatsignupfrontend.controllers.agent
 
 import play.api.http.Status._
+import uk.gov.hmrc.vatsignupfrontend.SessionKeys
 import uk.gov.hmrc.vatsignupfrontend.config.featureswitch._
 import uk.gov.hmrc.vatsignupfrontend.forms.BusinessEntityForm
 import uk.gov.hmrc.vatsignupfrontend.forms.BusinessEntityForm._
 import uk.gov.hmrc.vatsignupfrontend.helpers.servicemocks.AuthStub._
-import uk.gov.hmrc.vatsignupfrontend.helpers.{ComponentSpecBase, CustomMatchers}
+import uk.gov.hmrc.vatsignupfrontend.helpers.{ComponentSpecBase, CustomMatchers, IntegrationTestConstants}
+import uk.gov.hmrc.vatsignupfrontend.httpparsers.StoreAdministrativeDivisionHttpParser.StoreAdministrativeDivisionFailureResponse
 
 
 class CaptureBusinessEntityControllerISpec extends ComponentSpecBase with CustomMatchers {
@@ -32,10 +34,34 @@ class CaptureBusinessEntityControllerISpec extends ComponentSpecBase with Custom
   }
 
   "GET /business-type" should {
-    "return an OK" in {
+    "return See Other" when {
+      "the session VRN is an Administrative division" in {
+        stubAuth(OK, successfulAuthResponse(agentEnrolment))
+
+
+        val res = get("/client/business-type", Map(SessionKeys.vatNumberKey -> administrativeDivisionVRN))
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectUri(routes.CaptureAgentEmailController.show().url)
+        )
+      }
+      "no VRN in session" in {
+        stubAuth(OK, successfulAuthResponse(agentEnrolment))
+
+        val res = get("/client/business-type")
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectUri(routes.CaptureVatNumberController.show().url)
+        )
+      }
+    }
+
+    "return an OK when the session VRN is not Administrative division" in {
       stubAuth(OK, successfulAuthResponse(agentEnrolment))
 
-      val res = get("/client/business-type")
+      val res = get("/client/business-type", Map(SessionKeys.vatNumberKey -> IntegrationTestConstants.testVatNumber))
 
       res should have(
         httpStatus(OK)

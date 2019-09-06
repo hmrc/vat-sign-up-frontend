@@ -38,6 +38,7 @@ trait ComponentSpecBase extends UnitSpec with GuiceOneServerPerSuite with Wiremo
   val mockHost = WiremockHelper.wiremockHost
   val mockPort = WiremockHelper.wiremockPort.toString
   val mockUrl = s"http://$mockHost:$mockPort"
+  val administrativeDivisionVRN = "543278967"
 
   def config: Map[String, String] = Map(
     "auditing.enabled" -> "false",
@@ -50,7 +51,8 @@ trait ComponentSpecBase extends UnitSpec with GuiceOneServerPerSuite with Wiremo
     "microservice.services.identity-verification-proxy.port" -> mockPort,
     "microservice.services.citizen-details.host" -> mockHost,
     "microservice.services.citizen-details.port" -> mockPort,
-    "microservice.services.incorporation-information.url" -> mockUrl
+    "microservice.services.incorporation-information.url" -> mockUrl,
+    "administrative-divisions" -> administrativeDivisionVRN
   )
 
   override def beforeAll(): Unit = {

@@ -26,27 +26,55 @@ import uk.gov.hmrc.vatsignupfrontend.SessionKeys
 import uk.gov.hmrc.vatsignupfrontend.config.featureswitch._
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.forms.BusinessEntityForm._
+import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants.testVatNumber
 import uk.gov.hmrc.vatsignupfrontend.models.BusinessEntity.BusinessEntitySessionFormatter
 import uk.gov.hmrc.vatsignupfrontend.models._
+import uk.gov.hmrc.vatsignupfrontend.services.mocks.MockAdministrativeDivisionLookupService
 
-class CaptureBusinessEntityControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockControllerComponents {
 
-  object TestCaptureBusinessEntityController extends CaptureBusinessEntityController(mockControllerComponents)
+class CaptureBusinessEntityControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockControllerComponents with MockAdministrativeDivisionLookupService {
+
+  object TestCaptureBusinessEntityController extends CaptureBusinessEntityController(
+    mockControllerComponents,
+    mockAdministrativeDivisionLookupService
+  )
 
   implicit val testGetRequest = FakeRequest("GET", "/business-type")
 
   def testPostRequest(entityTypeVal: String): FakeRequest[AnyContentAsFormUrlEncoded] =
     FakeRequest("POST", "/business-type").withFormUrlEncodedBody(businessEntity -> entityTypeVal)
 
-
   "Calling the show action of the Capture Entity Type controller" should {
+    "redirect to capture email page" when {
+      "VRN is an Administrative Divisions" in {
+        mockAuthRetrieveAgentEnrolment()
+        mockIsAdministrativeDivision(testVatNumber)(true)
+
+        val result = TestCaptureBusinessEntityController.show(testGetRequest.withSession(SessionKeys.vatNumberKey -> testVatNumber))
+        status(result) shouldBe Status.SEE_OTHER
+        redirectLocation(result) shouldBe Some(routes.CaptureAgentEmailController.show().url)
+      }
+    }
+
     "go to the Capture Entity Type page" in {
       mockAuthRetrieveAgentEnrolment()
+      mockIsAdministrativeDivision(testVatNumber)(false)
 
-      val result = TestCaptureBusinessEntityController.show(testGetRequest)
+
+      val result = TestCaptureBusinessEntityController.show(testGetRequest.withSession(SessionKeys.vatNumberKey -> testVatNumber))
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some("text/html")
       charset(result) shouldBe Some("utf-8")
+    }
+
+    "redirect to capture email page" when {
+      "No session credentials" in {
+        mockAuthRetrieveAgentEnrolment()
+
+        val result = TestCaptureBusinessEntityController.show(testGetRequest)
+        status(result) shouldBe Status.SEE_OTHER
+        redirectLocation(result) shouldBe Some(routes.CaptureVatNumberController.show().url)
+      }
     }
   }
 
@@ -56,6 +84,7 @@ class CaptureBusinessEntityControllerSpec extends UnitSpec with GuiceOneAppPerSu
 
       "go to the capture company number page" when {
         "the business entity is limited company" in {
+
           mockAuthRetrieveAgentEnrolment()
 
           val result = TestCaptureBusinessEntityController.submit(testPostRequest(limitedCompany))
@@ -132,7 +161,7 @@ class CaptureBusinessEntityControllerSpec extends UnitSpec with GuiceOneAppPerSu
         "the business entity is other" in {
           mockAuthRetrieveAgentEnrolment()
 
-          val result =TestCaptureBusinessEntityController.submit(testPostRequest(other))
+          val result = TestCaptureBusinessEntityController.submit(testPostRequest(other))
           status(result) shouldBe Status.SEE_OTHER
           redirectLocation(result) shouldBe Some(routes.CaptureBusinessEntityOtherController.show().url)
           result.session get SessionKeys.businessEntityKey should contain(BusinessEntitySessionFormatter.toString(Other))
