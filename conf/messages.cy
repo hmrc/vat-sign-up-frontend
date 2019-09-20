@@ -1101,3 +1101,42 @@ principal.not_got_software.line_1                                     = Cyn i ch
 principal.not_got_software.line_2                                     = Sefydlu meddalwedd gyfrifyddu sy''n cydweddu ac sydd fwyaf addas i''ch anghenion busnes.
 principal.not_got_software.line_3                                     = Gwirio bod y feddalwedd a ddewiswyd gennych yn gweithio ac yn cysylltu â CThEM.
 principal.not_got_software.line_4                                     = Cael gafael ar ragor o wybodaeth am gynhyrchion a chwmnïau meddalwedd.
+
+#Accessibility Statement
+footer.links.accessibility.text = Datganiad
+accessibility.pageNavBar = Cofrestru am y cynllun Troi Treth yn Ddigidol ar gyfer TAW
+accessibility.pageTitle = Datganiad hygyrchedd ar gyfer cofrestru am y cynllun Troi Treth yn Ddigidol ar gyfer TAW
+accessibility.pageHeading = Datganiad hygyrchedd ar gyfer cofrestru am y cynllun Troi Treth yn Ddigidol ar gyfer TAW
+accessibility.pageBanner = gyfer cofrestru am y cynllun Troi Treth yn Ddigidol ar gyfer TAW
+accessibility.pageBody.intro.p1 = Mae''r datganiad hygyrchedd hwn yn esbonio pa mor hygyrch yw''r gwasanaeth hwn, beth i''w wneud os ydych yn cael anhawster i''w ddefnyddio, a sut i roi gwybod am broblemau hygyrchedd gyda''r gwasanaeth.
+accessibility.pageBody.intro.p2 = Mae''r gwasanaeth hwn yn rhan o wefan ehangach GOV.UK. Mae <a href="https://www.gov.uk/help/accessibility">datganiad hygyrchedd</a> ar wahân ar gyfer prif wefan GOV.UK.
+accessibility.pageBody.intro.p3 = Mae''r dudalen hon ond yn cynnwys gwybodaeth am wasanaeth Cofrestru am y cynllun Troi Treth yn Ddigidol ar gyfer TAW, sydd ar gael yn <a href="https://www.tax.service.gov.uk/vat-through-software/sign-up">https://www.tax.service.gov.uk/vat-through-software/sign-up</a>.
+accessibility.pageBody.use_this_service.h2 = Defnyddio''r gwasanaeth hwn
+accessibility.pageBody.use_this_service.p1 = Mae''r gwasanaeth hwn yn galluogi busnesau sydd wedi''u cofrestru ar gyfer TAW, a''u hasiantau, i gofrestru ar gyfer Troi Treth yn Ddigidol ar gyfer TAW fel y gallant ddefnyddio meddalwedd sy''n gydnaws â CThEM i reoli a chyflwyno eu Ffurflenni TAW.
+accessibility.pageBody.use_this_service.p2 = Mae''r gwasanaeth hwn wedi''i redeg gan Gyllid a Thollau EM (CThEM). Rydym am i gymaint o bobl â phosibl allu defnyddio''r gwasanaeth hwn. Mae hyn yn golygu y dylech allu:
+accessibility.pageBody.use_this_service.ul.li1 = newid lliwiau, lefelau cyferbyniad a ffontiau
+accessibility.pageBody.use_this_service.ul.li2 = chwyddo''r sgrin hyd at 300% heb i''r testun ddisgyn oddi ar y sgrin
+accessibility.pageBody.use_this_service.ul.li3 = mynd o ddechrau''r gwasanaeth i''r diwedd gan ddefnyddio bysellfwrdd yn unig
+accessibility.pageBody.use_this_service.ul.li4 = mynd o ddechrau''r gwasanaeth i''r diwedd gan ddefnyddio meddalwedd adnabod lleferydd
+accessibility.pageBody.use_this_service.ul.li5 = gwrando ar y gwasanaeth drwy ddefnyddio darllenydd sgrin (gan gynnwys y fersiynau diweddaraf o JAWS, NVDA a VoiceOver)
+accessibility.pageBody.use_this_service.p3 = Rydym hefyd wedi sicrhau bod y testun a ddefnyddir yn y gwasanaeth mor syml â phosibl i''w ddeall.
+accessibility.pageBody.use_this_service.p4 = Mae gan<a href="https://mcmw.abilitynet.org.uk">AbilityNet</a> gyngor ar wneud eich dyfais yn haws i''w defnyddio os oes gennych anabledd.
+accessibility.pageBody.how_accessible.h2 = Pa mor hygyrch yw''r gwasanaeth hwn
+accessibility.pageBody.how_accessible.p1 = Mae''r gwasanaeth hwn yn cydymffurfio''n llawn â <a href="https://www.w3.org/TR/WCAG21/">safon ''AA'' Canllawiau Hygyrchedd Cynnwys y We, fersiwn 2.1</a>.
+accessibility.pageBody.how_accessible.p2 = Nid oes unrhyw broblemau hygyrchedd hysbys yn y gwasanaeth hwn.
+accessibility.pageBody.reporting_accessibility_problems.h2 = Rhoi gwybod am broblemau hygyrchedd gyda''r gwasanaeth hwn
+accessibility.pageBody.reporting_accessibility_problems.p1 = Rydym bob amser yn ceisio gwella hygyrchedd y gwasanaeth hwn. Os byddwch yn dod o hyd i unrhyw broblemau nad ydynt wedi''u rhestru ar y dudalen hon, neu os ydych o''r farn nad ydym yn bodloni gofynion hygyrchedd, cysylltwch â hmrc-accessibility-problems@digital.hmrc.gov.uk.
+accessibility.pageBody.what_to_do.h2 = Beth i''w wneud os nad ydych yn hapus â sut rydym yn ateb eich cwyn
+accessibility.pageBody.what_to_do.p1 = Mae''r Comisiwn Cydraddoldeb a Hawliau Dynol (EHRC) yn gyfrifol am orfodi Rheoliadau Hygyrchedd Cyrff Sector Cyhoeddus (Gwefannau a Chymwysiadau Symudol) (Rhif 2) 2018 (y ''rheoliadau hygyrchedd''). Os nad ydych yn hapus â sut rydym yn ateb eich cwyn,<a href="https://www.equalityadvisoryservice.com/">cysylltwch â''r Gwasanaeth Cynghori a Chymorth Cydraddoldeb</a> (EASS), neu''r <a href="https://www.equalityni.org/Home">Equality Commission for Northern Ireland</a> (ECNI) os ydych yn byw yng Ngogledd Iwerddon.
+accessibility.pageBody.contact_us.h2 = Cysylltu â ni dros y ffôn neu gael ymweliad personol gennym
+accessibility.pageBody.contact_us.p1 = Rydym yn cynnig gwasanaeth text relay os ydych yn fyddar, â nam ar eich clyw neu os oes gennych nam ar eich lleferydd.
+accessibility.pageBody.contact_us.p2 = Gallwn ddarparu dehonglydd Iaith Arwyddion Prydain (BSL), neu gallwch drefnu ymweliad gan ymgynghorydd CThEM i''ch helpu i gwblhau''r gwasanaeth.
+accessibility.pageBody.contact_us.p3 = Gwybodaeth am sut i <a href="https://www.gov.uk/dealing-hmrc-additional-needs">gysylltu â ni</a>.
+accessibility.pageBody.technical_info.h2 = Gwybodaeth dechnegol am hygyrchedd y gwasanaeth hwn
+accessibility.pageBody.technical_info.p1 = Mae CThEM wedi ymrwymo i wneud y gwasanaeth hwn yn hygyrch, yn unol â Rheoliadau Hygyrchedd Cyrff Sector Cyhoeddus (Gwefannau a Chymwysiadau Symudol) (Rhif 2) 2018.
+accessibility.pageBody.technical_info.p2 = Mae''r gwasanaeth hwn yn cydymffurfio''n llawn â <a href="https://www.w3.org/TR/WCAG21/">safon ''AA'' y Canllawiau Hygyrchedd Cynnwys Gwe, fersiwn 2.1</a>.
+accessibility.pageBody.how_we_test.h2 = Sut gwnaethom brofi''r gwasanaeth hwn
+accessibility.pageBody.how_we_test.p1 = Cafodd y gwasanaeth ei brofi diwethaf ar 11 Medi 2019 a gwiriwyd ei fod yn cydymffurfio â safon ''AA'' Canllawiau Hygyrchedd Cynnwys y We, fersiwn 2.1.
+accessibility.pageBody.how_we_test.p2 = Adeiladwyd y gwasanaeth gan ddefnyddio rhannau a brofwyd gan y <a href="http://www.digitalaccessibilitycentre.org/">Ganolfan Hygyrchedd Digidol (Digital Accessibility Centre)</a>. Profwyd y gwasanaeth llawn gan CThEM, ac roedd y gwaith o brofi''r gwasanaeth yn cynnwys defnyddwyr anabl.
+accessibility.pageBody.how_we_test.p3 = Paratowyd y dudalen hon ar 19 Medi 2019. Cafodd ei diweddaru ddiwethaf ar 19 Medi 2019.
+

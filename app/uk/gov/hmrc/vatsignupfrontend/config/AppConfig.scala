@@ -222,4 +222,6 @@ class AppConfig @Inject()(val runModeConfiguration: Configuration, environment: 
   lazy val timeoutLength: String = loadConfig("timeout.length")
 
   lazy val administrativeDivisionList: Set[String] = loadConfig("administrative-divisions").split(",").toSet
+
+  lazy val accessibilityStatementRoute: String = uk.gov.hmrc.vatsignupfrontend.controllers.routes.AccessibilityStatementController.show().url
 }

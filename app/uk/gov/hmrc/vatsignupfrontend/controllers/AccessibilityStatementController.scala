@@ -16,29 +16,21 @@
 
 package uk.gov.hmrc.vatsignupfrontend.controllers
 
-import javax.inject.Inject
-import play.api.Configuration
-import play.api.i18n.MessagesApi
+import javax.inject.{Inject, Singleton}
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisedFunctions}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-
+import uk.gov.hmrc.vatsignupfrontend.config.ControllerComponents
+import uk.gov.hmrc.vatsignupfrontend.config.auth.AdministratorRolePredicate
+import uk.gov.hmrc.vatsignupfrontend.views.html.help.accessibility_statement
 
 import scala.concurrent.Future
 
-class DefaultUserController @Inject()(val config: Configuration,
-                                      val authConnector: AuthConnector,
-                                      implicit val messagesApi: MessagesApi) extends UserController
+@Singleton
+class AccessibilityStatementController @Inject()(val controllerComponents: ControllerComponents)
+  extends AuthenticatedController(AdministratorRolePredicate) {
 
-trait UserController extends FrontendController with AuthorisedFunctions with ImplicitMessages {
-
-
-  implicit val messagesApi: MessagesApi
-
-
-  def viewAccessibility : Action[AnyContent] = Action.async {
+  def show: Action[AnyContent] = Action.async {
     implicit request => {
-      Future.successful(Ok(views.html.help.accessibilityStatement()))
+      Future.successful(Ok(accessibility_statement()))
     }
   }
 }

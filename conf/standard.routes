@@ -3,3 +3,5 @@
 #Language Controller
 GET         /language/:lang                                     uk.gov.hmrc.vatsignupfrontend.controllers.LanguageSwitchController.switchToLanguage(lang: String)
 
+#Accessibility Statement
+GET         /accessibility-statement                            uk.gov.hmrc.vatsignupfrontend.controllers.AccessibilityStatementController.show()
