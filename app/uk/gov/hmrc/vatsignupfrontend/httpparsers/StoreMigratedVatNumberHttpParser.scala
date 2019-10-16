@@ -20,19 +20,15 @@ import play.api.http.Status._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 
-
 object StoreMigratedVatNumberHttpParser {
   type StoreMigratedVatNumberResponse = Either[StoreVatNumberFailure, StoreVatNumberSuccess]
-
 
   implicit object StoreMigratedVatNumberHttpReads extends HttpReads[StoreMigratedVatNumberResponse] {
     override def read(method: String, url: String, response: HttpResponse): StoreMigratedVatNumberResponse = {
 
       response.status match {
-
         case OK => Right(StoreMigratedVatNumberSuccess)
         case FORBIDDEN => Left(StoreMigratedVatNumberFailure)
-
       }
     }
   }
@@ -46,8 +42,3 @@ object StoreMigratedVatNumberHttpParser {
   case object StoreMigratedVatNumberFailure extends StoreVatNumberFailure
 
 }
-
-
-
-
-

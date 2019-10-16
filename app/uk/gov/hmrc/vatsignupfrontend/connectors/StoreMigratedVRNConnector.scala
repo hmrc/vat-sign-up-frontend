@@ -22,7 +22,6 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.httpparsers.StoreVatNumberHttpParser._
-
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -34,5 +33,4 @@ class StoreMigratedVRNConnector @Inject()(val http: HttpClient,
 
   def storeVatNumber(vatNumber: String)(implicit hc: HeaderCarrier): Future[StoreVatNumberResponse] =
     http.POST[JsObject, StoreVatNumberResponse](applicationConfig.storeMigratedVatNumberUrl, Json.obj(vatNumberKey -> vatNumber))
-
 }
