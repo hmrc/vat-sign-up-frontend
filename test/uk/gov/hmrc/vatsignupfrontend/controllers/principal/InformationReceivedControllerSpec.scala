@@ -16,12 +16,14 @@
 
 package uk.gov.hmrc.vatsignupfrontend.controllers.principal
 
+import org.jsoup.Jsoup
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
+import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.ReSignUpJourney
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.models.SoleTrader
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants.testVatNumber
@@ -44,6 +46,21 @@ class InformationReceivedControllerSpec extends UnitSpec with GuiceOneAppPerSuit
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some("text/html")
       charset(result) shouldBe Some("utf-8")
+    }
+  }
+
+  "Calling the show action of the information received controller with the resignup feature switch turned on" should {
+    "show the resignup information received page with the continue button" in {
+      mockAuthAdminRole()
+      enable(ReSignUpJourney)
+      val request = testGetRequest
+
+      val result = TestInformationReceivedController.show(request)
+      status(result) shouldBe Status.OK
+      contentType(result) shouldBe Some("text/html")
+      charset(result) shouldBe Some("utf-8")
+      val doc = Jsoup.parse(contentAsString(result))
+      Some(doc.getElementById("continue-button")).isEmpty shouldBe false
     }
   }
 

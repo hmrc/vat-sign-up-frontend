@@ -21,12 +21,14 @@ import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
 import uk.gov.hmrc.vatsignupfrontend.config.ControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.config.auth.AdministratorRolePredicate
+import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.ReSignUpJourney
 import uk.gov.hmrc.vatsignupfrontend.controllers.AuthenticatedController
-import uk.gov.hmrc.vatsignupfrontend.views.html.principal.information_received
 import uk.gov.hmrc.vatsignupfrontend.models.BusinessEntity
+import uk.gov.hmrc.vatsignupfrontend.utils.SessionUtils._
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.information_received
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.resignup
 
 import scala.concurrent.Future
-import uk.gov.hmrc.vatsignupfrontend.utils.SessionUtils._
 
 @Singleton
 class InformationReceivedController @Inject()(val controllerComponents: ControllerComponents)
@@ -39,9 +41,15 @@ class InformationReceivedController @Inject()(val controllerComponents: Controll
 
       (optVatNumber, optBusinessEntity) match {
         case (Some(vatNumber), Some(businessEntity)) =>
-          Future.successful(
-            Ok(information_received(businessEntity, vatNumber))
-          )
+          if (isEnabled(ReSignUpJourney)) {
+            Future.successful(
+              Ok(resignup.information_received(businessEntity, vatNumber))
+            )
+          } else {
+            Future.successful(
+              Ok(information_received(businessEntity, vatNumber))
+            )
+          }
         case _ =>
           Future.successful(Redirect(routes.CaptureVatNumberController.show))
       }
