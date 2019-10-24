@@ -19,6 +19,7 @@ package uk.gov.hmrc.vatsignupfrontend.controllers.principal
 import java.time.LocalDate
 
 import play.api.http.Status._
+import play.api.libs.json.Json
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys._
 import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.ReSignUpJourney
 import uk.gov.hmrc.vatsignupfrontend.forms.MultipleVatCheckForm
@@ -29,7 +30,6 @@ import uk.gov.hmrc.vatsignupfrontend.helpers.servicemocks.ClaimSubscriptionStub.
 import uk.gov.hmrc.vatsignupfrontend.helpers.servicemocks.StoreVatNumberStub._
 import uk.gov.hmrc.vatsignupfrontend.helpers.servicemocks.VatNumberEligibilityStub._
 import uk.gov.hmrc.vatsignupfrontend.helpers.{ComponentSpecBase, CustomMatchers, SessionCookieCrumbler}
-import uk.gov.hmrc.vatsignupfrontend.httpparsers.VatNumberEligibilityHttpParser._
 import uk.gov.hmrc.vatsignupfrontend.models.MigratableDates
 
 class MultipleVatCheckControllerISpec extends ComponentSpecBase with CustomMatchers {
@@ -66,8 +66,8 @@ class MultipleVatCheckControllerISpec extends ComponentSpecBase with CustomMatch
         "form value is NO and the VRN is migrated" in {
           enable(ReSignUpJourney)
           stubAuth(OK, successfulAuthResponse(vatDecEnrolment))
-          stubMigratedVatNumberEligibilitySuccess(testVatNumber)(EligibleValue, None, Some(Eligible(isOverseas = false, isMigrated = true)))
-          stubStoreMigratedVatNumberSuccess
+          stubVatNumberEligibility(testVatNumber)(status = OK, optEligibilityResponse = Some(Migrated))
+          stubStoreMigratedVatNumber(testVatNumber)(status = OK)
 
           val res = post("/more-than-one-vat-business")(MultipleVatCheckForm.yesNo -> YesNoMapping.option_no)
 
@@ -85,8 +85,8 @@ class MultipleVatCheckControllerISpec extends ComponentSpecBase with CustomMatch
         "form value is NO and the VRN is not migrated and does not have direct debit when there is only vat dec enrolment" in {
           enable(ReSignUpJourney)
           stubAuth(OK, successfulAuthResponse(vatDecEnrolment))
-          stubMigratedVatNumberEligibilitySuccess(testVatNumber)(EligibleValue, None, Some(Eligible(isOverseas = false, isMigrated = false)))
-          stubStoreVatNumberSuccess(isFromBta = false, isDirectDebit = false)
+          stubVatNumberEligibility(testVatNumber)(status = OK, optEligibilityResponse = Some(Migrated))
+          stubStoreMigratedVatNumber(testVatNumber)(status = OK)
 
           val res = post("/more-than-one-vat-business")(MultipleVatCheckForm.yesNo -> YesNoMapping.option_no)
 
@@ -96,7 +96,7 @@ class MultipleVatCheckControllerISpec extends ComponentSpecBase with CustomMatch
           )
 
           val session = SessionCookieCrumbler.getSessionMap(res)
-          session.get(hasDirectDebitKey) shouldBe Some("false")
+          session.get(hasDirectDebitKey) shouldBe None
         }
       }
 
@@ -104,8 +104,8 @@ class MultipleVatCheckControllerISpec extends ComponentSpecBase with CustomMatch
         "form value is NO and the VRN is not migrated and does not have direct debit when there is only mtd vat enrolment" in {
           enable(ReSignUpJourney)
           stubAuth(OK, successfulAuthResponse(mtdVatEnrolment))
-          stubMigratedVatNumberEligibilitySuccess(testVatNumber)(EligibleValue, None, Some(Eligible(isOverseas = false, isMigrated = false)))
-          stubStoreVatNumberSuccess(isFromBta = false, isDirectDebit = false)
+          stubVatNumberEligibility(testVatNumber)(status = OK, optEligibilityResponse = Some(Migrated))
+          stubStoreMigratedVatNumber(testVatNumber)(status = OK)
 
           val res = post("/more-than-one-vat-business")(MultipleVatCheckForm.yesNo -> YesNoMapping.option_no)
 
@@ -115,7 +115,7 @@ class MultipleVatCheckControllerISpec extends ComponentSpecBase with CustomMatch
           )
 
           val session = SessionCookieCrumbler.getSessionMap(res)
-          session.get(hasDirectDebitKey) shouldBe Some("false")
+          session.get(hasDirectDebitKey) shouldBe None
         }
       }
 
@@ -123,8 +123,8 @@ class MultipleVatCheckControllerISpec extends ComponentSpecBase with CustomMatch
         "form value is NO and the VRN is not migrated and does not have direct debit when both enrolments exist" in {
           enable(ReSignUpJourney)
           stubAuth(OK, successfulAuthResponse(vatDecEnrolment, mtdVatEnrolment))
-          stubMigratedVatNumberEligibilitySuccess(testVatNumber)(EligibleValue, None, Some(Eligible(isOverseas = false, isMigrated = false)))
-          stubStoreVatNumberSuccess(isFromBta = false, isDirectDebit = false)
+          stubVatNumberEligibility(testVatNumber)(status = OK, optEligibilityResponse = Some(Migrated))
+          stubStoreMigratedVatNumber(testVatNumber)(status = OK)
 
           val res = post("/more-than-one-vat-business")(MultipleVatCheckForm.yesNo -> YesNoMapping.option_no)
 
@@ -134,7 +134,7 @@ class MultipleVatCheckControllerISpec extends ComponentSpecBase with CustomMatch
           )
 
           val session = SessionCookieCrumbler.getSessionMap(res)
-          session.get(hasDirectDebitKey) shouldBe Some("false")
+          session.get(hasDirectDebitKey) shouldBe None
         }
       }
 
@@ -142,7 +142,7 @@ class MultipleVatCheckControllerISpec extends ComponentSpecBase with CustomMatch
         "form value is NO and the VRN is not migrated and is overseas" in {
           enable(ReSignUpJourney)
           stubAuth(OK, successfulAuthResponse(vatDecEnrolment))
-          stubMigratedVatNumberEligibilitySuccess(testVatNumber)(EligibleValue, None, Some(Eligible(isOverseas = true, isMigrated = false)))
+          stubVatNumberEligibility(testVatNumber)(status = OK, optEligibilityResponse = Some(Overseas))
           stubStoreVatNumberSuccess(isFromBta = false, isOverseasTrader = true)
 
           val res = post("/more-than-one-vat-business")(MultipleVatCheckForm.yesNo -> YesNoMapping.option_no)
@@ -154,13 +154,26 @@ class MultipleVatCheckControllerISpec extends ComponentSpecBase with CustomMatch
         }
       }
 
-      "return a redirect to migratable dates page" when {
+      "return a redirect to sign up after this date page" when {
         "form value is NO and the VRN is inhibited" in {
           enable(ReSignUpJourney)
           stubAuth(OK, successfulAuthResponse(vatDecEnrolment))
-          stubMigratedVatNumberEligibilitySuccess(testVatNumber)(
-            InhibitedValue, Some(MigratableDates(Some(testStartDate), Some(testEndDate))), None
+          stubVatNumberEligibility(testVatNumber)(status = OK, optEligibilityResponse = Some(Inhibited(MigratableDates(Some(testStartDate)))))
+
+          val res = post("/more-than-one-vat-business")(MultipleVatCheckForm.yesNo -> YesNoMapping.option_no)
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectUri(routes.MigratableDatesController.show().url)
           )
+        }
+      }
+
+      "return a redirect to sign up between these dates page" when {
+        "form value is NO and the VRN is inhibited" in {
+          enable(ReSignUpJourney)
+          stubAuth(OK, successfulAuthResponse(vatDecEnrolment))
+          stubVatNumberEligibility(testVatNumber)(status = OK, optEligibilityResponse = Some(Inhibited(MigratableDates(Some(testStartDate), Some(testEndDate)))))
 
           val res = post("/more-than-one-vat-business")(MultipleVatCheckForm.yesNo -> YesNoMapping.option_no)
 
@@ -175,7 +188,7 @@ class MultipleVatCheckControllerISpec extends ComponentSpecBase with CustomMatch
         "form value is NO and the VRN is ineligible" in {
           enable(ReSignUpJourney)
           stubAuth(OK, successfulAuthResponse(vatDecEnrolment))
-          stubMigratedVatNumberEligibilitySuccess(testVatNumber)(IneligibleValue, None, None)
+          stubVatNumberEligibility(testVatNumber)(status = OK, optEligibilityResponse = Some(Ineligible))
 
           val res = post("/more-than-one-vat-business")(MultipleVatCheckForm.yesNo -> YesNoMapping.option_no)
 
@@ -190,7 +203,7 @@ class MultipleVatCheckControllerISpec extends ComponentSpecBase with CustomMatch
         "form value is NO and the VRN is currently being migrated" in {
           enable(ReSignUpJourney)
           stubAuth(OK, successfulAuthResponse(vatDecEnrolment))
-          stubMigratedVatNumberEligibilitySuccess(testVatNumber)(MigrationInProgressValue, None, None)
+          stubVatNumberEligibility(testVatNumber)(status = OK, optEligibilityResponse = Some(MigrationInProgress))
 
           val res = post("/more-than-one-vat-business")(MultipleVatCheckForm.yesNo -> YesNoMapping.option_no)
 
@@ -205,7 +218,7 @@ class MultipleVatCheckControllerISpec extends ComponentSpecBase with CustomMatch
         "form value is NO and the vrn is already subscribed with the subscription successfully claimed" in {
           enable(ReSignUpJourney)
           stubAuth(OK, successfulAuthResponse(vatDecEnrolment))
-          stubMigratedVatNumberEligibilitySuccess(testVatNumber)(AlreadySubscribedValue, None, None)
+          stubVatNumberEligibility(testVatNumber)(status = OK, optEligibilityResponse = Some(AlreadySubscribed))
           stubClaimSubscription(testVatNumber, isFromBta = false)(NO_CONTENT)
 
           val res = post("/more-than-one-vat-business")(MultipleVatCheckForm.yesNo -> YesNoMapping.option_no)
@@ -221,7 +234,7 @@ class MultipleVatCheckControllerISpec extends ComponentSpecBase with CustomMatch
         "form value is NO and the vrn is already enrolled on a different cred" in {
           enable(ReSignUpJourney)
           stubAuth(OK, successfulAuthResponse(vatDecEnrolment))
-          stubMigratedVatNumberEligibilitySuccess(testVatNumber)(AlreadySubscribedValue, None, None)
+          stubVatNumberEligibility(testVatNumber)(status = OK, optEligibilityResponse = Some(AlreadySubscribed))
           stubClaimSubscription(testVatNumber, isFromBta = false)(CONFLICT)
 
           val res = post("/more-than-one-vat-business")(MultipleVatCheckForm.yesNo -> YesNoMapping.option_no)

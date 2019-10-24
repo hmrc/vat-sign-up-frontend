@@ -30,9 +30,9 @@ object StoreVatNumberStub extends WireMockMethods {
       "isFromBta" -> isFromBta
     )
 
-  def stubStoreMigratedVatNumberSuccess: Unit = {
-    when(method = POST, uri = "/vat-sign-up/subscription-request/migrated-vat-number", Json.obj("vatNumber" -> testVatNumber))
-      .thenReturn(status = OK)
+  def stubStoreMigratedVatNumber(vatNumber: String)(status: Int): Unit = {
+    when(method = POST, uri = "/vat-sign-up/subscription-request/migrated-vat-number", Json.obj("vatNumber" -> vatNumber))
+      .thenReturn(status)
   }
 
   def stubStoreVatNumberSuccess(isFromBta: Boolean, isOverseasTrader: Boolean = false, isDirectDebit: Boolean = false): Unit = {

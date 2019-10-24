@@ -19,125 +19,148 @@ package uk.gov.hmrc.vatsignupfrontend.controllers.principal
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.{Action, AnyContent, Request, Result}
 import uk.gov.hmrc.auth.core.retrieve.Retrievals
-import uk.gov.hmrc.http.InternalServerException
-import uk.gov.hmrc.vatsignupfrontend.SessionKeys
+import uk.gov.hmrc.http.{HeaderCarrier, InternalServerException}
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys._
 import uk.gov.hmrc.vatsignupfrontend.config.ControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.config.auth.AdministratorRolePredicate
+import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.ReSignUpJourney
 import uk.gov.hmrc.vatsignupfrontend.controllers.AuthenticatedController
 import uk.gov.hmrc.vatsignupfrontend.forms.VatNumberForm._
-import uk.gov.hmrc.vatsignupfrontend.httpparsers.VatNumberEligibilityPreMigrationHttpParser
-import uk.gov.hmrc.vatsignupfrontend.httpparsers.VatNumberEligibilityPreMigrationHttpParser._
-import uk.gov.hmrc.vatsignupfrontend.models.{BusinessEntity, MigratableDates, Overseas}
-import uk.gov.hmrc.vatsignupfrontend.services.StoreVatNumberService._
-import uk.gov.hmrc.vatsignupfrontend.services.{StoreVatNumberService, VatNumberEligibilityPreMigrationService}
+import uk.gov.hmrc.vatsignupfrontend.models.Overseas
+import uk.gov.hmrc.vatsignupfrontend.services.VatNumberOrchestrationService
+import uk.gov.hmrc.vatsignupfrontend.services.VatNumberOrchestrationService._
 import uk.gov.hmrc.vatsignupfrontend.utils.EnrolmentUtils._
-import uk.gov.hmrc.vatsignupfrontend.utils.SessionUtils.ResultUtils
+import uk.gov.hmrc.vatsignupfrontend.utils.SessionUtils._
 import uk.gov.hmrc.vatsignupfrontend.utils.VatNumberChecksumValidation
 import uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_vat_number
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CaptureVatNumberController @Inject()(val controllerComponents: ControllerComponents,
-                                           vatNumberEligibilityService: VatNumberEligibilityPreMigrationService,
-                                           storeVatNumberService: StoreVatNumberService)
-  extends AuthenticatedController(AdministratorRolePredicate) {
+                                           vatNumberOrchestrationService: VatNumberOrchestrationService
+                                          )(implicit ec: ExecutionContext) extends AuthenticatedController(AdministratorRolePredicate) {
 
   private val validateVatNumberForm = vatNumberForm(isAgent = false)
 
-  def show: Action[AnyContent] = Action.async { implicit request =>
-    authorised() {
-      Future.successful(Ok(capture_vat_number(validateVatNumberForm.form, routes.CaptureVatNumberController.submit())))
-    }
+  def show: Action[AnyContent] = Action.async {
+    implicit request =>
+      authorised() {
+        Future.successful(Ok(capture_vat_number(validateVatNumberForm.form, routes.CaptureVatNumberController.submit())))
+      }
   }
 
   def submit: Action[AnyContent] = Action.async { implicit request =>
     authorised()(Retrievals.allEnrolments) { enrolments =>
       validateVatNumberForm.bindFromRequest.fold(
-        { formWithErrors =>
-          Future.successful(BadRequest(capture_vat_number(formWithErrors, routes.CaptureVatNumberController.submit())))
-        },
-        { formVatNumber =>
-          if (VatNumberChecksumValidation.isValidChecksum(formVatNumber)) {
-            enrolments.mtdVatNumber match {
-              case Some(mtdVatNumber) if mtdVatNumber == formVatNumber =>
-                Future.successful(Redirect(routes.AlreadySignedUpController.show()))
+        formWithErrors =>
+          Future.successful(
+            BadRequest(capture_vat_number(formWithErrors, routes.CaptureVatNumberController.submit()))
+          ),
+        formVatNumber => {
+          val isValidFormVatNumber = VatNumberChecksumValidation.isValidChecksum(formVatNumber)
+
+          if (isValidFormVatNumber && isEnabled(ReSignUpJourney))
+            enrolments.getAnyVatNumber match {
+              case Some(vrn) if vrn == formVatNumber =>
+                storeVatNumber(formVatNumber)
               case Some(_) =>
-                Future.successful(Redirect(routes.CannotSignUpAnotherAccountController.show()))
+                Future.successful(Redirect(routes.IncorrectEnrolmentVatNumberController.show()))
               case None =>
-                enrolments.vatNumber match {
-                  case Some(enrolmentVatNumber) if enrolmentVatNumber == formVatNumber =>
-                    storeVatNumber(formVatNumber)
-                  case Some(_) =>
-                    Future.successful(Redirect(routes.IncorrectEnrolmentVatNumberController.show()))
-                  case _ =>
-                    checkVrnEligibility(formVatNumber) map {
-                      _.removingFromSession(
-                        vatRegistrationDateKey,
-                        businessPostCodeKey,
-                        previousVatReturnKey,
-                        lastReturnMonthPeriodKey,
-                        box5FigureKey
-                      )
-                    }
-                }
+                checkVatNumberEligibility(formVatNumber)
             }
-          }
-          else Future.successful(Redirect(routes.InvalidVatNumberController.show()))
+          else if (isValidFormVatNumber)
+            (enrolments.mtdVatNumber, enrolments.vatNumber) match {
+              case (Some(mtdVrn), _) if mtdVrn == formVatNumber =>
+                Future.successful(Redirect(routes.AlreadySignedUpController.show()))
+              case (Some(_), _) =>
+                Future.successful(Redirect(routes.CannotSignUpAnotherAccountController.show()))
+              case (_, Some(legacyVrn)) if legacyVrn == formVatNumber =>
+                storeVatNumber(legacyVrn)
+              case (_, Some(_)) =>
+                Future.successful(Redirect(routes.IncorrectEnrolmentVatNumberController.show()))
+              case (None, None) =>
+                checkVatNumberEligibility(formVatNumber)
+            }
+          else
+            Future.successful(Redirect(routes.InvalidVatNumberController.show()))
         }
       )
     }
   }
 
-  private def checkVrnEligibility(formVatNumber: String)(implicit request: Request[AnyContent]): Future[Result] = {
-    vatNumberEligibilityService.checkVatNumberEligibility(formVatNumber) map {
-      case Right(success) if success.isOverseas =>
+  private def checkVatNumberEligibility(vatNumber: String)(implicit hc: HeaderCarrier, request: Request[_]): Future[Result] = {
+    vatNumberOrchestrationService.checkVatNumberEligibility(vatNumber).map {
+      case Eligible(isOverseas, isMigrated) if isMigrated =>
         Redirect(routes.CaptureVatRegistrationDateController.show())
-          .addingToSession(vatNumberKey -> formVatNumber)
+          .addingToSession(vatNumberKey -> vatNumber)
+          .addingToSession(isMigratedKey, isMigrated)
+      case Eligible(isOverseas, isMigrated) if isOverseas =>
+        Redirect(routes.CaptureVatRegistrationDateController.show())
+          .addingToSession(vatNumberKey -> vatNumber)
           .addingToSession(businessEntityKey -> Overseas.toString)
-      case Right(_) =>
+      case Eligible(_, _) =>
         Redirect(routes.CaptureVatRegistrationDateController.show())
-          .addingToSession(vatNumberKey -> formVatNumber)
+          .addingToSession(vatNumberKey -> vatNumber)
           .removingFromSession(businessEntityKey)
-      case Left(IneligibleForMtdVatNumber(MigratableDates(None, None))) =>
+      case Ineligible =>
         Redirect(routes.CannotUseServiceController.show())
           .removingFromSession(businessEntityKey)
-      case Left(IneligibleForMtdVatNumber(migratableDates)) =>
+      case Inhibited(migratablDates) =>
         Redirect(routes.MigratableDatesController.show())
-          .addingToSession(SessionKeys.migratableDatesKey, migratableDates)
+          .addingToSession(migratableDatesKey, migratablDates)
           .removingFromSession(businessEntityKey)
-      case Left(VatNumberEligibilityPreMigrationHttpParser.InvalidVatNumber) =>
+      case MigrationInProgress =>
+        throw new InternalServerException("Migration In Progress should not be returned when the feature switch is enabled")
+      case AlreadySubscribed =>
+        throw new InternalServerException("Already Subscribed should not be returned when the feature switch is enabled")
+      case InvalidVatNumber =>
         Redirect(routes.InvalidVatNumberController.show())
           .removingFromSession(businessEntityKey)
-      case Left(VatNumberEligibilityFailureResponse(status)) =>
-        throw new InternalServerException(s"Failure retrieving eligibility of vat number: status=$status")
+    }.map {
+      _.removingFromSession(
+        vatRegistrationDateKey,
+        businessPostCodeKey,
+        previousVatReturnKey,
+        lastReturnMonthPeriodKey,
+        box5FigureKey
+      )
     }
   }
 
-  private def storeVatNumber(formVatNumber: String)(implicit request: Request[AnyContent]): Future[Result] = {
-    storeVatNumberService.storeVatNumber(formVatNumber, isFromBta = false) map {
-      case Right(VatNumberStored(isOverseas, isDirectDebit)) if isOverseas =>
-        Redirect(routes.OverseasResolverController.resolve())
-          .addingToSession(vatNumberKey -> formVatNumber)
-          .addingToSession(SessionKeys.hasDirectDebitKey, isDirectDebit)
-      case Right(VatNumberStored(_, isDirectDebit)) =>
-        Redirect(routes.CaptureBusinessEntityController.show())
-          .addingToSession(SessionKeys.vatNumberKey -> formVatNumber)
-          .addingToSession(SessionKeys.hasDirectDebitKey, isDirectDebit)
-      case Right(SubscriptionClaimed) =>
-        Redirect(routes.SignUpCompleteClientController.show())
-      case Left(IneligibleVatNumber(MigratableDates(None, None))) =>
-        Redirect(routes.CannotUseServiceController.show())
-      case Left(IneligibleVatNumber(migratableDates)) =>
-        Redirect(routes.MigratableDatesController.show())
-          .addingToSession(SessionKeys.migratableDatesKey, migratableDates)
-      case Left(VatMigrationInProgress) =>
-        Redirect(routes.MigrationInProgressErrorController.show())
-      case Left(VatNumberAlreadyEnrolled) =>
-        Redirect(bta.routes.BusinessAlreadySignedUpController.show())
-      case Left(_) =>
-        throw new InternalServerException("storeVatNumber failed")
+  private def storeVatNumber(vatNumber: String)(implicit request: Request[_]): Future[Result] = {
+    vatNumberOrchestrationService.storeVatNumber(vatNumber, isFromBta = false).flatMap {
+      case MigratedVatNumberStored =>
+        Future.successful(
+          Redirect(routes.CaptureBusinessEntityController.show())
+            .addingToSession(vatNumberKey -> vatNumber)
+            .addingToSession(isMigratedKey, true)
+        )
+      case NonMigratedVatNumberStored(isOverseas, hasDirectDebit) if isOverseas =>
+        Future.successful(
+          Redirect(routes.OverseasResolverController.resolve())
+            .addingToSession(vatNumberKey -> vatNumber)
+            .addingToSession(hasDirectDebitKey, hasDirectDebit)
+        )
+      case NonMigratedVatNumberStored(_, hasDirectDebit) =>
+        Future.successful(
+          Redirect(routes.CaptureBusinessEntityController.show())
+            .addingToSession(vatNumberKey -> vatNumber)
+            .addingToSession(hasDirectDebitKey, hasDirectDebit)
+        )
+      case ClaimedSubscription =>
+        Future.successful(Redirect(routes.SignUpCompleteClientController.show()))
+      case Ineligible =>
+        Future.successful(Redirect(routes.CannotUseServiceController.show()))
+      case Inhibited(migratableDates) =>
+        Future.successful(
+          Redirect(routes.MigratableDatesController.show())
+            .addingToSession(migratableDatesKey, migratableDates)
+        )
+      case MigrationInProgress =>
+        Future.successful(Redirect(routes.MigrationInProgressErrorController.show()))
+      case AlreadyEnrolledOnDifferentCredential =>
+        Future.successful(Redirect(bta.routes.BusinessAlreadySignedUpController.show()))
     }
   }
 }
