@@ -23,23 +23,23 @@ import uk.gov.hmrc.vatsignupfrontend.helpers.{ComponentSpecBase, CustomMatchers}
 
 class CouldNotConfirmLimitedPartnershipControllerISpec extends ComponentSpecBase with CustomMatchers {
 
-  "GET /error/could-not-confirm-limited-partnership" should {
+  "GET /could-not-confirm-limited-partnership" should {
     "return an OK" in {
 
       stubAuth(OK, successfulAuthResponse())
 
-      val res = get("/error/could-not-confirm-limited-partnership")
+      val res = get("/could-not-confirm-limited-partnership")
 
       res should have(httpStatus(OK))
     }
   }
 
-  "POST /error/could-not-confirm-limited-partnership" should {
+  "POST /could-not-confirm-limited-partnership" should {
     "redirect to the capture company number page" in {
 
       stubAuth(OK, successfulAuthResponse())
 
-      val res = post("/error/could-not-confirm-limited-partnership")()
+      val res = post("/could-not-confirm-limited-partnership")()
 
       res should have
       (httpStatus(SEE_OTHER),

@@ -27,12 +27,12 @@ GET         /interruption/not-got-software                      uk.gov.hmrc.vats
 GET         /error/return-due                                   uk.gov.hmrc.vatsignupfrontend.controllers.principal.eligibility.ReturnDueController.show
 
 # Verify Software Error page
-GET         /error/verify-software                              uk.gov.hmrc.vatsignupfrontend.controllers.principal.VerifySoftwareErrorController.show
-POST        /error/verify-software                              uk.gov.hmrc.vatsignupfrontend.controllers.principal.VerifySoftwareErrorController.submit
+GET         /verify-software                              uk.gov.hmrc.vatsignupfrontend.controllers.principal.VerifySoftwareErrorController.show
+POST        /verify-software                              uk.gov.hmrc.vatsignupfrontend.controllers.principal.VerifySoftwareErrorController.submit
 
 # Choose Software Error page
-GET         /error/choose-software                              uk.gov.hmrc.vatsignupfrontend.controllers.principal.ChooseSoftwareErrorController.show
-POST        /error/choose-software                              uk.gov.hmrc.vatsignupfrontend.controllers.principal.ChooseSoftwareErrorController.submit
+GET         /choose-software                              uk.gov.hmrc.vatsignupfrontend.controllers.principal.ChooseSoftwareErrorController.show
+POST        /choose-software                              uk.gov.hmrc.vatsignupfrontend.controllers.principal.ChooseSoftwareErrorController.submit
 
 # Resolve Vat Number
 GET         /resolve-vat-number                                 uk.gov.hmrc.vatsignupfrontend.controllers.principal.ResolveVatNumberController.resolve
@@ -85,8 +85,8 @@ GET         /confirm-company                                    uk.gov.hmrc.vats
 POST        /confirm-company                                    uk.gov.hmrc.vatsignupfrontend.controllers.principal.ConfirmCompanyController.submit
 
 # Dissolved Company
-GET         /error/dissolved-company                                  uk.gov.hmrc.vatsignupfrontend.controllers.principal.DissolvedCompanyController.show
-POST        /error/dissolved-company                                  uk.gov.hmrc.vatsignupfrontend.controllers.principal.DissolvedCompanyController.submit
+GET         /dissolved-company                                  uk.gov.hmrc.vatsignupfrontend.controllers.principal.DissolvedCompanyController.show
+POST        /dissolved-company                                  uk.gov.hmrc.vatsignupfrontend.controllers.principal.DissolvedCompanyController.submit
 
 # Confirm Registered Society name
 GET         /confirm-registered-society                         uk.gov.hmrc.vatsignupfrontend.controllers.principal.ConfirmRegisteredSocietyController.show
@@ -139,11 +139,11 @@ GET         /vat-could-not-confirm-business                     uk.gov.hmrc.vats
 POST        /vat-could-not-confirm-business                     uk.gov.hmrc.vatsignupfrontend.controllers.principal.VatCouldNotConfirmBusinessController.submit
 
 # Partnership as company error
-GET         /error/company-number-incorrect                     uk.gov.hmrc.vatsignupfrontend.controllers.principal.PartnershipAsCompanyErrorController.show
-POST        /error/company-number-incorrect                     uk.gov.hmrc.vatsignupfrontend.controllers.principal.PartnershipAsCompanyErrorController.submit
+GET         /company-number-incorrect                     uk.gov.hmrc.vatsignupfrontend.controllers.principal.PartnershipAsCompanyErrorController.show
+POST        /company-number-incorrect                     uk.gov.hmrc.vatsignupfrontend.controllers.principal.PartnershipAsCompanyErrorController.submit
 
 # Incorrect Enrolment Vat Number
-GET         /error/sign-in-with-different-details               uk.gov.hmrc.vatsignupfrontend.controllers.principal.IncorrectEnrolmentVatNumberController.show
+GET         /sign-in-with-different-details               uk.gov.hmrc.vatsignupfrontend.controllers.principal.IncorrectEnrolmentVatNumberController.show
 
 # Capture National Insurance Number (NINO)
 GET         /national-insurance-number                          uk.gov.hmrc.vatsignupfrontend.controllers.principal.soletrader.CaptureNinoController.show
@@ -197,7 +197,7 @@ GET         /confirm-partnership                                uk.gov.hmrc.vats
 POST        /confirm-partnership                                uk.gov.hmrc.vatsignupfrontend.controllers.principal.partnerships.ConfirmLimitedPartnershipController.submit
 
 # Sign up later
-GET         /error/sign-up-later                                uk.gov.hmrc.vatsignupfrontend.controllers.principal.MigratableDatesController.show
+GET         /sign-up-later                                uk.gov.hmrc.vatsignupfrontend.controllers.principal.MigratableDatesController.show
 
 # Capture Partnership Company Number
 GET         /partnership-company-number                         uk.gov.hmrc.vatsignupfrontend.controllers.principal.partnerships.CapturePartnershipCompanyNumberController.show
@@ -225,8 +225,8 @@ GET         /could-not-confirm-partnership-company              uk.gov.hmrc.vats
 POST        /could-not-confirm-partnership-company              uk.gov.hmrc.vatsignupfrontend.controllers.principal.partnerships.CouldNotConfirmCompanyController.submit
 
 # Could not confirm business
-GET         /error/could-not-confirm-limited-partnership        uk.gov.hmrc.vatsignupfrontend.controllers.principal.partnerships.CouldNotConfirmLimitedPartnershipController.show
-POST        /error/could-not-confirm-limited-partnership        uk.gov.hmrc.vatsignupfrontend.controllers.principal.partnerships.CouldNotConfirmLimitedPartnershipController.submit
+GET         /could-not-confirm-limited-partnership        uk.gov.hmrc.vatsignupfrontend.controllers.principal.partnerships.CouldNotConfirmLimitedPartnershipController.show
+POST        /could-not-confirm-limited-partnership        uk.gov.hmrc.vatsignupfrontend.controllers.principal.partnerships.CouldNotConfirmLimitedPartnershipController.submit
 
 # Could not confirm partnership known facts
 GET         /could-not-confirm-partnership                      uk.gov.hmrc.vatsignupfrontend.controllers.principal.partnerships.CouldNotConfirmKnownFactsController.show
@@ -269,7 +269,7 @@ GET         /charity-resolver                                   uk.gov.hmrc.vats
 GET         /government-organisation-resolver                   uk.gov.hmrc.vatsignupfrontend.controllers.principal.GovernmentOrganisationResolverController.resolve
 
 # Migration In Progress error page
-GET         /error/sign-up-in-progress                          uk.gov.hmrc.vatsignupfrontend.controllers.principal.MigrationInProgressErrorController.show
+GET         /sign-up-in-progress                          uk.gov.hmrc.vatsignupfrontend.controllers.principal.MigrationInProgressErrorController.show
 
 # Capture Registered Society Company Utr
 GET         /registered-society-utr                             uk.gov.hmrc.vatsignupfrontend.controllers.principal.CaptureRegisteredSocietyUtrController.show
@@ -280,14 +280,14 @@ GET         /check-your-answers-registered-society              uk.gov.hmrc.vats
 POST        /check-your-answers-registered-society              uk.gov.hmrc.vatsignupfrontend.controllers.principal.RegisteredSocietyCheckYourAnswersController.submit
 
 # Business Already Signed Up page
-GET         /error/business-already-signed-up                   uk.gov.hmrc.vatsignupfrontend.controllers.principal.bta.BusinessAlreadySignedUpController.show
-POST        /error/business-already-signed-up                   uk.gov.hmrc.vatsignupfrontend.controllers.principal.bta.BusinessAlreadySignedUpController.submit
+GET         /business-already-signed-up                   uk.gov.hmrc.vatsignupfrontend.controllers.principal.bta.BusinessAlreadySignedUpController.show
+POST        /business-already-signed-up                   uk.gov.hmrc.vatsignupfrontend.controllers.principal.bta.BusinessAlreadySignedUpController.submit
 
 # Principal Already Signed Up page
-GET         /error/already-signed-up                            uk.gov.hmrc.vatsignupfrontend.controllers.principal.AlreadySignedUpController.show
+GET         /already-signed-up                            uk.gov.hmrc.vatsignupfrontend.controllers.principal.AlreadySignedUpController.show
 
 # Principal Cannot Sign Up Another Account
-GET         /error/cannot-sign-up-another-account               uk.gov.hmrc.vatsignupfrontend.controllers.principal.CannotSignUpAnotherAccountController.show
+GET         /cannot-sign-up-another-account               uk.gov.hmrc.vatsignupfrontend.controllers.principal.CannotSignUpAnotherAccountController.show
 
 # Are you currently submitting VAT returns page
 GET         /submitted-vat-return                               uk.gov.hmrc.vatsignupfrontend.controllers.principal.PreviousVatReturnController.show

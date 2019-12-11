@@ -28,10 +28,10 @@ class ChooseSoftwareErrorControllerSpec extends UnitSpec with GuiceOneAppPerSuit
 
   object TestChooseSoftwareErrorController extends ChooseSoftwareErrorController(mockControllerComponents)
 
-  lazy val testGetRequest = FakeRequest("GET", "/error/choose-software")
+  lazy val testGetRequest = FakeRequest("GET", "/choose-software")
 
   lazy val testPostRequest: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest("POST", "/error/choose-software")
+    FakeRequest("POST", "/choose-software")
 
   "Calling the show action of the ChooseSoftwareError controller" should {
     "show the ChooseSoftwareError page" in {

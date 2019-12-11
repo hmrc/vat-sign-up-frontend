@@ -28,10 +28,10 @@ class VerifySoftwareErrorControllerSpec extends UnitSpec with GuiceOneAppPerSuit
 
   object TestVerifySoftwareErrorController extends VerifySoftwareErrorController(mockControllerComponents)
 
-  lazy val testGetRequest = FakeRequest("GET", "/error/verify-software")
+  lazy val testGetRequest = FakeRequest("GET", "/verify-software")
 
   lazy val testPostRequest: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest("POST", "/error/verify-software")
+    FakeRequest("POST", "/verify-software")
 
   "Calling the show action of the VerifySoftwareError controller" should {
     "show the VerifySoftwareError page" in {

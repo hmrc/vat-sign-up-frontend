@@ -38,8 +38,8 @@ GET         /company-number                                     uk.gov.hmrc.vats
 POST        /company-number                                     uk.gov.hmrc.vatsignupfrontend.controllers.agent.CaptureCompanyNumberController.submit
 
 # Dissolved Company
-GET         /error/dissolved-company                            uk.gov.hmrc.vatsignupfrontend.controllers.agent.DissolvedCompanyController.show
-POST        /error/dissolved-company                            uk.gov.hmrc.vatsignupfrontend.controllers.agent.DissolvedCompanyController.submit
+GET         /dissolved-company                            uk.gov.hmrc.vatsignupfrontend.controllers.agent.DissolvedCompanyController.show
+POST        /dissolved-company                            uk.gov.hmrc.vatsignupfrontend.controllers.agent.DissolvedCompanyController.submit
 
 # Confirm Company name
 GET         /confirm-company                                    uk.gov.hmrc.vatsignupfrontend.controllers.agent.ConfirmCompanyController.show
@@ -110,7 +110,7 @@ GET         /sign-up-complete                                   uk.gov.hmrc.vats
 POST        /information-received                               uk.gov.hmrc.vatsignupfrontend.controllers.agent.SignUpAnotherClientController.submit
 
 # Sign up later
-GET         /error/sign-up-later                                uk.gov.hmrc.vatsignupfrontend.controllers.agent.MigratableDatesController.show
+GET         /sign-up-later                                uk.gov.hmrc.vatsignupfrontend.controllers.agent.MigratableDatesController.show
 
 # Partnership UTR
 GET         /partnership-utr                                    uk.gov.hmrc.vatsignupfrontend.controllers.agent.partnerships.CapturePartnershipUtrController.show
@@ -171,7 +171,7 @@ GET         /registered-society-company-name-not-found          uk.gov.hmrc.vats
 POST        /registered-society-company-name-not-found          uk.gov.hmrc.vatsignupfrontend.controllers.agent.RegisteredSocietyCompanyNameNotFoundController.submit
 
 # Migration In Progress error page
-GET         /error/sign-up-in-progress                          uk.gov.hmrc.vatsignupfrontend.controllers.agent.MigrationInProgressErrorController.show
+GET         /sign-up-in-progress                          uk.gov.hmrc.vatsignupfrontend.controllers.agent.MigrationInProgressErrorController.show
 
 # Client Contact Preferences
 GET         /receive-email-notifications                        uk.gov.hmrc.vatsignupfrontend.controllers.agent.ContactPreferenceController.show

@@ -31,7 +31,7 @@ class PartnershipAsCompanyErrorControllerSpec extends UnitSpec with GuiceOneAppP
     "show the Partnership As Controller Error page" in {
       mockAuthAdminRole()
 
-      val result = TestPartnershipAsCompanyErrorController.show(FakeRequest("GET", "/error/company-number-incorrect"))
+      val result = TestPartnershipAsCompanyErrorController.show(FakeRequest("GET", "/company-number-incorrect"))
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some("text/html")
       charset(result) shouldBe Some("utf-8")
@@ -42,7 +42,7 @@ class PartnershipAsCompanyErrorControllerSpec extends UnitSpec with GuiceOneAppP
     "redirect to the Capture Business Entity page" in {
       mockAuthAdminRole()
 
-      val result = TestPartnershipAsCompanyErrorController.submit(FakeRequest("POST", "/error/company-number-incorrect"))
+      val result = TestPartnershipAsCompanyErrorController.submit(FakeRequest("POST", "/company-number-incorrect"))
       status(result) shouldBe Status.SEE_OTHER
       redirectLocation(result) should contain(routes.CaptureBusinessEntityController.show().url)
     }

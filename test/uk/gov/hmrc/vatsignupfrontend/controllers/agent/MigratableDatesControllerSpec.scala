@@ -37,7 +37,7 @@ class MigratableDatesControllerSpec extends UnitSpec with GuiceOneAppPerSuite wi
   object TestMigratableDatesController extends MigratableDatesController(mockControllerComponents)
 
   def testGetRequest(date: Option[LocalDate] = None, cutoffDate: Option[LocalDate] = None): FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest("GET", "/error/sign-up-later").withSession(migratableDatesKey -> Json.toJson(MigratableDates(date, cutoffDate)).toString())
+    FakeRequest("GET", "/sign-up-later").withSession(migratableDatesKey -> Json.toJson(MigratableDates(date, cutoffDate)).toString())
 
   private def dateFormat(date: LocalDate) = DateModel.dateConvert(date).toCheckYourAnswersDateFormat
 

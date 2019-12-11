@@ -29,11 +29,11 @@ class MigratableDatesControllerISpec extends ComponentSpecBase with CustomMatche
 
   val testDate: LocalDate = LocalDate.now()
 
-  "GET /error/sign-up-later" should {
+  "GET /sign-up-later" should {
     "return a See Other" when {
       "no dates are available" in {
         stubAuth(OK, successfulAuthResponse(agentEnrolment))
-        val res = get("/client/error/sign-up-later",
+        val res = get("/client/sign-up-later",
           Map(
             migratableDatesKey -> Json.toJson(MigratableDates()).toString()
           )
@@ -47,7 +47,7 @@ class MigratableDatesControllerISpec extends ComponentSpecBase with CustomMatche
     "return an OK" when {
       "one date is available" in {
         stubAuth(OK, successfulAuthResponse(agentEnrolment))
-        val res = get("/client/error/sign-up-later",
+        val res = get("/client/sign-up-later",
           Map(
             migratableDatesKey -> Json.toJson(MigratableDates(Some(testDate))).toString()
           )
@@ -61,7 +61,7 @@ class MigratableDatesControllerISpec extends ComponentSpecBase with CustomMatche
     "return an OK" when {
       "two dates are available" in {
         stubAuth(OK, successfulAuthResponse(agentEnrolment))
-        val res = get("/client/error/sign-up-later",
+        val res = get("/client/sign-up-later",
           Map(
             migratableDatesKey -> Json.toJson(MigratableDates(Some(testDate), Some(testDate))).toString()
           )

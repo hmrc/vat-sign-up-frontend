@@ -22,11 +22,11 @@ import uk.gov.hmrc.vatsignupfrontend.helpers.{ComponentSpecBase, CustomMatchers}
 
 class MigrationInProgressErrorControllerISpec extends ComponentSpecBase with CustomMatchers {
 
-  "GET /error/sign-up-in-progress" should {
+  "GET /sign-up-in-progress" should {
     "return an OK" in {
       stubAuth(OK, successfulAuthResponse(agentEnrolment))
 
-      val res = get("/client/error/sign-up-in-progress")
+      val res = get("/client/sign-up-in-progress")
 
       res should have(
         httpStatus(OK)

@@ -29,11 +29,11 @@ import uk.gov.hmrc.vatsignupfrontend.models.MigratableDates
 class MigratableDatesControllerISpec extends ComponentSpecBase with CustomMatchers {
 
   val testDate = LocalDate.now()
-  "GET /error/sign-up-later" should {
+  "GET /sign-up-later" should {
     "return a See Other" when {
       "no dates are available" in {
         stubAuth(OK, successfulAuthResponse())
-        val res = get("/error/sign-up-later",
+        val res = get("/sign-up-later",
           Map(
             migratableDatesKey -> Json.toJson(MigratableDates()).toString()
           )
@@ -47,7 +47,7 @@ class MigratableDatesControllerISpec extends ComponentSpecBase with CustomMatche
     "return an OK" when {
       "one date is available" in {
         stubAuth(OK, successfulAuthResponse())
-        val res = get("/error/sign-up-later",
+        val res = get("/sign-up-later",
           Map(
             migratableDatesKey -> Json.toJson(MigratableDates(Some(testDate))).toString()
           )
@@ -61,7 +61,7 @@ class MigratableDatesControllerISpec extends ComponentSpecBase with CustomMatche
     "return an OK" when {
       "two dates are available" in {
         stubAuth(OK, successfulAuthResponse())
-        val res = get("/error/sign-up-later",
+        val res = get("/sign-up-later",
           Map(
             migratableDatesKey -> Json.toJson(MigratableDates(Some(testDate), Some(testDate))).toString()
           )

@@ -22,11 +22,11 @@ import uk.gov.hmrc.vatsignupfrontend.helpers.{ComponentSpecBase, CustomMatchers}
 
 class IncorrectEnrolmentVatNumberISpec extends ComponentSpecBase with CustomMatchers {
 
-  "GET /error/sign-in-with-different-details" should {
+  "GET /sign-in-with-different-details" should {
     "return an OK" in {
       stubAuth(OK, successfulAuthResponse())
 
-      val res = get("/error/sign-in-with-different-details")
+      val res = get("/sign-in-with-different-details")
 
       res should have(
         httpStatus(OK)

@@ -22,11 +22,11 @@ import uk.gov.hmrc.vatsignupfrontend.helpers.{ComponentSpecBase, CustomMatchers}
 
 class DissolvedCompanyControllerISpec extends ComponentSpecBase with CustomMatchers {
 
-  "GET /error/dissolved-company" should {
+  "GET /dissolved-company" should {
     "return an OK" in {
       stubAuth(OK, successfulAuthResponse(agentEnrolment))
 
-      val res = get("/client/error/dissolved-company")
+      val res = get("/client/dissolved-company")
 
       res should have(
         httpStatus(OK)
@@ -34,11 +34,11 @@ class DissolvedCompanyControllerISpec extends ComponentSpecBase with CustomMatch
     }
   }
 
-  "POST /error/dissolved-company" should {
+  "POST /dissolved-company" should {
     "return a SEE OTHER with a redirect to capture company number" in {
       stubAuth(OK, successfulAuthResponse(agentEnrolment))
 
-      val res = post("/client/error/dissolved-company")()
+      val res = post("/client/dissolved-company")()
 
       res should have(
         httpStatus(SEE_OTHER),

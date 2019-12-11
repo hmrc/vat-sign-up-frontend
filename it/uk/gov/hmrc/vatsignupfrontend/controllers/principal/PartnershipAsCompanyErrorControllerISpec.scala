@@ -27,7 +27,7 @@ class PartnershipAsCompanyErrorControllerISpec extends ComponentSpecBase with Cu
 
       stubAuth(OK, successfulAuthResponse())
 
-      val res = get("/error/company-number-incorrect")
+      val res = get("/company-number-incorrect")
 
       res should have(
         httpStatus(OK)
@@ -40,7 +40,7 @@ class PartnershipAsCompanyErrorControllerISpec extends ComponentSpecBase with Cu
 
       stubAuth(OK, successfulAuthResponse())
 
-      val res = post("/error/company-number-incorrect")()
+      val res = post("/company-number-incorrect")()
 
       res should have(
         httpStatus(SEE_OTHER),

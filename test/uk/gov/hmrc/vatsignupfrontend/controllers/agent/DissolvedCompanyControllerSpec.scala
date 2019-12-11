@@ -30,10 +30,10 @@ class DissolvedCompanyControllerSpec extends UnitSpec with GuiceOneAppPerSuite w
     mockControllerComponents
   )
 
-  lazy val testGetRequest = FakeRequest("GET", "/client/error/dissolved-company")
+  lazy val testGetRequest = FakeRequest("GET", "/client/dissolved-company")
 
   lazy val testPostRequest: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest("POST", "/client/error/dissolved-company")
+    FakeRequest("POST", "/client/dissolved-company")
 
   "Calling the show action of DissolvedCompanyController" should {
     "show the dissolved company view" in {

@@ -30,7 +30,7 @@ class IncorrectEnrolmentVatNumberControllerSpec extends UnitSpec with GuiceOneAp
 
   object TestIncorrectEnrolmentVatNumberController extends IncorrectEnrolmentVatNumberController(mockControllerComponents)
 
-  lazy val testGetRequest = FakeRequest("GET", "/error/sign-in-with-different-details")
+  lazy val testGetRequest = FakeRequest("GET", "/sign-in-with-different-details")
 
   "Calling the show action of the Incorrect Enrolment Vat Number controller" should {
     "return OK" in {

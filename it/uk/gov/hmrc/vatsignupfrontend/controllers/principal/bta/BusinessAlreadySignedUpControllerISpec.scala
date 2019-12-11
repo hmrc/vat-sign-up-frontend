@@ -22,11 +22,11 @@ import uk.gov.hmrc.vatsignupfrontend.helpers.{ComponentSpecBase, CustomMatchers}
 
 class BusinessAlreadySignedUpControllerISpec extends ComponentSpecBase with CustomMatchers {
 
-  "GET /error/business-already-signed-up" should {
+  "GET /business-already-signed-up" should {
     "return an OK" in {
       stubAuth(OK, successfulAuthResponse())
 
-      val res = get("/error/business-already-signed-up")
+      val res = get("/business-already-signed-up")
 
       res should have(
         httpStatus(OK)
@@ -34,11 +34,11 @@ class BusinessAlreadySignedUpControllerISpec extends ComponentSpecBase with Cust
     }
   }
 
-  "POST /error/business-already-signed-up" should {
+  "POST /business-already-signed-up" should {
     "redirect to sign in on resolve vat number" in {
       stubAuth(OK, successfulAuthResponse())
 
-      val res = post("/error/business-already-signed-up")()
+      val res = post("/business-already-signed-up")()
 
       res should have(
         httpStatus(SEE_OTHER),

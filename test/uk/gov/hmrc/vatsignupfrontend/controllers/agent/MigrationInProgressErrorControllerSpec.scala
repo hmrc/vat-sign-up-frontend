@@ -27,7 +27,7 @@ class MigrationInProgressErrorControllerSpec extends UnitSpec with GuiceOneAppPe
 
   object TestMigrationInProgressErrorController extends MigrationInProgressErrorController(mockControllerComponents)
 
-  lazy val testGetRequest = FakeRequest("GET", "/error/sign-up-in-progress")
+  lazy val testGetRequest = FakeRequest("GET", "/sign-up-in-progress")
 
   "Calling the show action of the cannot use service controller" should {
     "show the cannot use service page" in {

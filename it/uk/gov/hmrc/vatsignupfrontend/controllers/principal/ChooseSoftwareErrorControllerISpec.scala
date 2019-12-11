@@ -20,10 +20,10 @@ import play.api.http.Status._
 import uk.gov.hmrc.vatsignupfrontend.helpers.{ComponentSpecBase, CustomMatchers}
 
 class ChooseSoftwareErrorControllerISpec extends ComponentSpecBase with CustomMatchers {
-  "GET /error/choose-software" should {
+  "GET /choose-software" should {
     "return an OK" in {
 
-      val res = get("/error/choose-software")
+      val res = get("/choose-software")
 
       res should have(
         httpStatus(OK)
@@ -31,10 +31,10 @@ class ChooseSoftwareErrorControllerISpec extends ComponentSpecBase with CustomMa
     }
   }
 
-  "POST /error/choose-software" should {
+  "POST /choose-software" should {
     "redirect to the gov.uk guidance page" in {
 
-      val res = post("/error/choose-software")()
+      val res = post("/choose-software")()
 
       res should have(
         httpStatus(SEE_OTHER),
