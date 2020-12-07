@@ -27,9 +27,9 @@ object ClaimSubscriptionHttpParser {
       response.status match {
         case NO_CONTENT => Right(SubscriptionClaimed)
         case FORBIDDEN => Left(KnownFactsMismatch)
-        case BAD_REQUEST => Left(InvalidVatNumber)
+        case BAD_REQUEST => Left(InvalidVatNumber(response.body))
         case CONFLICT => Left(AlreadyEnrolledOnDifferentCredential)
-        case status => Left(ClaimSubscriptionFailureResponse(status))
+        case status => Left(ClaimSubscriptionFailureResponse(status, response.body))
       }
     }
   }
@@ -40,11 +40,11 @@ object ClaimSubscriptionHttpParser {
 
   case object KnownFactsMismatch extends ClaimSubscriptionFailure
 
-  case object InvalidVatNumber extends ClaimSubscriptionFailure
+  case class InvalidVatNumber(message: String) extends ClaimSubscriptionFailure
 
   case object AlreadyEnrolledOnDifferentCredential extends ClaimSubscriptionFailure
 
-  case class ClaimSubscriptionFailureResponse(status: Int) extends ClaimSubscriptionFailure
+  case class ClaimSubscriptionFailureResponse(status: Int, message: String) extends ClaimSubscriptionFailure
 }
 
 

@@ -591,7 +591,7 @@ class CheckYourAnswersControllerSpec extends UnitSpec with GuiceOneAppPerSuite
             testVatNumber,
             Some(testBusinessPostcode),
             testDate, isFromBta = false
-          )(Future.successful(Left(ClaimSubscriptionHttpParser.ClaimSubscriptionFailureResponse(INTERNAL_SERVER_ERROR))))
+          )(Future.successful(Left(ClaimSubscriptionHttpParser.ClaimSubscriptionFailureResponse(INTERNAL_SERVER_ERROR, "error message"))))
 
           val result = TestCheckYourAnswersController.submit(testPostRequest().withSession(
             SessionKeys.isAlreadySubscribedKey -> "true"

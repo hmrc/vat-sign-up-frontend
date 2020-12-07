@@ -147,7 +147,7 @@ class StoreVatNumberServiceSpec extends UnitSpec with MockStoreVatNumberConnecto
         "throw an InternalServerException" in {
           mockStoreVatNumber(testVatNumber, isFromBta = false)(Future.successful(Left(StoreVatNumberHttpParser.AlreadySubscribed)))
           mockClaimSubscription(testVatNumber, isFromBta = false)(
-            Future.successful(Left(ClaimSubscriptionHttpParser.ClaimSubscriptionFailureResponse(INTERNAL_SERVER_ERROR)))
+            Future.successful(Left(ClaimSubscriptionHttpParser.ClaimSubscriptionFailureResponse(INTERNAL_SERVER_ERROR, "error message")))
           )
 
           intercept[InternalServerException](await(TestStoreVatNumberService.storeVatNumber(testVatNumber, isFromBta = false)))
@@ -315,7 +315,7 @@ class StoreVatNumberServiceSpec extends UnitSpec with MockStoreVatNumberConnecto
             optPostCode = Some(testBusinessPostcode),
             registrationDate = testDateModel,
             isFromBta = false
-          )(Future.successful(Left(ClaimSubscriptionHttpParser.ClaimSubscriptionFailureResponse(INTERNAL_SERVER_ERROR))))
+          )(Future.successful(Left(ClaimSubscriptionHttpParser.ClaimSubscriptionFailureResponse(INTERNAL_SERVER_ERROR, "error message"))))
 
           intercept[InternalServerException](await(TestStoreVatNumberService.storeVatNumber(
             vatNumber = testVatNumber,

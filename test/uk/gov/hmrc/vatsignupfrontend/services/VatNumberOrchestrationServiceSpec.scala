@@ -256,7 +256,7 @@ class VatNumberOrchestrationServiceSpec extends UnitSpec
           "throw and internal server exception" in {
             mockCheckVatNumberEligibility(testVatNumber)(Future.successful(StoreVatNumberOrchestrationService.AlreadySubscribed(isOverseas = false)))
             mockClaimSubscription(testVatNumber, isFromBta = false)(
-              Future.successful(Left(ClaimSubscriptionHttpParser.ClaimSubscriptionFailureResponse(BAD_REQUEST)))
+              Future.successful(Left(ClaimSubscriptionHttpParser.ClaimSubscriptionFailureResponse(BAD_REQUEST, "error message")))
             )
 
             val res = TestService.orchestrate(Enrolments(Set(testVatDecEnrolment)), testVatNumber)

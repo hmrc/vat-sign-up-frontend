@@ -89,7 +89,7 @@ class ClaimSubscriptionControllerSpec extends UnitSpec with GuiceOneAppPerSuite
             "throw an Internal Server Exception" in {
 
               mockAuthRetrieveVatDecEnrolment()
-              mockClaimSubscription(testVatNumber, isFromBta = true)(Future.successful(Left(InvalidVatNumber)))
+              mockClaimSubscription(testVatNumber, isFromBta = true)(Future.successful(Left(InvalidVatNumber("error message"))))
 
               val result = TestClaimSubscriptionController.show(testVatNumber)(testGetRequest)
 

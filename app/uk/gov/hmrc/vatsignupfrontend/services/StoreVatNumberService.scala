@@ -139,8 +139,6 @@ object StoreVatNumberService {
 
   case class StoreVatNumberFailureResponse(status: Int) extends StoreVatNumberWithKnownFactsFailure with DelegatedStoreVatNumberFailure
 
-  case class ClaimSubscriptionFailureResponse(status: Int) extends StoreVatNumberWithKnownFactsFailure
-
   case object VatMigrationInProgress extends StoreVatNumberWithEnrolmentFailure with DelegatedStoreVatNumberFailure
     with StoreVatNumberWithKnownFactsFailure
 
