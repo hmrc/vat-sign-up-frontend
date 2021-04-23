@@ -68,7 +68,7 @@ class CaptureVatNumberController @Inject()(storeVatNumberOrchestrationService: S
                     Future.successful(Redirect(errorRoutes.IncorrectEnrolmentVatNumberController.show()))
                   case _ =>
                     storeVatNumberOrchestrationService.orchestrate(enrolments, formVatNumber).map {
-                      case Eligible(isOverseas, isMigrated) =>
+                      case Eligible(isOverseas, isMigrated, _) =>
                         Redirect(routes.CaptureVatRegistrationDateController.show())
                           .addingToSession(vatNumberKey -> formVatNumber)
                           .conditionallyAddingToSession(businessEntityKey, Overseas.toString, isOverseas)
@@ -107,6 +107,8 @@ class CaptureVatNumberController @Inject()(storeVatNumberOrchestrationService: S
                       case InvalidVatNumber =>
                         Redirect(errorRoutes.InvalidVatNumberController.show())
                           .removingFromSession(businessEntityKey)
+                      case RecentlyRegistered =>
+                        Redirect(errorRoutes.RecentlyRegisteredVatNumberController.show())
                       case errorResponse =>
                         throw new InternalServerException(s"storeVatNumberOrchestration failed due to $errorResponse")
                     }.map {

@@ -215,6 +215,17 @@ class ConfirmVatNumberControllerSpec extends UnitSpec
       }
     }
 
+    "vat number is in session but store vat is unsuccessful as vrn was registered less than a week ago" when {
+      "go to the deregistered VAT number page" in {
+        mockAgentAuthSuccess(Enrolments(Set(testAgentEnrolment)))
+        mockOrchestrate(enrolments = Enrolments(Set(testAgentEnrolment)), vatNumber = testVatNumber)(Future.successful(RecentlyRegistered))
+
+        val result = TestConfirmVatNumberController.submit(testPostRequest.withSession(SessionKeys.vatNumberKey -> testVatNumber))
+        status(result) shouldBe Status.SEE_OTHER
+        redirectLocation(result) shouldBe Some(errorRoutes.RecentlyRegisteredVatNumberController.show().url)
+      }
+    }
+
     "vat number is in session but store vat is unsuccessful" should {
       "throw internal server exception" in {
         mockAgentAuthSuccess(Enrolments(Set(testAgentEnrolment)))

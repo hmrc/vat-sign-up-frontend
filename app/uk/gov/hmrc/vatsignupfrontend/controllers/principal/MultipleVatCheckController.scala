@@ -82,6 +82,8 @@ class MultipleVatCheckController @Inject()(storeVatNumberOrchestrationService: S
                     Redirect(errorRoutes.BusinessAlreadySignedUpController.show())
                   case AlreadySubscribed(_) =>
                     Redirect(errorRoutes.AlreadySignedUpController.show())
+                  case RecentlyRegistered =>
+                    Redirect(errorRoutes.RecentlyRegisteredVatNumberController.show())
                   case _ =>
                     throw new InternalServerException("Unexpected response from vat number orchestration service")
                 }

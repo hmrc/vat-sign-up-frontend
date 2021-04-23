@@ -40,8 +40,8 @@ class CheckVatNumberEligibilityService @Inject()(vatNumberEligibilityConnector: 
         StoreVatNumberOrchestrationService.Deregistered
       case Right(Inhibited(inhibitedDates)) =>
         StoreVatNumberOrchestrationService.Inhibited(inhibitedDates)
-      case Right(Eligible(isOverseas, isMigrated)) =>
-        StoreVatNumberOrchestrationService.Eligible(isOverseas, isMigrated)
+      case Right(Eligible(isOverseas, isMigrated, isNew)) =>
+        StoreVatNumberOrchestrationService.Eligible(isOverseas, isMigrated, isNew)
       case Left(VatNumberNotFound) =>
         StoreVatNumberOrchestrationService.InvalidVatNumber
       case _ =>
@@ -51,7 +51,7 @@ class CheckVatNumberEligibilityService @Inject()(vatNumberEligibilityConnector: 
 
   def isOverseas(vatNumber: String)(implicit headerCarrier: HeaderCarrier): Future[Boolean] = {
     vatNumberEligibilityConnector.checkVatNumberEligibility(vatNumber).map {
-      case Right(Eligible(isOverseas, _)) => isOverseas
+      case Right(Eligible(isOverseas, _, _)) => isOverseas
       case Right(AlreadySubscribed(isOverseas)) => isOverseas
       case eligibilityStatus =>
         throw new InternalServerException(

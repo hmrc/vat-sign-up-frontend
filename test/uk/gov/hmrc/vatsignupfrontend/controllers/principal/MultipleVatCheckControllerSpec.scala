@@ -221,6 +221,19 @@ class MultipleVatCheckControllerSpec extends UnitSpec with MockVatControllerComp
             redirectLocation(result) shouldBe Some(errorRoutes.BusinessAlreadySignedUpController.show().url)
           }
         }
+        "the vat number was registered less than a week ago" should {
+          "redirect to the recently registered error page" in {
+            mockAuthRetrieveVatDecEnrolment()
+            mockOrchestrate(
+              enrolments = Enrolments(Set(testVatDecEnrolment)),
+              vatNumber = testVatNumber
+            )(Future.successful(RecentlyRegistered))
+
+            val result = TestMultipleVatCheckController.submit(testPostRequest(entityTypeVal = "no"))
+            status(result) shouldBe Status.SEE_OTHER
+            redirectLocation(result) shouldBe Some(errorRoutes.RecentlyRegisteredVatNumberController.show().url)
+          }
+        }
         "the user has an MTD-VAT and VAT-DEC enrolment" should {
           "redirect to already signed up error page" when {
             "the vat numbers from both enrolments match each other" in {

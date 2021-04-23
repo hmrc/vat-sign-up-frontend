@@ -90,3 +90,6 @@ GET         /passcode-not-found                                 uk.gov.hmrc.vats
 
 # Too Many Email Passcode Attempts
 GET         /passcode-too-many-attempts                         uk.gov.hmrc.vatsignupfrontend.controllers.principal.error.MaxEmailPasscodeAttemptsExceededController.show
+
+# Recently Registered Vat Number
+GET         /registered-within-last-week                        uk.gov.hmrc.vatsignupfrontend.controllers.principal.error.RecentlyRegisteredVatNumberController.show

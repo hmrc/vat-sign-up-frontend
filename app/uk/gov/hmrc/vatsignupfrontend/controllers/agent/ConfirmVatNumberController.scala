@@ -84,6 +84,8 @@ class ConfirmVatNumberController @Inject()(storeVatNumberOrchestrationService: S
                     Redirect(errorRoutes.MigrationInProgressErrorController.show())
                   case InvalidVatNumber =>
                     Redirect(errorRoutes.CouldNotConfirmVatNumberController.show())
+                  case RecentlyRegistered =>
+                    Redirect(errorRoutes.RecentlyRegisteredVatNumberController.show())
                   case errorResponse =>
                     throw new InternalServerException(s"storeVatNumberOrchestration failed due to $errorResponse")
                 }

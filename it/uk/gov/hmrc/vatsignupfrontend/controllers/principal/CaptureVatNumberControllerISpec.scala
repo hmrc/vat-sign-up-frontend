@@ -169,6 +169,21 @@ class CaptureVatNumberControllerISpec extends ComponentSpecBase with CustomMatch
           }
         }
 
+        "redirect to the recently registered error page" when {
+          "the vat number has been registered less than a week ago" in {
+            stubAuth(OK, successfulAuthResponse(vatDecEnrolment))
+            stubVatNumberEligibility(testVatNumber)(status = OK, optEligibilityResponse = Some(RecentlyRegistered))
+            stubStoreVatNumberMigrationInProgress(isFromBta = false)
+
+            val res = post("/vat-number")(VatNumberForm.vatNumber -> testVatNumber)
+
+            res should have(
+              httpStatus(SEE_OTHER),
+              redirectUri(errorRoutes.RecentlyRegisteredVatNumberController.show().url)
+            )
+          }
+        }
+
         "redirect to the business already signed up error page" when {
           "the vat number is already signed up and a user is attempting to claim subscription" in {
             stubAuth(OK, successfulAuthResponse(vatDecEnrolment))

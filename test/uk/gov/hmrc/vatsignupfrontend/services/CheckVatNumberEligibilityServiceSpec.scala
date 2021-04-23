@@ -40,10 +40,10 @@ class CheckVatNumberEligibilityServiceSpec extends UnitSpec with MockVatNumberEl
   "checkVatNumberEligibility" when {
     "the connector returns Eligible" should {
       "return Eligible and isMigrated" in {
-        mockVatNumberEligibility(testVatNumber)(Future.successful(Right(Eligible(isOverseas = false, isMigrated = true))))
+        mockVatNumberEligibility(testVatNumber)(Future.successful(Right(Eligible(isOverseas = false, isMigrated = true, isNew = false))))
 
         val result = await(TestService.checkEligibility(testVatNumber))
-        result shouldBe StoreVatNumberOrchestrationService.Eligible(isOverseas = false, isMigrated = true)
+        result shouldBe StoreVatNumberOrchestrationService.Eligible(isOverseas = false, isMigrated = true, isNew = false)
       }
     }
 
@@ -115,7 +115,7 @@ class CheckVatNumberEligibilityServiceSpec extends UnitSpec with MockVatNumberEl
   "isOverseas" when {
     "the connector returns Eligible(isOverseas, _)" should {
       "return isOverseas" in {
-        mockVatNumberEligibility(testVatNumber)(Future.successful(Right(Eligible(isOverseas = true, isMigrated = true))))
+        mockVatNumberEligibility(testVatNumber)(Future.successful(Right(Eligible(isOverseas = true, isMigrated = true, isNew = false))))
 
         val result = await(TestService.isOverseas(testVatNumber))
 

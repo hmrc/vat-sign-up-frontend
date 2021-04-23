@@ -54,11 +54,21 @@ class VatNumberOrchestrationServiceSpec extends UnitSpec
     "enrolments are not provided" when {
       "the vat number is eligible" should {
         "return Eligible" in {
-          mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = true, isMigrated = false)))
+          mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = true, isMigrated = false, isNew = false)))
 
           val res = TestService.orchestrate(testNoEnrolments, testVatNumber)
 
-          await(res) shouldBe StoreVatNumberOrchestrationService.Eligible(isOverseas = true, isMigrated = false)
+          await(res) shouldBe StoreVatNumberOrchestrationService.Eligible(isOverseas = true, isMigrated = false, isNew = false)
+        }
+      }
+
+      "the vat number is eligible but registered less than a week ago" should {
+        "return RecentlyRegistered" in {
+          mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = true, isMigrated = false, isNew = true)))
+
+          val res = TestService.orchestrate(testNoEnrolments, testVatNumber)
+
+          await(res) shouldBe StoreVatNumberOrchestrationService.RecentlyRegistered
         }
       }
 
@@ -126,7 +136,7 @@ class VatNumberOrchestrationServiceSpec extends UnitSpec
       "an eligible vat number has already been migrated to ETMP" when {
         "the user is not overseas" should {
           "return VatNumberStored" in {
-            mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = false, isMigrated = true)))
+            mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = false, isMigrated = true, isNew = false)))
             mockStoreMigratedVatNumber(testVatNumber, None, None)(
               Future.successful(Right(StoreMigratedVatNumberHttpParser.StoreMigratedVatNumberSuccess))
             )
@@ -138,7 +148,7 @@ class VatNumberOrchestrationServiceSpec extends UnitSpec
         }
         "the user is overseas" should {
           "return VatNumberStored" in {
-            mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = true, isMigrated = true)))
+            mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = true, isMigrated = true, isNew = false)))
             mockStoreMigratedVatNumber(testVatNumber, None, None)(
               Future.successful(Right(StoreMigratedVatNumberHttpParser.StoreMigratedVatNumberSuccess))
             )
@@ -153,7 +163,7 @@ class VatNumberOrchestrationServiceSpec extends UnitSpec
       "the vat number has not been migrated to ETMP yet" when {
         "the user already has both enrolments" should {
           "return AlreadySubscribed" in {
-            mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = false, isMigrated = false)))
+            mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = false, isMigrated = false, isNew = false)))
             mockStoreVatNumber(testVatNumber, isFromBta = false)(Future.successful(Right(StoreVatNumberService.VatNumberStored(isDirectDebit = false))))
 
             val res = TestService.orchestrate(Enrolments(Set(testMtdVatEnrolment, testVatDecEnrolment)), testVatNumber)
@@ -164,7 +174,7 @@ class VatNumberOrchestrationServiceSpec extends UnitSpec
 
         "the user already has an MTD-VAT enrolment" should {
           "return AlreadySubscribed" in {
-            mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = false, isMigrated = false)))
+            mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = false, isMigrated = false, isNew = false)))
             mockStoreVatNumber(testVatNumber, isFromBta = false)(Future.successful(Right(StoreVatNumberService.VatNumberStored(isDirectDebit = false))))
 
             val res = TestService.orchestrate(Enrolments(Set(testMtdVatEnrolment)), testVatNumber)
@@ -175,7 +185,7 @@ class VatNumberOrchestrationServiceSpec extends UnitSpec
 
         "the user only has the legacy VAT enrolment" should {
           "return VatNumberStored" in {
-            mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = false, isMigrated = false)))
+            mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = false, isMigrated = false, isNew = false)))
             mockStoreVatNumber(testVatNumber, isFromBta = false)(Future.successful(Right(StoreVatNumberService.VatNumberStored(isDirectDebit = false))))
 
             val res = TestService.orchestrate(Enrolments(Set(testVatDecEnrolment)), testVatNumber)
@@ -302,7 +312,7 @@ class VatNumberOrchestrationServiceSpec extends UnitSpec
     "an eligible vat number has already been migrated to ETMP" when {
       "the user is not overseas" should {
         "return VatNumberStored" in {
-          mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = false, isMigrated = true)))
+          mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = false, isMigrated = true, isNew = false)))
           mockStoreMigratedVatNumber(testVatNumber, None, None)(
             Future.successful(Right(StoreMigratedVatNumberHttpParser.StoreMigratedVatNumberSuccess))
           )
@@ -315,7 +325,7 @@ class VatNumberOrchestrationServiceSpec extends UnitSpec
 
       "the user is overseas" should {
         "return VatNumberStored" in {
-          mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = true, isMigrated = true)))
+          mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = true, isMigrated = true, isNew = false)))
           mockStoreMigratedVatNumber(testVatNumber, None, None)(
             Future.successful(Right(StoreMigratedVatNumberHttpParser.StoreMigratedVatNumberSuccess))
           )
@@ -329,7 +339,7 @@ class VatNumberOrchestrationServiceSpec extends UnitSpec
 
     "the vat number has not been migrated to ETMP yet" should {
       "return VatNumberStored" in {
-        mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = false, isMigrated = false)))
+        mockCheckVatNumberEligibility(testVatNumber)(Future.successful(Eligible(isOverseas = false, isMigrated = false, isNew = false)))
         mockStoreVatNumberDelegated(testVatNumber)(Future.successful(Right(StoreVatNumberService.VatNumberStored(isDirectDebit = false))))
 
         val res = TestService.orchestrate(Enrolments(Set(testAgentEnrolment)), testVatNumber)
