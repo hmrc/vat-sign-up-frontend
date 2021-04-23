@@ -50,3 +50,6 @@ GET         /sign-up-in-progress                                uk.gov.hmrc.vats
 
 # Deregistered Vat Number Page
 GET         /deregistered-vat-number                            uk.gov.hmrc.vatsignupfrontend.controllers.agent.error.DeregisteredVatNumberController.show
+
+# Recently Registered Vat Number
+GET         /registered-within-last-week                        uk.gov.hmrc.vatsignupfrontend.controllers.agent.error.RecentlyRegisteredVatNumberController.show

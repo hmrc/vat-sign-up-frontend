@@ -384,7 +384,7 @@ class CaptureVatNumberControllerSpec extends UnitSpec
               mockOrchestrate(
                 enrolments = Enrolments(Set()),
                 vatNumber = testVatNumber
-              )(Future.successful(Eligible(isOverseas = false, isMigrated = false)))
+              )(Future.successful(Eligible(isOverseas = false, isMigrated = false, isNew = false)))
 
               implicit val request: FakeRequest[AnyContentAsFormUrlEncoded] = testPostRequest(testVatNumber)
 
@@ -400,7 +400,7 @@ class CaptureVatNumberControllerSpec extends UnitSpec
               mockOrchestrate(
                 enrolments = Enrolments(Set()),
                 vatNumber = testVatNumber
-              )(Future.successful(Eligible(isOverseas = false, isMigrated = false)))
+              )(Future.successful(Eligible(isOverseas = false, isMigrated = false, isNew = false)))
 
               implicit val request: FakeRequest[AnyContentAsFormUrlEncoded] = testPostRequest(testVatNumber)
                 .withSession(
@@ -428,7 +428,7 @@ class CaptureVatNumberControllerSpec extends UnitSpec
               mockOrchestrate(
                 enrolments = Enrolments(Set()),
                 vatNumber = testVatNumber
-              )(Future.successful(Eligible(isOverseas = false, isMigrated = false)))
+              )(Future.successful(Eligible(isOverseas = false, isMigrated = false, isNew = false)))
 
               implicit val request: FakeRequest[AnyContentAsFormUrlEncoded] = testPostRequest(testVatNumber)
                 .withSession(
@@ -461,7 +461,7 @@ class CaptureVatNumberControllerSpec extends UnitSpec
               mockOrchestrate(
                 enrolments = Enrolments(Set()),
                 vatNumber = testVatNumber
-              )(Future.successful(Eligible(isOverseas = true, isMigrated = false)))
+              )(Future.successful(Eligible(isOverseas = true, isMigrated = false, isNew = false)))
 
               implicit val request: FakeRequest[AnyContentAsFormUrlEncoded] = testPostRequest(testVatNumber)
 
@@ -482,7 +482,7 @@ class CaptureVatNumberControllerSpec extends UnitSpec
               mockOrchestrate(
                 enrolments = Enrolments(Set()),
                 vatNumber = testVatNumber
-              )(Future.successful(Eligible(isOverseas = true, isMigrated = true)))
+              )(Future.successful(Eligible(isOverseas = true, isMigrated = true, isNew = false)))
 
               implicit val request: FakeRequest[AnyContentAsFormUrlEncoded] = testPostRequest(testVatNumber)
 
@@ -493,6 +493,22 @@ class CaptureVatNumberControllerSpec extends UnitSpec
               session(result).get(vatNumberKey) should contain(testVatNumber)
               session(result).get(businessEntityKey) should contain(Overseas.toString)
               session(result).get(isMigratedKey) should contain(true.toString)
+            }
+          }
+
+          "the vat number has been registered less than a week ago" should {
+            "redirect to the Recently Registered controller" in {
+              mockAuthRetrieveEmptyEnrolment()
+              mockOrchestrate(
+                enrolments = Enrolments(Set()),
+                vatNumber = testVatNumber
+              )(Future.successful(RecentlyRegistered))
+
+              implicit val request: FakeRequest[AnyContentAsFormUrlEncoded] = testPostRequest(testVatNumber)
+
+              val result = TestCaptureVatNumberController.submit(request)
+              status(result) shouldBe Status.SEE_OTHER
+              redirectLocation(result) shouldBe Some(errorRoutes.RecentlyRegisteredVatNumberController.show().url)
             }
           }
 

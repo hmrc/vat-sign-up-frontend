@@ -26,12 +26,28 @@ object VatNumberEligibilityStub extends WireMockMethods {
                               (status: Int, optEligibilityResponse: Option[EligibilityResponse]): Unit = {
 
     val jsonBody = optEligibilityResponse match {
-      case Some(Eligible) => Json.obj("mtdStatus" -> "Eligible", "eligibilityDetails" -> Json.obj("isMigrated" -> false, "isOverseas" -> false))
-      case Some(Migrated) => Json.obj("mtdStatus" -> "Eligible", "eligibilityDetails" -> Json.obj("isMigrated" -> true, "isOverseas" -> false))
+      case Some(Eligible) => Json.obj(
+        "mtdStatus" -> "Eligible",
+        "eligibilityDetails" -> Json.obj("isMigrated" -> false, "isOverseas" -> false, "isNew" -> false)
+      )
+      case Some(RecentlyRegistered) => Json.obj(
+        "mtdStatus" -> "Eligible",
+        "eligibilityDetails" -> Json.obj("isMigrated" -> false, "isOverseas" -> false, "isNew" -> true)
+      )
+      case Some(Migrated) => Json.obj(
+        "mtdStatus" -> "Eligible",
+        "eligibilityDetails" -> Json.obj("isMigrated" -> true, "isOverseas" -> false, "isNew" -> false)
+      )
       case Some(Ineligible) => Json.obj("mtdStatus" -> "Ineligible")
       case Some(Deregistered) => Json.obj("mtdStatus" -> "Deregistered")
-      case Some(Overseas(isMigrated)) => Json.obj("mtdStatus" -> "Eligible", "eligibilityDetails" -> Json.obj("isMigrated" -> isMigrated, "isOverseas" -> true))
-      case Some(Inhibited(dates)) => Json.obj("mtdStatus" -> "Inhibited", "migratableDates" -> Json.obj("migratableDate" -> dates.migratableDate, "migratableCutoffDate" -> dates.migratableCutoffDate))
+      case Some(Overseas(isMigrated)) => Json.obj(
+        "mtdStatus" -> "Eligible",
+        "eligibilityDetails" -> Json.obj("isMigrated" -> isMigrated, "isOverseas" -> true, "isNew" -> false)
+      )
+      case Some(Inhibited(dates)) => Json.obj(
+        "mtdStatus" -> "Inhibited",
+        "migratableDates" -> Json.obj("migratableDate" -> dates.migratableDate, "migratableCutoffDate" -> dates.migratableCutoffDate)
+      )
       case Some(MigrationInProgress) => Json.obj("mtdStatus" -> "MigrationInProgress")
       case Some(AlreadySubscribed(isOverseas)) => Json.obj("mtdStatus" -> "AlreadySubscribed", "isOverseas" -> isOverseas)
       case None => Json.obj()
@@ -45,6 +61,7 @@ object VatNumberEligibilityStub extends WireMockMethods {
   sealed trait EligibilityResponse
 
   case object Eligible extends EligibilityResponse
+  case object RecentlyRegistered extends EligibilityResponse
   case object Migrated extends EligibilityResponse
   case object Ineligible extends EligibilityResponse
   case object Deregistered extends EligibilityResponse
@@ -52,4 +69,5 @@ object VatNumberEligibilityStub extends WireMockMethods {
   case class Inhibited(dates: MigratableDates) extends EligibilityResponse
   case object MigrationInProgress extends EligibilityResponse
   case class AlreadySubscribed(isOverseas: Boolean) extends EligibilityResponse
+
 }

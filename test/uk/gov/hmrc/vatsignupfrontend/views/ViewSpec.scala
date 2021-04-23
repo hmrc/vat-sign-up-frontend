@@ -255,6 +255,9 @@ trait ViewSpec extends UnitSpec with GuiceOneAppPerSuite {
     def shouldHaveContinueButtonLink(href: String, text: String): Unit =
       shouldHaveALink("continue-button", href = href, text = text)
 
+    def shouldHaveAlternateContinueButtonLink(href: String, text: String): Unit =
+      shouldHaveALink("alternate-button", href = href, text = text)
+
     def shouldHaveForm(formName: String, id: Option[String] = None)(actionCall: => Call): Unit = {
       val selector =
         id match {

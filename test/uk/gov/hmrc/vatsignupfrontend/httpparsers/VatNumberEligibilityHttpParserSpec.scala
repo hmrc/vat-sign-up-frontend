@@ -32,7 +32,7 @@ class VatNumberEligibilityHttpParserSpec extends UnitSpec {
 
   val currentDate: LocalDate = LocalDate.now()
   val testMigratableDates = MigratableDates(Some(currentDate), Some(currentDate))
-  val testEligibilityDetails = Eligible(isOverseas = false, isMigrated = false)
+  val testEligibilityDetails = Eligible(isOverseas = false, isMigrated = false, isNew = false)
 
   def response(mtdStatus: String,
                migratableDates: Option[MigratableDates] = None,
@@ -88,7 +88,7 @@ class VatNumberEligibilityHttpParserSpec extends UnitSpec {
 
         val res = VatNumberEligibilityHttpReads.read(testHttpVerb, testUri, httpResponse)
 
-        res shouldBe Right(Eligible(isOverseas = false, isMigrated = false))
+        res shouldBe Right(Eligible(isOverseas = false, isMigrated = false, isNew = false))
       }
       "parse a NOT_FOUND response as VatNumberNotFound" in {
         val httpResponse = HttpResponse(NOT_FOUND)

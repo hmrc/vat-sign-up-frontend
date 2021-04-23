@@ -632,6 +632,20 @@ agent.deregistered_unenrolled.paragraph1                               = Rydych 
 agent.deregistered_unenrolled.paragraph2                               = Fel arall, gallwch gofrestru ar gyfer TAW gan ddefnyddio’r <a id="vatRegistration" href="{0}" target="_blank">gwasanaeth cofrestru TAW (yn agor ffenestr neu dab newydd)</a>.
 agent.deregistered_unenrolled.another_number                           = Nodwch rif TAW arall
 
+## Recently Registered page
+principal.recentlyRegistered.title                                     = Ni allwch gofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar hyn o bryd
+principal.recentlyRegistered.heading                                   = Ni allwch gofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar hyn o bryd
+principal.recentlyRegistered.par1                                      = Ni allwch gofrestru ar gyfer y cynllun Troi Treth yn Ddigidol cyn pen y 7 diwrnod cyntaf ar ôl cofrestru ar gyfer TAW. Byddwch yn gallu cofrestru 7 diwrnod ar ôl dyddiad dod i rym eich cofrestriad.
+principal.recentlyRegistered.button                                    = Yn ôl i’r cyfrif TAW
+
+## Recently Registered page
+agent.recentlyRegistered.title                                         = Ni allwch gofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar hyn o bryd
+agent.recentlyRegistered.heading                                       = Ni allwch gofrestru ar gyfer y cynllun Troi Treth yn Ddigidol ar hyn o bryd
+agent.recentlyRegistered.par1                                          = Ni allwch gofrestru ar gyfer y cynllun Troi Treth yn Ddigidol cyn pen y 7 diwrnod cyntaf ar ôl cofrestru ar gyfer TAW. Byddwch yn gallu cofrestru 7 diwrnod ar ôl dyddiad dod i rym eich cofrestriad.
+agent.recentlyRegistered.button                                        = Yn ôl i’r cyfrif TAW
+agent.recentlyRegistered.button2                                       = Cofrestru busnes arall ar gyfer y cynllun Troi Treth yn Ddigidol
+
+
 ## Principal Cannot Use Service Yet page
 principal.cannot_use_service.title                                     = Dydy’ch busnes ddim yn gymwys ar hyn o bryd
 principal.cannot_use_service.heading                                   = Dydy’ch busnes ddim yn gymwys ar hyn o bryd

@@ -80,12 +80,13 @@ object VatNumberEligibilityHttpParser {
 
   case class AlreadySubscribed(isOverseas: Boolean) extends VatNumberEligibilitySuccess
 
-  case class Eligible(isOverseas: Boolean, isMigrated: Boolean) extends VatNumberEligibilitySuccess
+  case class Eligible(isOverseas: Boolean, isMigrated: Boolean, isNew: Boolean) extends VatNumberEligibilitySuccess
 
   object Eligible {
     implicit val reads: Reads[Eligible] = (
       (JsPath \ "isOverseas").read[Boolean] and
-        (JsPath \ "isMigrated").read[Boolean]
+        (JsPath \ "isMigrated").read[Boolean] and
+        (JsPath \ "isNew").read[Boolean]
       ) (Eligible.apply _)
   }
 

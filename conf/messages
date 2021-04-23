@@ -299,6 +299,19 @@ agent.deregistered_unenrolled.paragraph1                               = The VAT
 agent.deregistered_unenrolled.paragraph2                               = Alternatively, you can register for VAT using the <a id="vatRegistration" href="{0}" target="_blank">VAT registration service (opens in a new window or tab)</a>.
 agent.deregistered_unenrolled.another_number                           = Enter another VAT number
 
+## Recently Registered page
+principal.recentlyRegistered.title                                     = You cannot sign up for Making Tax Digital yet
+principal.recentlyRegistered.heading                                   = You cannot sign up for Making Tax Digital yet
+principal.recentlyRegistered.par1                                      = You cannot sign up to Making Tax Digital (MTD) within the first 7 days of registering for VAT. You will be able to sign up 7 days after your effective date of registration.
+principal.recentlyRegistered.button                                    = Return to VAT account
+
+## Recently Registered page
+agent.recentlyRegistered.title                                         = You cannot sign up for Making Tax Digital yet
+agent.recentlyRegistered.heading                                       = You cannot sign up for Making Tax Digital yet
+agent.recentlyRegistered.par1                                          = You cannot sign up to Making Tax Digital (MTD) within the first 7 days of registering for VAT. You will be able to sign up 7 days after your effective date of registration.
+agent.recentlyRegistered.button                                        = Return to VAT account
+agent.recentlyRegistered.button2                                       = Sign a different business up to MTD
+
 ## Agent Capture Partnership UTR
 agent.capture_partnership_utr.title                                    = What is your client’s partnership Unique Taxpayer Reference (UTR)?
 agent.capture_partnership_utr.heading                                  = What is your client’s partnership Unique Taxpayer Reference (UTR)?

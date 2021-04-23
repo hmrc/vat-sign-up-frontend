@@ -41,7 +41,7 @@ class StoreVatNumberOrchestrationService @Inject()(checkVatNumberEligibilityServ
     val isAgent = enrolments.agentReferenceNumber.isDefined
 
     checkVatNumberEligibilityService.checkEligibility(vatNumber).flatMap {
-      case Eligible(isOverseas, isMigrated) if isMigrated && (isEnrolled || isAgent) =>
+      case Eligible(isOverseas, isMigrated, false) if isMigrated && (isEnrolled || isAgent) =>
         storeMigratedVatNumberService.storeVatNumber(vatNumber, None, None) map {
           case Right(StoreMigratedVatNumberHttpParser.StoreMigratedVatNumberSuccess) =>
             VatNumberStored(isOverseas, isDirectDebit = false, isMigrated)
@@ -50,13 +50,15 @@ class StoreVatNumberOrchestrationService @Inject()(checkVatNumberEligibilityServ
           case Left(StoreMigratedVatNumberHttpParser.NoAgentClientRelationship) =>
             NoAgentClientRelationship
         }
-      case Eligible(isOverseas, _) if enrolments.mtdVatNumber.isDefined =>
-        //If user already has MTD-VAT enrolment, do not call legacy store VRN code as it will attempt to claim enrolment and fail
+      case Eligible(isOverseas, _, _) if enrolments.mtdVatNumber.isDefined =>
+        // If user already has MTD-VAT enrolment, do not call legacy store VRN code as it will attempt to claim enrolment and fail
         Future.successful(AlreadySubscribed(isOverseas))
-      case Eligible(isOverseas, _) if isEnrolled =>
+      case Eligible(_, _, true) =>
+        Future.successful(RecentlyRegistered)
+      case Eligible(isOverseas, _, _) if isEnrolled =>
         storeVatNumberService.storeVatNumber(vatNumber, isFromBta = false)
           .map(handleLegacyStoreVatNumberResponse(vatNumber, isOverseas))
-      case Eligible(isOverseas, _) if isAgent =>
+      case Eligible(isOverseas, _, _) if isAgent =>
         storeVatNumberService.storeVatNumberDelegated(vatNumber)
           .map(handleLegacyStoreVatNumberResponse(vatNumber, isOverseas))
       case StoreVatNumberOrchestrationService.AlreadySubscribed(_) if isEnrolled && enrolments.mtdVatNumber.isEmpty =>
@@ -120,9 +122,11 @@ object StoreVatNumberOrchestrationService {
 
   case class Inhibited(migratableDates: MigratableDates) extends StoreVatNumberOrchestrationServiceResponse
 
-  case class Eligible(isOverseas: Boolean, isMigrated: Boolean) extends StoreVatNumberOrchestrationServiceResponse
+  case class Eligible(isOverseas: Boolean, isMigrated: Boolean, isNew: Boolean) extends StoreVatNumberOrchestrationServiceResponse
 
   case class AlreadySubscribed(isOverseas: Boolean) extends StoreVatNumberOrchestrationServiceResponse
+
+  case object RecentlyRegistered extends StoreVatNumberOrchestrationServiceResponse
 
 }
 

@@ -158,6 +158,20 @@ class MultipleVatCheckControllerISpec extends ComponentSpecBase with CustomMatch
       }
     }
 
+    "return a redirect to recently registered vrn page" when {
+      "form value is NO and the VRN is registered less than a week ago" in {
+        stubAuth(OK, successfulAuthResponse(vatDecEnrolment))
+        stubVatNumberEligibility(testVatNumber)(status = OK, optEligibilityResponse = Some(RecentlyRegistered))
+
+        val res = post("/more-than-one-vat-business")(MultipleVatCheckForm.yesNo -> YesNoMapping.option_no)
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectUri(errorRoutes.RecentlyRegisteredVatNumberController.show().url)
+        )
+      }
+    }
+
     "return a redirect to sign up between these dates page" when {
       "form value is NO and the VRN is inhibited" in {
         stubAuth(OK, successfulAuthResponse(vatDecEnrolment))

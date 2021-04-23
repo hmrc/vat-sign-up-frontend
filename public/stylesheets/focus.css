@@ -21,6 +21,7 @@
   }
   .button {
     border: 2px solid transparent;
+    margin-bottom: 10px;
   }
   .button:focus:not(:active):not(:hover) {
     border-color: #fd0;
