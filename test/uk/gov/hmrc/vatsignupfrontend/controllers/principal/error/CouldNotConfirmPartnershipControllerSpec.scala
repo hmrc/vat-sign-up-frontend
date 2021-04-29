@@ -24,10 +24,13 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.controllers.principal.{routes => principalRoutes}
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.could_not_confirm_limited_partnership
 
 class CouldNotConfirmPartnershipControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestCouldNotConfirmLimitedPartnershipController$ extends CouldNotConfirmLimitedPartnershipController
+  val view = app.injector.instanceOf[could_not_confirm_limited_partnership]
+
+  object TestCouldNotConfirmLimitedPartnershipController$ extends CouldNotConfirmLimitedPartnershipController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/error/could-not-confirm-company")
 

@@ -27,16 +27,18 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{AgentConfirmNino => m
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.models.SoleTrader
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.soletrader.confirm_nino
 
 class ConfirmNinoViewSpec extends ViewSpec {
 
   val testNino = "AA111111A"
 
+  val view = app.injector.instanceOf[confirm_nino]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.agent.soletrader.confirm_nino(
+  val page: HtmlFormat.Appendable = view(
     nino = testNino,
     businessEntity = SoleTrader,
     postAction = testCall

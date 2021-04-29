@@ -29,13 +29,14 @@ import uk.gov.hmrc.vatsignupfrontend.testonly.views.html.trigger_bulk_migration
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class TriggerBulkMigrationController @Inject()(triggerBulkMigrationConnector: TriggerBulkMigrationConnector)
+class TriggerBulkMigrationController @Inject()(triggerBulkMigrationConnector: TriggerBulkMigrationConnector,
+                                               view: trigger_bulk_migration)
                                               (implicit ec: ExecutionContext,
                                                vcc: VatControllerComponents)
   extends AuthenticatedController() {
 
   val show: Action[AnyContent] = Action { implicit request =>
-    Ok(trigger_bulk_migration(
+    Ok(view(
       vatNumberForm(false).form,
       routes.TriggerBulkMigrationController.submit())
     )
@@ -45,7 +46,7 @@ class TriggerBulkMigrationController @Inject()(triggerBulkMigrationConnector: Tr
     vatNumberForm(isAgent = false).bindFromRequest.fold(
       formWithErrors =>
         Future.successful(
-          BadRequest(trigger_bulk_migration(formWithErrors, routes.TriggerBulkMigrationController.submit()))
+          BadRequest(view(formWithErrors, routes.TriggerBulkMigrationController.submit()))
         ),
       vatNumber =>
         triggerBulkMigrationConnector.triggerBulkMigration(vatNumber).map {

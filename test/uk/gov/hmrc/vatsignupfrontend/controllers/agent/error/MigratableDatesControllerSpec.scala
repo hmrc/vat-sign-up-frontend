@@ -35,7 +35,10 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.{sign_up_after_this_date, 
 
 class MigratableDatesControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestMigratableDatesController extends MigratableDatesController
+  val signUpAfterView = app.injector.instanceOf[sign_up_after_this_date]
+  val signUpBetweenView = app.injector.instanceOf[sign_up_between_these_dates]
+
+  object TestMigratableDatesController extends MigratableDatesController(signUpAfterView, signUpBetweenView)
 
   def testGetRequest(date: Option[LocalDate] = None, cutoffDate: Option[LocalDate] = None): FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest("GET", "/client/error/sign-up-later").withSession(migratableDatesKey -> Json.toJson(MigratableDates(date, cutoffDate)).toString())
@@ -64,7 +67,7 @@ class MigratableDatesControllerSpec extends UnitSpec with GuiceOneAppPerSuite wi
         contentType(result) shouldBe Some("text/html")
         charset(result) shouldBe Some("utf-8")
 
-        contentAsString(result) shouldBe sign_up_after_this_date(testDate).body
+        contentAsString(result) shouldBe signUpAfterView(testDate).body
       }
     }
 
@@ -82,7 +85,7 @@ class MigratableDatesControllerSpec extends UnitSpec with GuiceOneAppPerSuite wi
         contentType(result) shouldBe Some("text/html")
         charset(result) shouldBe Some("utf-8")
 
-        contentAsString(result) shouldBe sign_up_between_these_dates(testDate, testDate2).body
+        contentAsString(result) shouldBe signUpBetweenView(testDate, testDate2).body
       }
     }
   }

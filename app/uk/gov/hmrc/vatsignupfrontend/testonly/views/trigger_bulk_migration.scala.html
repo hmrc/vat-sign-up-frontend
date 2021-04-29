@@ -14,11 +14,19 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.play.views.html.helpers.form
 @import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 @import uk.gov.hmrc.vatsignupfrontend.views.html._
 @import uk.gov.hmrc.vatsignupfrontend.views.html.helpers._
 @import uk.gov.hmrc.vatsignupfrontend.forms.VatNumberForm._
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(
+        main_template: main_template,
+        summaryErrorHelper: summaryErrorHelper,
+        inputHelper: inputHelper,
+        form: FormWithCSRF,
+        continueButton: continueButton
+)
 
 @(vatNumberForm: Form[String], postAction: Call)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 

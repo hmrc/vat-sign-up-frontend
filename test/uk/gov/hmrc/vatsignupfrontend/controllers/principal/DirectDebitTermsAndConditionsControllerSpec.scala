@@ -23,10 +23,13 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
 import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup
 import uk.gov.hmrc.vatsignupfrontend.controllers.ControllerSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.direct_debit_terms_and_conditions
 
 class DirectDebitTermsAndConditionsControllerSpec extends ControllerSpec {
 
-  object TestDirectDebitTermsAndConditionsController extends DirectDebitTermsAndConditionsController
+  val view = app.injector.instanceOf[direct_debit_terms_and_conditions]
+
+  object TestDirectDebitTermsAndConditionsController extends DirectDebitTermsAndConditionsController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/direct-debit-terms-and-conditions")
   lazy val testPostRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("POST", "/direct-debit-terms-and-conditions")

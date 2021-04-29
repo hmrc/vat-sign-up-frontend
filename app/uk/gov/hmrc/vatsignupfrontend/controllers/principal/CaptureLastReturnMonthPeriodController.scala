@@ -28,13 +28,13 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_last_return_mo
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CaptureLastReturnMonthPeriodController @Inject()(implicit ec: ExecutionContext,
+class CaptureLastReturnMonthPeriodController @Inject()(view: capture_last_return_month_period)(implicit ec: ExecutionContext,
                                                          vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
-      Future.successful(Ok(capture_last_return_month_period(
+      Future.successful(Ok(view(
         monthForm = monthForm,
         postAction = routes.CaptureLastReturnMonthPeriodController.submit()
       )))
@@ -46,7 +46,7 @@ class CaptureLastReturnMonthPeriodController @Inject()(implicit ec: ExecutionCon
       monthForm.bindFromRequest.fold(
         formWithErrors =>
           Future.successful(BadRequest(
-            capture_last_return_month_period(formWithErrors, routes.CaptureLastReturnMonthPeriodController.submit())
+            view(formWithErrors, routes.CaptureLastReturnMonthPeriodController.submit())
           )),
         lastReturnMonthPeriod =>
           Future.successful(

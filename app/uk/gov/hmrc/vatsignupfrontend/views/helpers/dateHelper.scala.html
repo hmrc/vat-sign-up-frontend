@@ -17,6 +17,14 @@
 @import play.api.data.Form
 @import play.api.data.Field
 @import uk.gov.hmrc.vatsignupfrontend.forms.submapping.DateMapping._
+@import uk.gov.hmrc.vatsignupfrontend.forms.validation.ErrorMessageHelper._
+@import uk.gov.hmrc.vatsignupfrontend.views.html.helpers.labelHelper
+@import uk.gov.hmrc.vatsignupfrontend.views.html.helpers.inputHelper
+
+@this(
+    labelHelper: labelHelper,
+    inputHelper: inputHelper
+)
 
 @(field: Field,
         label: Option[String] = None,
@@ -24,7 +32,7 @@
         parentForm: Form[_]
 )(implicit messages: Messages)
 
-@import uk.gov.hmrc.vatsignupfrontend.forms.validation.ErrorMessageHelper._
+
 
 @hasErrors = @{ parentForm.errors(field.name).nonEmpty }
 

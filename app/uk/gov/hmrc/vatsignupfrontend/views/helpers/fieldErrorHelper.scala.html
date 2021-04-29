@@ -17,6 +17,8 @@
 @import play.api.data.Form
 @import play.api.data.Field
 
+@this()
+
 @(field: Field, parentForm: Form[_])(implicit messages: Messages)
 
     @import uk.gov.hmrc.vatsignupfrontend.forms.validation.ErrorMessageHelper._

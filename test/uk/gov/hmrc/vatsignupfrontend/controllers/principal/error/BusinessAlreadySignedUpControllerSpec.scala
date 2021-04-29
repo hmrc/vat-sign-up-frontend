@@ -23,11 +23,13 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
-
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.bta.business_already_signed_up
 
 class BusinessAlreadySignedUpControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestBusinessAlreadySignedUpController extends BusinessAlreadySignedUpController
+  val view = app.injector.instanceOf[business_already_signed_up]
+
+  object TestBusinessAlreadySignedUpController extends BusinessAlreadySignedUpController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/bta/business-already-signed-up")
 

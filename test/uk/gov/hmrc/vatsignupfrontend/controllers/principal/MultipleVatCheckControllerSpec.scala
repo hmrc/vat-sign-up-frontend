@@ -32,10 +32,13 @@ import uk.gov.hmrc.vatsignupfrontend.services.mocks.MockStoreVatNumberOrchestrat
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 
 import scala.concurrent.Future
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.multiple_vat_check
 
 class MultipleVatCheckControllerSpec extends UnitSpec with MockVatControllerComponents with MockStoreVatNumberOrchestrationService {
 
-  object TestMultipleVatCheckController extends MultipleVatCheckController(mockStoreVatNumberOrchestrationService)
+  val view = app.injector.instanceOf[multiple_vat_check]
+
+  object TestMultipleVatCheckController extends MultipleVatCheckController(mockStoreVatNumberOrchestrationService, view)
 
   val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/more-than-one-vat-business")
 

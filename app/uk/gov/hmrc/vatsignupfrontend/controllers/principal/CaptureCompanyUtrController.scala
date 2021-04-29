@@ -28,8 +28,9 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_company_utr
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CaptureCompanyUtrController @Inject()(implicit ec: ExecutionContext,
-                                              vcc: VatControllerComponents)
+class CaptureCompanyUtrController @Inject()(view: capture_company_utr)
+                                           (implicit ec: ExecutionContext,
+                                            vcc: VatControllerComponents)
 
   extends AuthenticatedController(AdministratorRolePredicate) {
 
@@ -37,7 +38,7 @@ class CaptureCompanyUtrController @Inject()(implicit ec: ExecutionContext,
     implicit request =>
       authorised() {
         Future.successful(
-          Ok(capture_company_utr(companyUtrForm.form, routes.CaptureCompanyUtrController.submit()))
+          Ok(view(companyUtrForm.form, routes.CaptureCompanyUtrController.submit()))
         )
       }
   }
@@ -48,7 +49,7 @@ class CaptureCompanyUtrController @Inject()(implicit ec: ExecutionContext,
         companyUtrForm.bindFromRequest.fold(
           formWithErrors =>
             Future.successful(
-              BadRequest(capture_company_utr(formWithErrors, routes.CaptureCompanyUtrController.submit()))
+              BadRequest(view(formWithErrors, routes.CaptureCompanyUtrController.submit()))
             ),
           companyUtr =>
             Future.successful(

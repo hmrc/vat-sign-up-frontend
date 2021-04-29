@@ -23,10 +23,13 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.cannot_use_service_yet
 
 class CannotUseServiceControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestCannotUseServiceController extends CannotUseServiceController
+  val view = app.injector.instanceOf[cannot_use_service_yet]
+
+  object TestCannotUseServiceController extends CannotUseServiceController(view)
 
   lazy val testGetRequest = FakeRequest("GET", "/client/error/cannot-use-service-yet")
   lazy val testPostRequest: FakeRequest[AnyContentAsEmpty.type] =

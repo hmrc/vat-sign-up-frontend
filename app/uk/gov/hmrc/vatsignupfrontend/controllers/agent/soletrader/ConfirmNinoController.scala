@@ -33,7 +33,8 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.soletrader.confirm_nino
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ConfirmNinoController @Inject()(storeNinoService: StoreNinoService)
+class ConfirmNinoController @Inject()(storeNinoService: StoreNinoService,
+                                      view: confirm_nino)
                                      (implicit ec: ExecutionContext,
                                       vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
@@ -50,7 +51,7 @@ class ConfirmNinoController @Inject()(storeNinoService: StoreNinoService)
           Future.successful(Redirect(routes.CaptureNinoController.show()))
         case (Some(businessEntity), Some(nino)) =>
           Future.successful(
-            Ok(confirm_nino(businessEntity, nino, routes.ConfirmNinoController.submit()))
+            Ok(view(businessEntity, nino, routes.ConfirmNinoController.submit()))
           )
       }
     }

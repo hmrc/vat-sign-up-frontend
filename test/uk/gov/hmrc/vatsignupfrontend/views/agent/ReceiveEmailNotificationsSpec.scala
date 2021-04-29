@@ -26,10 +26,12 @@ import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.forms.ContactPreferencesForm
 import uk.gov.hmrc.vatsignupfrontend.forms.ContactPreferencesForm._
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.receive_email_notifications
 
 
 class ReceiveEmailNotificationsSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[receive_email_notifications]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
@@ -38,7 +40,7 @@ class ReceiveEmailNotificationsSpec extends ViewSpec {
 
     "There are no form errors" should {
 
-      lazy val page = uk.gov.hmrc.vatsignupfrontend.views.html.agent.receive_email_notifications(
+      lazy val page = view(
         contactPreferencesForm(isAgent = true),
         postAction = testCall)(
         request,
@@ -110,7 +112,7 @@ class ReceiveEmailNotificationsSpec extends ViewSpec {
 
   "There are form errors as a preference hasn't been selected" should {
 
-    lazy val page = uk.gov.hmrc.vatsignupfrontend.views.html.agent.receive_email_notifications(
+    lazy val page = view(
       contactPreferencesForm(isAgent = true).bind(Map(ContactPreferencesForm.contactPreference -> "")),
       postAction = testCall)(
       request,

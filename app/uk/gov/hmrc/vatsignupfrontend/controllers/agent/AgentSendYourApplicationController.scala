@@ -31,14 +31,15 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AgentSendYourApplicationController @Inject()(migratedSubmissionService: MigratedSubmissionService,
-                                                   submissionService: SubmissionService)
+                                                   submissionService: SubmissionService,
+                                                   view: send_your_application)
                                                   (implicit ec: ExecutionContext,
                                                    vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
-      Future.successful(Ok(send_your_application(routes.AgentSendYourApplicationController.submit())))
+      Future.successful(Ok(view(routes.AgentSendYourApplicationController.submit())))
     }
   }
 

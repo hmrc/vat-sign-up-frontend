@@ -33,20 +33,20 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ConfirmEmailController @Inject()(storeEmailAddressService: StoreEmailAddressService,
-                                       emailVerificationService: EmailVerificationService)
+                                       emailVerificationService: EmailVerificationService,
+                                       view: confirm_email)
                                       (implicit ec: ExecutionContext,
                                        vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
-
   val show: Action[AnyContent] = Action.async { implicit request =>
-    authorised() {
+      authorised() {
       val optVatNumber = request.session.get(SessionKeys.vatNumberKey).filter(_.nonEmpty)
       val optEmail = request.session.get(SessionKeys.emailKey).filter(_.nonEmpty)
 
       (optVatNumber, optEmail) match {
         case (Some(_), Some(email)) =>
           Future.successful(
-            Ok(confirm_email(email, routes.ConfirmEmailController.submit()))
+            Ok(view(email, routes.ConfirmEmailController.submit()))
           )
         case (None, _) =>
           Future.successful(

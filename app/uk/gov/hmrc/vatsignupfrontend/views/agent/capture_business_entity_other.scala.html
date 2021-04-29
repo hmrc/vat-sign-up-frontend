@@ -20,6 +20,15 @@
 @import uk.gov.hmrc.vatsignupfrontend.models.BusinessEntity
 @import uk.gov.hmrc.vatsignupfrontend.views.html._
 @import uk.gov.hmrc.vatsignupfrontend.views.html.helpers.{continueButton, radioHelper, summaryErrorHelper}
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(
+        agent_main_template: agent_main_template,
+        summaryErrorHelper: summaryErrorHelper,
+        form: FormWithCSRF,
+        radioHelper: radioHelper,
+        continueButton: continueButton
+)
 
 @(businessEntityForm: Form[BusinessEntity],
   postAction: Call

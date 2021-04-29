@@ -23,10 +23,13 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.choose_software_error
 
 class ChooseSoftwareErrorControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestChooseSoftwareErrorController extends ChooseSoftwareErrorController
+  val view = app.injector.instanceOf[choose_software_error]
+
+  object TestChooseSoftwareErrorController extends ChooseSoftwareErrorController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/error/choose-software")
 

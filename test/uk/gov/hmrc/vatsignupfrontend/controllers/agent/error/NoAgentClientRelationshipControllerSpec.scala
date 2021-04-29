@@ -22,10 +22,13 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.no_agent_client_relationship
 
 class NoAgentClientRelationshipControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestNoAgentClientRelationshipController extends NoAgentClientRelationshipController
+  val view = app.injector.instanceOf[no_agent_client_relationship]
+
+  object TestNoAgentClientRelationshipController extends NoAgentClientRelationshipController(view)
 
   lazy val testGetRequest = FakeRequest("GET", "/client/error/not-authorised")
 

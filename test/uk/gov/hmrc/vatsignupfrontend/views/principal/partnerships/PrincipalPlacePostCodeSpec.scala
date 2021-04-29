@@ -24,15 +24,16 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{PartnershipPrincipalP
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.forms.PartnershipPostCodeForm._
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
-
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.principal_place_post_code
 
 class PrincipalPlacePostCodeSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[principal_place_post_code]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.principal_place_post_code(
+  lazy val page: HtmlFormat.Appendable = view(
     businessPostCodeForm = partnershipPostCodeForm(isAgent = false).form,
     postAction = testCall)(
     request,

@@ -24,16 +24,17 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{PrincipalDeregistered
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants.testVatNumber
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.deregistered_enrolled
 
 class DeregisteredEnrolledViewSpec extends ViewSpec {
 
   val testLink: String = "test/test"
-
+  val view = app.injector.instanceOf[deregistered_enrolled]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.deregistered_enrolled(
+  lazy val page: HtmlFormat.Appendable = view(
     testVatNumber)(
     request,
     messagesApi.preferred(request),

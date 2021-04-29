@@ -32,7 +32,8 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.capture_company_number
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CaptureRegisteredSocietyCompanyNumberController @Inject()(getCompanyNameService: GetCompanyNameService)
+class CaptureRegisteredSocietyCompanyNumberController @Inject()(getCompanyNameService: GetCompanyNameService,
+                                                                view: capture_company_number)
                                                                (implicit ec: ExecutionContext,
                                                                 vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
@@ -43,7 +44,7 @@ class CaptureRegisteredSocietyCompanyNumberController @Inject()(getCompanyNameSe
     implicit request =>
       authorised() {
         Future.successful(
-          Ok(capture_company_number(validateCompanyNumberForm.form, routes.CaptureRegisteredSocietyCompanyNumberController.submit()))
+          Ok(view(validateCompanyNumberForm.form, routes.CaptureRegisteredSocietyCompanyNumberController.submit()))
         )
       }
   }
@@ -54,7 +55,7 @@ class CaptureRegisteredSocietyCompanyNumberController @Inject()(getCompanyNameSe
         validateCompanyNumberForm.bindFromRequest.fold(
           formWithErrors =>
             Future.successful(
-              BadRequest(capture_company_number(formWithErrors, routes.CaptureCompanyNumberController.submit()))
+              BadRequest(view(formWithErrors, routes.CaptureCompanyNumberController.submit()))
             ),
           companyNumber =>
             if (companyNumber.startsWith("BR")) {

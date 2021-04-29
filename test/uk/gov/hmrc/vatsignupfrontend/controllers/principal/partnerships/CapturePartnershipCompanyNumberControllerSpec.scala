@@ -34,11 +34,14 @@ import uk.gov.hmrc.vatsignupfrontend.models.companieshouse.NonPartnershipEntity
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.MockGetCompanyNameService
 
 import scala.concurrent.Future
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.capture_partnership_company_number
 
 class CapturePartnershipCompanyNumberControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents
   with MockGetCompanyNameService {
 
-  object TestCaptureCompanyNumberController extends CapturePartnershipCompanyNumberController(mockGetCompanyNameService)
+  val view = app.injector.instanceOf[capture_partnership_company_number]
+
+  object TestCaptureCompanyNumberController extends CapturePartnershipCompanyNumberController(mockGetCompanyNameService, view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/partnership-company-number")
 

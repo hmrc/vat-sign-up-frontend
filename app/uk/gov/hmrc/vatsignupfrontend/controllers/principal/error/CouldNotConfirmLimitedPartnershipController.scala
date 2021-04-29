@@ -27,14 +27,15 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.could_not
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CouldNotConfirmLimitedPartnershipController @Inject()(implicit ec: ExecutionContext,
-                                                              vcc: VatControllerComponents)
+class CouldNotConfirmLimitedPartnershipController @Inject()(view: could_not_confirm_limited_partnership)
+                                                           (implicit ec: ExecutionContext,
+                                                            vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       Future.successful(
-        Ok(could_not_confirm_limited_partnership(routes.CouldNotConfirmLimitedPartnershipController.submit())))
+        Ok(view(routes.CouldNotConfirmLimitedPartnershipController.submit())))
     }
   }
 

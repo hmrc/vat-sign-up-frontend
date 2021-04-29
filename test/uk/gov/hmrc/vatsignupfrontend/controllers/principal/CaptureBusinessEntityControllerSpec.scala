@@ -32,14 +32,18 @@ import uk.gov.hmrc.vatsignupfrontend.services.mocks.{MockAdministrativeDivisionL
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 
 import scala.concurrent.Future
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_business_entity
 
 class CaptureBusinessEntityControllerSpec extends UnitSpec with GuiceOneAppPerSuite
   with MockVatControllerComponents with MockAdministrativeDivisionLookupService
   with MockStoreOverseasInformationService {
 
+  val view = app.injector.instanceOf[capture_business_entity]
+
   object TestCaptureBusinessEntityController extends CaptureBusinessEntityController(
     mockStoreOverseasInformationService,
-    mockAdministrativeDivisionLookupService
+    mockAdministrativeDivisionLookupService,
+    view
   )
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/business-type").withSession(SessionKeys.vatNumberKey -> testVatNumber)

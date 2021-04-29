@@ -26,10 +26,12 @@ import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.forms.Box5FigureForm._
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_box_5_figure
 
 class CaptureBox5FigureControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestCaptureBox5FigureController extends CaptureBox5FigureController
+  val view = app.injector.instanceOf[capture_box_5_figure]
+  object TestCaptureBox5FigureController extends CaptureBox5FigureController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/box-5-figure")
 

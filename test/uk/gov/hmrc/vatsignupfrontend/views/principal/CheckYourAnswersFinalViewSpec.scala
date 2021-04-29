@@ -29,9 +29,11 @@ import uk.gov.hmrc.vatsignupfrontend.models._
 import uk.gov.hmrc.vatsignupfrontend.utils.SummarySectionTesting
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
 import uk.gov.hmrc.vatsignupfrontend.views.helpers.CheckYourAnswersIdConstants._
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.check_your_answers_final
 
 class CheckYourAnswersFinalViewSpec extends ViewSpec with SummarySectionTesting {
 
+  val view = app.injector.instanceOf[check_your_answers_final]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
@@ -44,7 +46,7 @@ class CheckYourAnswersFinalViewSpec extends ViewSpec with SummarySectionTesting 
            emailAddress: String = testEmail,
            contactPreference: ContactPreference = Digital,
            isAdministrativeDivision: Boolean = false
-          ): Html = uk.gov.hmrc.vatsignupfrontend.views.html.principal.check_your_answers_final(
+          ): Html = view(
     vatNumber = testVatNumber,
     businessEntity = optBusinessEntity,
     optNino = optNino,

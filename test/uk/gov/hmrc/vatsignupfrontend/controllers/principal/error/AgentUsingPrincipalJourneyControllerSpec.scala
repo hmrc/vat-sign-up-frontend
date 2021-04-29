@@ -23,10 +23,13 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.agent_using_principal_journey
 
 class AgentUsingPrincipalJourneyControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestAgentUsingPrincipalJourneyController extends AgentUsingPrincipalJourneyController
+  val view = app.injector.instanceOf[agent_using_principal_journey]
+
+  object TestAgentUsingPrincipalJourneyController extends AgentUsingPrincipalJourneyController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/error/wrong-account-type")
 

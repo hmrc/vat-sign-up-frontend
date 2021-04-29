@@ -26,10 +26,13 @@ import uk.gov.hmrc.vatsignupfrontend.forms.PreviousVatReturnForm._
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.models.{No, Yes}
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.previous_vat_return
 
 class PreviousVatReturnControllerSpec extends UnitSpec with MockVatControllerComponents {
 
-  object TestPreviousVatReturnController extends PreviousVatReturnController
+  val view = app.injector.instanceOf[previous_vat_return]
+
+  object TestPreviousVatReturnController extends PreviousVatReturnController(view)
 
   val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/submitted-vat-return")
 

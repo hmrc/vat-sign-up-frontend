@@ -23,14 +23,16 @@ import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{AgentCouldNotConfirmPartnership => messages, Base => base}
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.partnerships.could_not_confirm_partnership
 
 class CouldNotConfirmPartnershipSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[could_not_confirm_partnership]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.agent.partnerships.could_not_confirm_partnership(
+  lazy val page: HtmlFormat.Appendable = view(
     postAction = testCall)(
     request,
     messagesApi.preferred(request),

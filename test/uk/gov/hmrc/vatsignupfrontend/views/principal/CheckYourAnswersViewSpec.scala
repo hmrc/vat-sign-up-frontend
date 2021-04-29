@@ -31,12 +31,14 @@ import uk.gov.hmrc.vatsignupfrontend.models._
 import uk.gov.hmrc.vatsignupfrontend.utils.SummarySectionTesting
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
 import uk.gov.hmrc.vatsignupfrontend.views.helpers.CheckYourAnswersIdConstants._
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.check_your_answers
 
 class CheckYourAnswersViewSpec extends ViewSpec with SummarySectionTesting {
 
   val testRegistrationDate: DateModel = DateModel.dateConvert(LocalDate.now())
   val testEntity: BusinessEntity = SoleTrader
 
+  val view = app.injector.instanceOf[check_your_answers]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
@@ -45,7 +47,7 @@ class CheckYourAnswersViewSpec extends ViewSpec with SummarySectionTesting {
            optLastReturnMonthPeriod: Option[String] = None,
            optPreviousVatReturn: Option[String] = None,
            optPostCode: Option[PostCode] = Some(testBusinessPostcode)
-          ): Html = uk.gov.hmrc.vatsignupfrontend.views.html.principal.check_your_answers(
+          ): Html = view(
     vatNumber = testVatNumber,
     registrationDate = testRegistrationDate,
     optPostCode = optPostCode,

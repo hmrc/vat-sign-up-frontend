@@ -18,6 +18,14 @@
 @import uk.gov.hmrc.vatsignupfrontend.views.html._
 @import uk.gov.hmrc.vatsignupfrontend.views.html.helpers.signOutButton
 
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(
+        principal_main_template: principal_main_template,
+        form: FormWithCSRF,
+        signOutButton: signOutButton
+)
+
 @()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @principal_main_template(title = Messages("principal.cannot_use_service.title"),

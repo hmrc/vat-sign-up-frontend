@@ -17,7 +17,6 @@
 package uk.gov.hmrc.vatsignupfrontend.controllers.principal
 
 import java.time.LocalDate
-
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
@@ -38,6 +37,7 @@ import uk.gov.hmrc.vatsignupfrontend.models.{DateModel, MigratableDates, Oversea
 import uk.gov.hmrc.vatsignupfrontend.services.StoreVatNumberOrchestrationService._
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.MockStoreVatNumberOrchestrationService
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_vat_number
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -53,7 +53,9 @@ class CaptureVatNumberControllerSpec extends UnitSpec
     super.beforeEach()
   }
 
-  object TestCaptureVatNumberController extends CaptureVatNumberController(mockStoreVatNumberOrchestrationService)
+  val view = app.injector.instanceOf[capture_vat_number]
+
+  object TestCaptureVatNumberController extends CaptureVatNumberController(mockStoreVatNumberOrchestrationService, view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/vat-number")
 

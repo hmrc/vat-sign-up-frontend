@@ -24,14 +24,16 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{PrincipalCaptureEmail
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.forms.EmailForm._
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_email
 
 class CaptureEmailSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[capture_email]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val DDpage: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_email(
+  lazy val DDpage: HtmlFormat.Appendable = view(
     hasDirectDebit = true,
     emailForm = emailForm(isAgent = false).form,
     postAction = testCall)(
@@ -69,7 +71,7 @@ class CaptureEmailSpec extends ViewSpec {
     testPage.shouldHaveALink("disclaimer", messages.link, appConfig.disclaimer)
   }
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_email(
+  lazy val page: HtmlFormat.Appendable = view(
     hasDirectDebit = false,
     emailForm = emailForm(isAgent = false).form,
     postAction = testCall)(

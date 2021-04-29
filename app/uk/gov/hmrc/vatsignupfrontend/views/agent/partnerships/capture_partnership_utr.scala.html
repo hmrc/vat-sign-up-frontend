@@ -20,6 +20,18 @@
 @import uk.gov.hmrc.vatsignupfrontend.views.html._
 @import uk.gov.hmrc.vatsignupfrontend.views.html.helpers._
 @import uk.gov.hmrc.vatsignupfrontend.controllers.agent.partnerships.routes.CapturePartnershipUtrController.noUtrSelected
+@import uk.gov.hmrc.vatsignupfrontend.views.html.main_template
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(
+        layout: agent_main_template,
+        summaryErrorHelper: summaryErrorHelper,
+        form: FormWithCSRF,
+        labelHelper: labelHelper,
+        inputHelper: inputHelper,
+        accordionHelper: accordionHelper,
+        continueButton: continueButton
+)
 
 @(partnershipUtrForm: Form[String], postAction: Call, displayNoSautrLink: Boolean)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
@@ -37,7 +49,7 @@
     </p>
 }
 
-@agent_main_template(title = Messages("agent.capture_partnership_utr.title"), bodyClasses = None, form = Some(partnershipUtrForm)) {
+@layout(title = Messages("agent.capture_partnership_utr.title"), bodyClasses = None, form = Some(partnershipUtrForm)) {
     @summaryErrorHelper(partnershipUtrForm)
 
     @form(action = postAction) {

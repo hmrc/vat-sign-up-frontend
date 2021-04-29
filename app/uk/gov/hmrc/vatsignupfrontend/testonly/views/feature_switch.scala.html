@@ -19,6 +19,10 @@
 @import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.FeatureSwitch
 @import uk.gov.hmrc.vatsignupfrontend.views.html.main_template
 
+@this(
+        main_template: main_template
+)
+
 @(switchNames: Map[FeatureSwitch, Boolean], backendFeatureSwitches: Map[String, Boolean], action: Call)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @main_template(title = Messages("Feature switch")) {

@@ -24,15 +24,17 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{PrincipalPlaceOfBusin
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.forms.BusinessPostCodeForm._
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.principal_place_of_business
 
 
 class PrincipalPlaceOfBusinessSpec extends ViewSpec {
 
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
+  lazy val view = app.injector.instanceOf[principal_place_of_business]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.principal_place_of_business(
+  lazy val page: HtmlFormat.Appendable = view(
     businessPostCodeForm = businessPostCodeForm.form,
     postAction = testCall)(
     request,

@@ -32,6 +32,7 @@ import uk.gov.hmrc.vatsignupfrontend.models._
 import uk.gov.hmrc.vatsignupfrontend.models.companieshouse.{LimitedLiabilityPartnership, NonPartnershipEntity}
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.{MockAdministrativeDivisionLookupService, MockGetCompanyNameService, MockStoreVatNumberService, MockSubmissionService}
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.check_your_answers_final
 
 import scala.concurrent.Future
 
@@ -43,10 +44,12 @@ class CheckYourAnswersFinalControllerSpec extends UnitSpec with GuiceOneAppPerSu
   with MockGetCompanyNameService
   with MockAdministrativeDivisionLookupService {
 
+  val view = app.injector.instanceOf[check_your_answers_final]
+
   object TestCheckYourAnswersFinalController
     extends CheckYourAnswersFinalController(
       mockStoreVatNumberService, mockSubscriptionRequestSummaryConnector, mockSubmissionService,
-      mockGetCompanyNameService, mockAdministrativeDivisionLookupService
+      mockGetCompanyNameService, mockAdministrativeDivisionLookupService, view
     )
 
   def testGetRequest(vatNumber: Option[String] = Some(testVatNumber)

@@ -23,6 +23,15 @@
 @import uk.gov.hmrc.vatsignupfrontend.views.html._
 @import uk.gov.hmrc.vatsignupfrontend.views.html.helpers.{continueButton, summaryRowHelper}
 
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(
+        principal_main_template: principal_main_template,
+        form: FormWithCSRF,
+        summaryRowHelper: summaryRowHelper,
+        continueButton: continueButton
+)
+
 @(entityType: BusinessEntity,
         partnershipUtr: Option[String],
         companyNumber: Option[String],

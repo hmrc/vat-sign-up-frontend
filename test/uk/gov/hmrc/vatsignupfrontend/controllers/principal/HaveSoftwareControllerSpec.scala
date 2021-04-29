@@ -24,10 +24,13 @@ import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.controllers.principal.error.{routes => errorRoutes}
 import uk.gov.hmrc.vatsignupfrontend.forms.HaveSoftwareForm._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.have_software
 
 class HaveSoftwareControllerSpec extends UnitSpec with MockVatControllerComponents {
 
-  object TestHaveSoftwareController extends HaveSoftwareController
+  val view = app.injector.instanceOf[have_software]
+
+  object TestHaveSoftwareController extends HaveSoftwareController(view)
 
   val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/have-software")
 

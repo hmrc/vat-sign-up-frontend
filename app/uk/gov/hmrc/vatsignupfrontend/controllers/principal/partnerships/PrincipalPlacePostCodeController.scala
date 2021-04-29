@@ -31,8 +31,9 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.principal
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class PrincipalPlacePostCodeController @Inject()(implicit ec: ExecutionContext,
-                                                   vcc: VatControllerComponents)
+class PrincipalPlacePostCodeController @Inject()(view: principal_place_post_code)
+                                                (implicit ec: ExecutionContext,
+                                                 vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   val postCodeForm: PrevalidationAPI[PostCode] = partnershipPostCodeForm(isAgent = false)
@@ -41,7 +42,7 @@ class PrincipalPlacePostCodeController @Inject()(implicit ec: ExecutionContext,
     implicit request =>
       authorised() {
         Future.successful(
-          Ok(principal_place_post_code(postCodeForm.form, routes.PrincipalPlacePostCodeController.submit()))
+          Ok(view(postCodeForm.form, routes.PrincipalPlacePostCodeController.submit()))
         )
       }
   }
@@ -52,7 +53,7 @@ class PrincipalPlacePostCodeController @Inject()(implicit ec: ExecutionContext,
         postCodeForm.bindFromRequest.fold(
           formWithErrors =>
             Future.successful(
-              BadRequest(principal_place_post_code(formWithErrors, routes.PrincipalPlacePostCodeController.submit()))
+              BadRequest(view(formWithErrors, routes.PrincipalPlacePostCodeController.submit()))
             ),
           partnershipPostCode =>
             Future.successful(

@@ -25,14 +25,16 @@ import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.forms.EmailForm._
 import uk.gov.hmrc.vatsignupfrontend.models.Digital
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.capture_client_email
 
 class CaptureClientEmailSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[capture_client_email]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.agent.capture_client_email(
+  lazy val page: HtmlFormat.Appendable = view(
     hasDirectDebit = false,
     emailForm = emailForm(isAgent = true).form,
     postAction = testCall)(
@@ -67,7 +69,7 @@ class CaptureClientEmailSpec extends ViewSpec {
     testPage.shouldHaveContinueButton()
   }
 
-  lazy val ddPageAndDigital = uk.gov.hmrc.vatsignupfrontend.views.html.agent.capture_client_email(
+  lazy val ddPageAndDigital = view(
     hasDirectDebit = true,
     emailForm = emailForm(isAgent = true).form,
     postAction = testCall)(

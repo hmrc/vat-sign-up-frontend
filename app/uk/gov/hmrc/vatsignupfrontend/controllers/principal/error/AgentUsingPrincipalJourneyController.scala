@@ -27,13 +27,14 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.agent_using_principal_
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AgentUsingPrincipalJourneyController @Inject()(implicit ec: ExecutionContext,
-                                                       vcc: VatControllerComponents)
+class AgentUsingPrincipalJourneyController @Inject()(view: agent_using_principal_journey)
+                                                    (implicit ec: ExecutionContext,
+                                                     vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
-      Future.successful(Ok(agent_using_principal_journey(agentRoutes.CaptureVatNumberController.show())))
+      Future.successful(Ok(view(agentRoutes.CaptureVatNumberController.show())))
     }
   }
 

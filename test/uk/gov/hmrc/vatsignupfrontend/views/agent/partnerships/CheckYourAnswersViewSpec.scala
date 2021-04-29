@@ -31,10 +31,12 @@ import uk.gov.hmrc.vatsignupfrontend.models.{GeneralPartnership, LimitedPartners
 import uk.gov.hmrc.vatsignupfrontend.utils.SummarySectionTesting
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
 import uk.gov.hmrc.vatsignupfrontend.views.helpers.CheckYourAnswersIdConstants._
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.partnerships.check_your_answers
 
 
 class CheckYourAnswersViewSpec extends ViewSpec with SummarySectionTesting {
 
+  val view = app.injector.instanceOf[check_your_answers]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
@@ -52,7 +54,7 @@ class CheckYourAnswersViewSpec extends ViewSpec with SummarySectionTesting {
       name = "Check your answers View",
       title = messages.title,
       heading = messages.heading,
-      page = uk.gov.hmrc.vatsignupfrontend.views.html.agent.partnerships.check_your_answers(
+      page = view(
         utr = Some(testSaUtr),
         entityType = GeneralPartnership,
         Some(testBusinessPostcode),
@@ -67,7 +69,7 @@ class CheckYourAnswersViewSpec extends ViewSpec with SummarySectionTesting {
 
     "the saUtr and the post code are given for a general partnership" should {
       "render the page correctly" in {
-        lazy val page: Html = uk.gov.hmrc.vatsignupfrontend.views.html.agent.partnerships.check_your_answers(
+        lazy val page: Html = view(
           utr = Some(testSaUtr),
           entityType = GeneralPartnership,
           Some(testBusinessPostcode),
@@ -98,7 +100,7 @@ class CheckYourAnswersViewSpec extends ViewSpec with SummarySectionTesting {
 
       "the General Partnership has an optional SA UTR" should {
         "render the page correctly" in {
-          lazy val page: Html = uk.gov.hmrc.vatsignupfrontend.views.html.agent.partnerships.check_your_answers(
+          lazy val page: Html = view(
             utr = None,
             entityType = GeneralPartnership,
             postCode = None,
@@ -123,7 +125,7 @@ class CheckYourAnswersViewSpec extends ViewSpec with SummarySectionTesting {
 
         "the saUtr, company number and the post code are given for a limited partnership" should {
           "render the page correctly" in {
-            lazy val page: Html = uk.gov.hmrc.vatsignupfrontend.views.html.agent.partnerships.check_your_answers(
+            lazy val page: Html = view(
               utr = Some(testSaUtr),
               entityType = LimitedPartnership,
               Some(testBusinessPostcode),

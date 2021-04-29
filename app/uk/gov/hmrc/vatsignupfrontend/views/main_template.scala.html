@@ -19,6 +19,13 @@
 @import uk.gov.hmrc.vatsignupfrontend.controllers.principal.routes.{SessionTimeoutController => principalSessionTimeoutController}
 @import uk.gov.hmrc.http.SessionKeys
 @import play.twirl.api.HtmlFormat
+@import uk.gov.hmrc.vatsignupfrontend.views.html.govuk_wrapper
+@import uk.gov.hmrc.play.views.html.layouts.Sidebar
+
+@this(
+    govuk_wrapper: govuk_wrapper,
+    sidebarLayout: Sidebar
+)
 
 @(title: String,
   navTitle: Option[String] = None,
@@ -67,7 +74,7 @@
 
 @sidebar = {
     @if(sidebarLinks.isDefined) {
-        @layouts.sidebar(sidebarLinks.get, Some("sidebar"))
+        @sidebarLayout(sidebarLinks.get, Some("sidebar"))
     }
 }
 

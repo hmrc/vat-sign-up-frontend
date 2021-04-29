@@ -28,14 +28,15 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_box_5_figure
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CaptureBox5FigureController @Inject()(implicit ec: ExecutionContext,
-                                              vcc: VatControllerComponents)
+class CaptureBox5FigureController @Inject()(view: capture_box_5_figure)
+                                           (implicit ec: ExecutionContext,
+                                            vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   def show: Action[AnyContent] = Action.async {
     implicit request =>
       authorised() {
-        Future.successful(Ok(capture_box_5_figure(box5FigureForm.form, routes.CaptureBox5FigureController.submit())))
+        Future.successful(Ok(view(box5FigureForm.form, routes.CaptureBox5FigureController.submit())))
       }
   }
 
@@ -45,7 +46,7 @@ class CaptureBox5FigureController @Inject()(implicit ec: ExecutionContext,
         box5FigureForm.bindFromRequest.fold(
           formWithErrors =>
             Future.successful(
-              BadRequest(capture_box_5_figure(formWithErrors, routes.CaptureBox5FigureController.submit()))
+              BadRequest(view(formWithErrors, routes.CaptureBox5FigureController.submit()))
             )
           ,
           formBox5Figure =>

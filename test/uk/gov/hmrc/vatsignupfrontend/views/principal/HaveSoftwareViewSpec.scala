@@ -25,17 +25,18 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{HaveSoftware => messa
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.forms.HaveSoftwareForm._
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
-
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.have_software
 
 class HaveSoftwareViewSpec extends ViewSpec {
 
   val error = "error.have_software"
 
+  val view = app.injector.instanceOf[have_software]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.have_software(
+  lazy val page: HtmlFormat.Appendable = view(
     haveSoftwareForm,
     postAction = testCall)(
     request,

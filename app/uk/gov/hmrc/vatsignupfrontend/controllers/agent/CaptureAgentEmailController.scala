@@ -28,7 +28,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CaptureAgentEmailController @Inject()(implicit ec: ExecutionContext,
+class CaptureAgentEmailController @Inject()(view: capture_agent_email)(implicit ec: ExecutionContext,
                                             vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
 
@@ -43,7 +43,7 @@ class CaptureAgentEmailController @Inject()(implicit ec: ExecutionContext,
         case (Some(isMigrated), _) if isMigrated =>
           Future.successful(Redirect(routes.AgentSendYourApplicationController.show()))
         case (_, None) =>
-          Future.successful(Ok(capture_agent_email(validateEmailForm.form, routes.CaptureAgentEmailController.submit())))
+          Future.successful(Ok(view(validateEmailForm.form, routes.CaptureAgentEmailController.submit())))
         case (_, Some(_)) =>
           Future.successful(Redirect(routes.ConfirmAgentEmailController.show()))
       }
@@ -62,7 +62,7 @@ class CaptureAgentEmailController @Inject()(implicit ec: ExecutionContext,
       validateEmailForm.bindFromRequest.fold(
         formWithErrors =>
           Future.successful(
-            BadRequest(capture_agent_email(formWithErrors, routes.CaptureAgentEmailController.submit()))
+            BadRequest(view(formWithErrors, routes.CaptureAgentEmailController.submit()))
           ),
         email =>
           // UPDATE WHEN NEW ENTER PASSCODE PAGE IS UPDATED

@@ -22,10 +22,13 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.client_verified_email
 
 class ClientVerifiedEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestClientVerifiedEmailController extends ClientVerifiedEmailController
+  val view = app.injector.instanceOf[client_verified_email]
+
+  object TestClientVerifiedEmailController extends ClientVerifiedEmailController(view)
 
   "Calling the show action of the Email Verified controller" should {
       lazy val testGetRequest = FakeRequest("GET", "/client-email-verified")

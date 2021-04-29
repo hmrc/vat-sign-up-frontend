@@ -24,6 +24,15 @@
 @import uk.gov.hmrc.vatsignupfrontend.models.LimitedCompany
 @import uk.gov.hmrc.vatsignupfrontend.views.helpers.BusinessEntityHelper
 
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(
+        principal_main_template: principal_main_template,
+        form: FormWithCSRF,
+        continueButton: continueButton,
+        summaryRowHelper: summaryRowHelper
+)
+
 @(companyNumber: String, companyUtr: String, businessEntity: BusinessEntity, postAction: Call)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @import _root_.uk.gov.hmrc.vatsignupfrontend.views.helpers.CheckYourAnswersCompanyConstants._

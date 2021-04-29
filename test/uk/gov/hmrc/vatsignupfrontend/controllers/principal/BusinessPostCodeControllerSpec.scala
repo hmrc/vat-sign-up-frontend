@@ -17,7 +17,6 @@
 package uk.gov.hmrc.vatsignupfrontend.controllers.principal
 
 import java.time.LocalDate
-
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
 import play.api.libs.json.Json
@@ -31,10 +30,14 @@ import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.models.DateModel
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.MockClaimSubscriptionService
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.principal_place_of_business
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class BusinessPostCodeControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents with MockClaimSubscriptionService {
 
-  object TestBusinessPostCodeController extends BusinessPostCodeController
+  lazy val view = app.injector.instanceOf[principal_place_of_business]
+
+  object TestBusinessPostCodeController extends BusinessPostCodeController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/business-postcode")
 

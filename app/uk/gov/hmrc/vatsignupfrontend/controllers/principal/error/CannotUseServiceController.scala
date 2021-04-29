@@ -26,13 +26,13 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.cannot_use_service_yet
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CannotUseServiceController @Inject()(implicit ec: ExecutionContext,
+class CannotUseServiceController @Inject()(view: cannot_use_service_yet)(implicit ec: ExecutionContext,
                                              vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
-      Future.successful(Ok(cannot_use_service_yet()))
+      Future.successful(Ok(view()))
     }
   }
 

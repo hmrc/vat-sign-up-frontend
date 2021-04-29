@@ -26,12 +26,14 @@ import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.forms.MonthForm
 import uk.gov.hmrc.vatsignupfrontend.models.January
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_last_return_month_period
 
 
 class CaptureLastReturnMonthPeriodControllerSpec extends UnitSpec
   with MockVatControllerComponents {
 
-  object TestCaptureLastReturnMonthPeriodController extends CaptureLastReturnMonthPeriodController
+  val view = app.injector.instanceOf[capture_last_return_month_period]
+  object TestCaptureLastReturnMonthPeriodController extends CaptureLastReturnMonthPeriodController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/last-vat-return-date")
 

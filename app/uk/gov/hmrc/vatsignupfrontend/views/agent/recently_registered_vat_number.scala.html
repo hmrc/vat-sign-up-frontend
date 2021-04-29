@@ -17,10 +17,18 @@
 @import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 @import uk.gov.hmrc.vatsignupfrontend.views.html._
 @import uk.gov.hmrc.vatsignupfrontend.views.html.helpers._
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(
+        agent_main_template: agent_main_template,
+        form: FormWithCSRF,
+        continueButtonLink: continueButtonLink,
+        alternateContinueButton: alternateContinueButton
+)
 
 @()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
-@principal_main_template(title = messages("agent.recentlyRegistered.title"), bodyClasses = None) {
+@agent_main_template(title = messages("agent.recentlyRegistered.title"), bodyClasses = None) {
 
     <h1 id="recently_registered" class="heading-xlarge">@Messages("agent.recentlyRegistered.heading")</h1>
     <p>@Messages("agent.recentlyRegistered.par1")</p>

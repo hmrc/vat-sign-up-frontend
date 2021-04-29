@@ -23,10 +23,13 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.migration_in_progress_error
 
 class MigrationInProgressErrorControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestMigrationInProgressErrorController extends MigrationInProgressErrorController
+  val view = app.injector.instanceOf[migration_in_progress_error]
+
+  object TestMigrationInProgressErrorController extends MigrationInProgressErrorController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/error/sign-up-in-progress")
 

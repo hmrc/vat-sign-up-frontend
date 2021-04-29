@@ -23,10 +23,13 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.controllers.agent.{routes => agentRoutes}
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.use_different_email_address
 
 class UseDifferentEmailAddressControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestUseDifferentEmailAddressController extends UseDifferentEmailAddressController
+  val view = app.injector.instanceOf[use_different_email_address]
+
+  object TestUseDifferentEmailAddressController extends UseDifferentEmailAddressController(view)
 
   "Calling the show action of the use different email address controller" when {
     "show the use different email address controller" in {

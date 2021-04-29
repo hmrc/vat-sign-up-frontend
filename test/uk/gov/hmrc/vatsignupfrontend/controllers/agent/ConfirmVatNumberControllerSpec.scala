@@ -32,6 +32,7 @@ import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.models.MigratableDates
 import uk.gov.hmrc.vatsignupfrontend.services.StoreVatNumberOrchestrationService._
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.MockStoreVatNumberOrchestrationService
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.confirm_vat_number
 
 import scala.concurrent.Future
 
@@ -40,7 +41,9 @@ class ConfirmVatNumberControllerSpec extends UnitSpec
   with MockVatControllerComponents
   with MockStoreVatNumberOrchestrationService {
 
-  object TestConfirmVatNumberController extends ConfirmVatNumberController(mockStoreVatNumberOrchestrationService)
+  val view = app.injector.instanceOf[confirm_vat_number]
+
+  object TestConfirmVatNumberController extends ConfirmVatNumberController(mockStoreVatNumberOrchestrationService, view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/confirm-vat-number")
 

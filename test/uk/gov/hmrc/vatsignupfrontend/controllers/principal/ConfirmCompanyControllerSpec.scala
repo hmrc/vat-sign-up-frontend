@@ -28,13 +28,17 @@ import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.{MockCtReferenceLookupService, MockStoreCompanyNumberService}
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.confirm_company
 
 class ConfirmCompanyControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents
   with MockStoreCompanyNumberService with MockCtReferenceLookupService {
 
+  val view = app.injector.instanceOf[confirm_company]
+
   object TestConfirmCompanyController extends ConfirmCompanyController(
     mockStoreCompanyNumberService,
-    mockCtReferenceLookupService
+    mockCtReferenceLookupService,
+    view
   )
 
   val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/confirm-company")

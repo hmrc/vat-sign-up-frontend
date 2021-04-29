@@ -38,7 +38,8 @@ class CheckYourAnswersFinalController @Inject()(storeVatNumberService: StoreVatN
                                                 subscriptionRequestSummary: SubscriptionRequestSummaryConnector,
                                                 submissionService: SubmissionService,
                                                 getCompanyNameService: GetCompanyNameService,
-                                                administrativeDivisionLookupService: AdministrativeDivisionLookupService)
+                                                administrativeDivisionLookupService: AdministrativeDivisionLookupService,
+                                                view: check_your_answers_final)
                                                (implicit ec: ExecutionContext,
                                                 vcc: VatControllerComponents) extends AuthenticatedController(AdministratorRolePredicate) {
   def show: Action[AnyContent] = Action.async { implicit request =>
@@ -61,7 +62,7 @@ class CheckYourAnswersFinalController @Inject()(storeVatNumberService: StoreVatN
                     case Left(_) => throw new InternalServerException(s"Get Company Name Service failed when retrieving data for the CYA final")
                     case Right(CompanyClosed(_)) => throw new InternalServerException(s"Get company name service should not return dissolved")
                     case Right(CompanyDetails(companyName, _)) =>
-                      Ok(check_your_answers_final(
+                      Ok(view(
                         summary.vatNumber,
                         summary.businessEntity,
                         summary.optNino,
@@ -75,7 +76,7 @@ class CheckYourAnswersFinalController @Inject()(storeVatNumberService: StoreVatN
                       ))
                   }
                 case None =>
-                  Future.successful(Ok(check_your_answers_final(
+                  Future.successful(Ok(view(
                     summary.vatNumber,
                     summary.businessEntity,
                     summary.optNino,

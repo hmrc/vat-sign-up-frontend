@@ -27,7 +27,7 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.verify_agent_email
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class VerifyAgentEmailController @Inject()(implicit ec: ExecutionContext,
+class VerifyAgentEmailController @Inject()(view: verify_agent_email)(implicit ec: ExecutionContext,
                                              vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
 
@@ -36,7 +36,7 @@ class VerifyAgentEmailController @Inject()(implicit ec: ExecutionContext,
       request.session.get(SessionKeys.transactionEmailKey) match {
         case Some(transactionEmail) if transactionEmail.nonEmpty =>
           Future.successful(
-            Ok(verify_agent_email(transactionEmail))
+            Ok(view(transactionEmail))
           )
         case _ =>
           Future.successful(

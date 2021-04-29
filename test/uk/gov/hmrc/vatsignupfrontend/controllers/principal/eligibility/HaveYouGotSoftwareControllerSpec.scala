@@ -28,10 +28,13 @@ import uk.gov.hmrc.vatsignupfrontend.forms.submapping.HaveSoftwareMapping
 import uk.gov.hmrc.vatsignupfrontend.models.{AccountingSoftware, HaveSoftware, Neither, Spreadsheets}
 import uk.gov.hmrc.vatsignupfrontend.utils.MaterializerSupport
 import uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility.have_you_got_software
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility.have_you_got_software
 
 class HaveYouGotSoftwareControllerSpec extends ControllerSpec with GuiceOneAppPerSuite with MockVatControllerComponents with MaterializerSupport {
 
-  object TestHaveYouGotSoftwareController extends HaveYouGotSoftwareController
+  val view = app.injector.instanceOf[have_you_got_software]
+
+  object TestHaveYouGotSoftwareController extends HaveYouGotSoftwareController(view)
 
   val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/interruption/have-you-got-software")
 
@@ -49,7 +52,7 @@ class HaveYouGotSoftwareControllerSpec extends ControllerSpec with GuiceOneAppPe
       val messagesApi = mockVatControllerComponents.controllerComponents.messagesApi
 
       status(result) shouldBe OK
-      bodyOf(result) shouldBe have_you_got_software(
+      bodyOf(result) shouldBe view(
         haveSoftwareForm = HaveYouGotSoftwareForm.haveYouGotSoftwareForm,
         postAction = routes.HaveYouGotSoftwareController.submit()
       )(testGetRequest, messagesApi.preferred(testGetRequest), mockAppConfig).body

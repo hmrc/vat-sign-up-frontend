@@ -24,14 +24,16 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{ConfirmPartnership =>
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.confirm_partnership
 
 class ConfirmPartnershipSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[confirm_partnership]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.confirm_partnership(
+  lazy val page: HtmlFormat.Appendable = view(
     companyName = testCompanyName,
     postAction = testCall,
     changeLink = testUri)(

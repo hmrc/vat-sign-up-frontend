@@ -41,10 +41,13 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility.return_due
 
 class ReturnDueControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestReturnDueController extends ReturnDueController
+  val view = app.injector.instanceOf[return_due]
+
+  object TestReturnDueController extends ReturnDueController(view)
 
   "show" should {
     "render the view successfully" in {
@@ -52,7 +55,7 @@ class ReturnDueControllerSpec extends UnitSpec with GuiceOneAppPerSuite with Moc
       implicit val messages: Messages = mockVatControllerComponents.controllerComponents.messagesApi.preferred(req)
 
       val result = TestReturnDueController.show(req)
-      contentAsString(result) shouldBe eligibility.return_due().body
+      contentAsString(result) shouldBe view().body
 
       status(result) shouldBe Status.OK
     }

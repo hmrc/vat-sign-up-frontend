@@ -24,14 +24,16 @@ import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{PrincipalRecentlyRegistered => messages}
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.recently_registered_vat_number
 
 class RecentlyRegisteredSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[recently_registered_vat_number]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.recently_registered_vat_number(
+  lazy val page: HtmlFormat.Appendable = view(
   )(
     request,
     messagesApi.preferred(request),

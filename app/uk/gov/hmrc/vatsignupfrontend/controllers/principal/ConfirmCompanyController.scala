@@ -36,7 +36,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ConfirmCompanyController @Inject()(storeCompanyNumberService: StoreCompanyNumberService,
-                                         ctReferenceLookupService: CtReferenceLookupService)
+                                         ctReferenceLookupService: CtReferenceLookupService,
+                                         view: confirm_company)
                                         (implicit ec: ExecutionContext,
                                          vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) with FeatureSwitching {
@@ -48,7 +49,7 @@ class ConfirmCompanyController @Inject()(storeCompanyNumberService: StoreCompany
         optCompanyName match {
           case Some(companyName) =>
             val changeLink = routes.CaptureCompanyNumberController.show().url
-            Ok(confirm_company(
+            Ok(view(
               companyName = companyName,
               postAction = routes.ConfirmCompanyController.submit(),
               changeLink = changeLink

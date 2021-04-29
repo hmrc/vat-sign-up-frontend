@@ -25,15 +25,16 @@ import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{MakingTaxDigitalSoftware => messages}
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
-
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility.making_tax_digital_software
 
 class MakingTaxDigitalSoftwareViewSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[making_tax_digital_software]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility.making_tax_digital_software(testCall)(
+  lazy val page: HtmlFormat.Appendable = view(testCall)(
     request,
     messagesApi.preferred(request),
     appConfig

@@ -29,7 +29,8 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.confirm_company
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ConfirmCompanyController @Inject()(storeCompanyNumberService: StoreCompanyNumberService)
+class ConfirmCompanyController @Inject()(storeCompanyNumberService: StoreCompanyNumberService,
+                                         view: confirm_company)
                                         (implicit ec: ExecutionContext,
                                          vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
@@ -42,7 +43,7 @@ class ConfirmCompanyController @Inject()(storeCompanyNumberService: StoreCompany
         optCompanyName match {
           case Some(companyName) =>
             val changeLink = routes.CaptureCompanyNumberController.show().url
-            Ok(confirm_company(
+            Ok(view(
               companyName = companyName,
               postAction = routes.ConfirmCompanyController.submit(),
               changeLink = changeLink

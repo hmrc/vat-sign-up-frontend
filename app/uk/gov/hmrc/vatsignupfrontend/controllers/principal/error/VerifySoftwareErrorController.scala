@@ -26,13 +26,14 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.verify_software_error
 import scala.concurrent.Future
 
 @Singleton
-class VerifySoftwareErrorController @Inject()(implicit vcc: VatControllerComponents) extends FrontendController(vcc.controllerComponents) with I18nSupport {
+class VerifySoftwareErrorController @Inject()(view: verify_software_error)
+                                             (implicit vcc: VatControllerComponents) extends FrontendController(vcc.controllerComponents) with I18nSupport {
 
   implicit val appConfig: AppConfig = vcc.appConfig
 
   val show: Action[AnyContent] = Action.async { implicit request =>
     Future.successful(
-      Ok(verify_software_error(routes.VerifySoftwareErrorController.submit()))
+      Ok(view(routes.VerifySoftwareErrorController.submit()))
     )
   }
 

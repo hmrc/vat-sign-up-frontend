@@ -29,8 +29,9 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.information_received
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class InformationReceivedController @Inject()(implicit ec: ExecutionContext,
-                                                vcc: VatControllerComponents)
+class InformationReceivedController @Inject()(view: information_received)
+                                             (implicit ec: ExecutionContext,
+                                              vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
@@ -41,7 +42,7 @@ class InformationReceivedController @Inject()(implicit ec: ExecutionContext,
       (optVatNumber, optBusinessEntity) match {
         case (Some(vatNumber), Some(businessEntity)) =>
           Future.successful(
-            Ok(information_received(businessEntity, vatNumber))
+            Ok(view(businessEntity, vatNumber))
           )
         case _ =>
           Future.successful(Redirect(routes.CaptureVatNumberController.show))

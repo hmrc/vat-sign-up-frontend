@@ -26,10 +26,13 @@ import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.forms.RegisteredSocietyUtrForm._
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_registered_society_utr
 
 class CaptureRegisteredSocietyUtrControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestCaptureRegisteredSocietyUtrController extends CaptureRegisteredSocietyUtrController
+  val view = app.injector.instanceOf[capture_registered_society_utr]
+
+  object TestCaptureRegisteredSocietyUtrController extends CaptureRegisteredSocietyUtrController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/registered-society-utr")
 

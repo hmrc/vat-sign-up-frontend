@@ -26,14 +26,15 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.sign_in_w
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SignInWithDifferentDetailsPartnershipController @Inject()(implicit ec: ExecutionContext,
-                                                                  vcc: VatControllerComponents)
+class SignInWithDifferentDetailsPartnershipController @Inject()(view: sign_in_with_different_details_partnership)
+                                                               (implicit ec: ExecutionContext,
+                                                                vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       Future.successful(
-        Ok(sign_in_with_different_details_partnership())
+        Ok(view())
       )
     }
   }

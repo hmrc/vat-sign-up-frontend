@@ -26,15 +26,17 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.direct_debit_terms_and
 
 import scala.concurrent.{ExecutionContext, Future}
 
+
 @Singleton
-class DirectDebitTermsAndConditionsController @Inject()(implicit ec: ExecutionContext,
-                                                          vcc: VatControllerComponents)
+class DirectDebitTermsAndConditionsController @Inject()(view: direct_debit_terms_and_conditions)
+                                                       (implicit ec: ExecutionContext,
+                                                        vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       Future.successful(
-        Ok(direct_debit_terms_and_conditions(routes.DirectDebitTermsAndConditionsController.submit()))
+        Ok(view(routes.DirectDebitTermsAndConditionsController.submit()))
       )
     }
   }

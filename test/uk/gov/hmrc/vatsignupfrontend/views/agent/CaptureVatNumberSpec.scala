@@ -24,14 +24,16 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{CaptureVatNumber => m
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.forms.VatNumberForm._
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.capture_vat_number
 
 class CaptureVatNumberSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[capture_vat_number]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.agent.capture_vat_number(
+  lazy val page: HtmlFormat.Appendable = view(
     vatNumberForm = vatNumberForm(isAgent = true).form,
     postAction = testCall)(
     request,

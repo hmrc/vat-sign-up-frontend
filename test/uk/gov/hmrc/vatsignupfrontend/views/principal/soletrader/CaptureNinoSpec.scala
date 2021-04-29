@@ -24,14 +24,16 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{CaptureNino => messag
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.forms.NinoForm._
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.soletrader.capture_nino
 
 class CaptureNinoSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[capture_nino]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.soletrader.capture_nino(
+  lazy val page: HtmlFormat.Appendable = view(
     ninoForm = ninoForm(isAgent = false).form,
     postAction = testCall)(
     request,

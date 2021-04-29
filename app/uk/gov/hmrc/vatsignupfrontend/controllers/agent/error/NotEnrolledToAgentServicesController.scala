@@ -25,14 +25,15 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.not_enrolled_to_agent_serv
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class NotEnrolledToAgentServicesController @Inject()(implicit ec: ExecutionContext,
-                                                       vcc: VatControllerComponents)
+class NotEnrolledToAgentServicesController @Inject()(view: not_enrolled_to_agent_services)
+                                                    (implicit ec: ExecutionContext,
+                                                     vcc: VatControllerComponents)
   extends AuthenticatedController() {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       Future.successful(
-        Ok(not_enrolled_to_agent_services())
+        Ok(view())
       )
     }
   }

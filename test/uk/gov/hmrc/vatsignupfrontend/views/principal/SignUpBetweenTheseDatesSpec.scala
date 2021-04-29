@@ -26,9 +26,11 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{SignUpBetweenTheseDat
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.models.DateModel
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.sign_up_between_these_dates
 
 class SignUpBetweenTheseDatesSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[sign_up_between_these_dates]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
@@ -38,7 +40,7 @@ class SignUpBetweenTheseDatesSpec extends ViewSpec {
   val expectedFormattedStartDate: String = DateModel.dateConvert(testStartDate).toOutputDateFormat
   val expectedFormattedEndDate: String = DateModel.dateConvert(testEndDate).toOutputDateFormat
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.sign_up_between_these_dates(
+  lazy val page: HtmlFormat.Appendable = view(
     startDate = testStartDate,
     endDate = testEndDate)(
     request,

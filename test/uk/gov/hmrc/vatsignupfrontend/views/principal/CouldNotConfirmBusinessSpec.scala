@@ -23,14 +23,16 @@ import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{CouldNotConfirmBusiness => messages}
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.could_not_confirm_business
 
 class CouldNotConfirmBusinessSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[could_not_confirm_business]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.could_not_confirm_business(
+  lazy val page: HtmlFormat.Appendable = view(
     postAction = testCall)(
     request,
     messagesApi.preferred(request),

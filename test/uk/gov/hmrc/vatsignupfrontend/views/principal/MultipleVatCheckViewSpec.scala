@@ -25,17 +25,17 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{YesNo => messages}
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.forms.MultipleVatCheckForm._
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
-
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.multiple_vat_check
 
 class MultipleVatCheckViewSpec extends ViewSpec {
 
   val error = "error.multiple_vat_check"
-
+  val view = app.injector.instanceOf[multiple_vat_check]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.multiple_vat_check(
+  lazy val page: HtmlFormat.Appendable = view(
     multipleVatCheckForm,
     postAction = testCall)(
     request,

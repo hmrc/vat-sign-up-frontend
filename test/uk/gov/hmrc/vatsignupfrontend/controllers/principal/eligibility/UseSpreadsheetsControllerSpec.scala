@@ -28,11 +28,13 @@ import uk.gov.hmrc.vatsignupfrontend.controllers.principal.{routes => principalR
 import uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility
 
 import scala.concurrent.Future
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility.use_spreadsheets
 
 class UseSpreadsheetsControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
   class Setup {
-    val controller = new UseSpreadsheetsController
+    val view = app.injector.instanceOf[use_spreadsheets]
+    val controller = new UseSpreadsheetsController(view)
   }
 
   "show" should {
@@ -40,7 +42,7 @@ class UseSpreadsheetsControllerSpec extends UnitSpec with GuiceOneAppPerSuite wi
       implicit val req: Request[AnyContent] = FakeRequest()
       implicit val messages: Messages = mockVatControllerComponents.controllerComponents.messagesApi.preferred(req)
       val res: Future[Result] = controller.show(req)
-      contentAsString(res) shouldBe eligibility.use_spreadsheets(principalRoutes.ResolveVatNumberController.resolve()).body
+      contentAsString(res) shouldBe view(principalRoutes.ResolveVatNumberController.resolve()).body
       status(res) shouldBe Status.OK
     }
   }

@@ -19,10 +19,20 @@
 @import uk.gov.hmrc.vatsignupfrontend.views.html._
 @import uk.gov.hmrc.vatsignupfrontend.views.html.helpers._
 @import uk.gov.hmrc.vatsignupfrontend.forms.CompanyNumberForm._
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(
+    layout: agent_main_template,
+    summaryErrorHelper: summaryErrorHelper,
+    form: FormWithCSRF,
+    labelHelper: labelHelper,
+    inputHelper: inputHelper,
+    continueButton: continueButton
+)
 
 @(partnershipCompanyNumberForm: Form[String], postAction: Call)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
-@agent_main_template(title = Messages("agent.capture_partnership_company_number.title"), bodyClasses = None, form = Some(partnershipCompanyNumberForm)) {
+@layout(title = Messages("agent.capture_partnership_company_number.title"), bodyClasses = None, form = Some(partnershipCompanyNumberForm)) {
     @summaryErrorHelper(partnershipCompanyNumberForm)
 
     @form(action = postAction) {

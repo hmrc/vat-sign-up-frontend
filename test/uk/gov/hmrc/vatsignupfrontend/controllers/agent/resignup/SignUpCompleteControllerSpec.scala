@@ -30,10 +30,13 @@ import uk.gov.hmrc.vatsignupfrontend.controllers.agent.routes.SignUpAnotherClien
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants.testVatNumber
 import uk.gov.hmrc.vatsignupfrontend.models.SoleTrader
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.resignup.sign_up_complete
 
 class SignUpCompleteControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestSignUpCompleteController extends SignUpCompleteController
+  val view = app.injector.instanceOf[sign_up_complete]
+
+  object TestSignUpCompleteController extends SignUpCompleteController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/client/sign-up-complete").withSession(
     SessionKeys.businessEntityKey -> SoleTrader.toString,
@@ -44,7 +47,7 @@ class SignUpCompleteControllerSpec extends UnitSpec with GuiceOneAppPerSuite wit
   lazy val messagesApi: MessagesApi = mockVatControllerComponents.controllerComponents.messagesApi
 
   lazy val page: Html =
-    uk.gov.hmrc.vatsignupfrontend.views.html.agent.resignup.sign_up_complete(SoleTrader, testVatNumber, SignUpAnotherClientController.submit())(
+    view(SoleTrader, testVatNumber, SignUpAnotherClientController.submit())(
       testGetRequest,
       messagesApi.preferred(testGetRequest),
       appConfig

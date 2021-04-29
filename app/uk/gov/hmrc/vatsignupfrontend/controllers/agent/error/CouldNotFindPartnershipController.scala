@@ -28,13 +28,14 @@ import scala.concurrent.{ExecutionContext, Future}
 
 
 @Singleton
-class CouldNotFindPartnershipController @Inject()(implicit ec: ExecutionContext,
-                                                    vcc: VatControllerComponents)
+class CouldNotFindPartnershipController @Inject()(view: could_not_find_partnership)
+                                                 (implicit ec: ExecutionContext,
+                                                  vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
-      Future.successful(Ok(could_not_find_partnership(routes.CouldNotFindPartnershipController.submit())))
+      Future.successful(Ok(view(routes.CouldNotFindPartnershipController.submit())))
     }
   }
 

@@ -23,10 +23,13 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.verify_software_error
 
 class VerifySoftwareErrorControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestVerifySoftwareErrorController extends VerifySoftwareErrorController
+  val view = app.injector.instanceOf[verify_software_error]
+
+  object TestVerifySoftwareErrorController extends VerifySoftwareErrorController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/error/verify-software")
 

@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.vatsignupfrontend.controllers.principal.partnerships
 
-import javax.inject.{Inject, Singleton}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
 import uk.gov.hmrc.vatsignupfrontend.config.VatControllerComponents
@@ -25,10 +24,12 @@ import uk.gov.hmrc.vatsignupfrontend.controllers.AuthenticatedController
 import uk.gov.hmrc.vatsignupfrontend.controllers.principal.{routes => principalRoutes}
 import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.confirm_partnership
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ConfirmPartnershipController @Inject()(implicit ec: ExecutionContext,
+class ConfirmPartnershipController @Inject()(view: confirm_partnership)
+                                            (implicit ec: ExecutionContext,
                                                vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
@@ -41,7 +42,7 @@ class ConfirmPartnershipController @Inject()(implicit ec: ExecutionContext,
       Future.successful(
         (optVatNumber, optCompanyNumber, optCompanyName, optPartnershipType) match {
           case (Some(vatNumber), Some(companyNumber), Some(companyName), Some(partnershipType)) =>
-            Ok(confirm_partnership(
+            Ok(view(
               companyName = companyName,
               postAction = routes.ConfirmPartnershipController.submit(),
               changeLink = principalRoutes.CaptureBusinessEntityController.show().url

@@ -28,8 +28,9 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.partnerships.confirm_partn
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ConfirmPartnershipController @Inject()(implicit ec: ExecutionContext,
-                                               vcc: VatControllerComponents)
+class ConfirmPartnershipController @Inject()(view: confirm_partnership)
+                                            (implicit ec: ExecutionContext,
+                                             vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
@@ -41,7 +42,7 @@ class ConfirmPartnershipController @Inject()(implicit ec: ExecutionContext,
       Future.successful(
         (optVatNumber, optCompanyNumber, optCompanyName, optPartnershipType) match {
           case (Some(_), Some(_), Some(companyName), Some(_)) =>
-            Ok(confirm_partnership(
+            Ok(view(
               companyName = companyName,
               postAction = routes.ConfirmPartnershipController.submit(),
               changeLink = agentRoutes.CaptureBusinessEntityController.show().url

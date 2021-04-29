@@ -30,7 +30,8 @@ import uk.gov.hmrc.vatsignupfrontend.testonly.views.html.stub_issuer
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class StubIssuerController @Inject()(stubIssuerService: StubIssuerService)
+class StubIssuerController @Inject()(stubIssuerService: StubIssuerService,
+                                     view: stub_issuer)
                                     (implicit ec: ExecutionContext,
                                      vcc: VatControllerComponents)
   extends AuthenticatedController() {
@@ -38,7 +39,7 @@ class StubIssuerController @Inject()(stubIssuerService: StubIssuerService)
   val show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       Future.successful(
-        Ok(stub_issuer(stubIssuerForm.fill(StubIssuerRequest(
+        Ok(view(stubIssuerForm.fill(StubIssuerRequest(
           vatNumber = "",
           isSuccessful = true,
           errorMessage = None
@@ -53,7 +54,7 @@ class StubIssuerController @Inject()(stubIssuerService: StubIssuerService)
       stubIssuerForm.bindFromRequest.fold(
         formWithErrors =>
           Future.successful(
-            BadRequest(stub_issuer(formWithErrors, routes.StubIssuerController.submit()))
+            BadRequest(view(formWithErrors, routes.StubIssuerController.submit()))
           ),
         stubIssuerRequest =>
           stubIssuerService.callIssuer(stubIssuerRequest).map {

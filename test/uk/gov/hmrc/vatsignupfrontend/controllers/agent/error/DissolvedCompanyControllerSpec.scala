@@ -28,10 +28,13 @@ import uk.gov.hmrc.vatsignupfrontend.controllers.agent.{routes => agentRoutes}
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants.testCompanyName
 import uk.gov.hmrc.vatsignupfrontend.models.{LimitedCompany, LimitedPartnership, RegisteredSociety}
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.dissolved_company
 
 class DissolvedCompanyControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestDissolvedCompanyController extends DissolvedCompanyController
+  val view = app.injector.instanceOf[dissolved_company]
+
+  object TestDissolvedCompanyController extends DissolvedCompanyController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/client/error/dissolved-company")
 

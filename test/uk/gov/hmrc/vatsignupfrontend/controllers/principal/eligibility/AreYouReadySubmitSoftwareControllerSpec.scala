@@ -26,10 +26,12 @@ import uk.gov.hmrc.vatsignupfrontend.forms.eligibility.AreYouReadySubmitSoftware
 import uk.gov.hmrc.vatsignupfrontend.forms.submapping.YesNoMapping._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility.are_you_ready_submit_software
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility.are_you_ready_submit_software
 
 class AreYouReadySubmitSoftwareControllerSpec extends UnitSpec with MockVatControllerComponents {
 
-  object TestAreYouReadySubmitSoftwareController extends AreYouReadySubmitSoftwareController
+  val view = app.injector.instanceOf[are_you_ready_submit_software]
+  object TestAreYouReadySubmitSoftwareController extends AreYouReadySubmitSoftwareController(view)
 
   "The show method" should {
     "render the are_you_ready_submit_software view" in {
@@ -39,7 +41,7 @@ class AreYouReadySubmitSoftwareControllerSpec extends UnitSpec with MockVatContr
       val result = TestAreYouReadySubmitSoftwareController.show(testGetRequest)
 
       status(result) shouldBe OK
-      contentAsString(result) shouldBe are_you_ready_submit_software(areYouReadySubmitSoftwareForm, routes.AreYouReadySubmitSoftwareController.submit()).body
+      contentAsString(result) shouldBe view(areYouReadySubmitSoftwareForm, routes.AreYouReadySubmitSoftwareController.submit()).body
     }
   }
 
@@ -55,7 +57,7 @@ class AreYouReadySubmitSoftwareControllerSpec extends UnitSpec with MockVatContr
         val result = TestAreYouReadySubmitSoftwareController.submit(request)
 
         status(result) shouldBe BAD_REQUEST
-        contentAsString(result) shouldBe are_you_ready_submit_software(
+        contentAsString(result) shouldBe view(
           areYouReadySubmitSoftwareForm.bindFromRequest(),
           routes.AreYouReadySubmitSoftwareController.submit()
         ).body

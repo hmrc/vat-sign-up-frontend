@@ -26,10 +26,14 @@ import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.controllers.principal.{routes => principalRoutes}
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants.testVatNumber
 import uk.gov.hmrc.vatsignupfrontend.views.html.principal.{deregistered_enrolled, deregistered_unenrolled}
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.deregistered_enrolled
 
 class DeregisteredVatNumberControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestDeregisteredVatNumberController extends DeregisteredVatNumberController
+  val enrolledView = app.injector.instanceOf[deregistered_enrolled]
+  val unenrolledView = app.injector.instanceOf[deregistered_unenrolled]
+
+  object TestDeregisteredVatNumberController extends DeregisteredVatNumberController(enrolledView, unenrolledView)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/error/deregistered-vat-number")
 
@@ -45,7 +49,7 @@ class DeregisteredVatNumberControllerSpec extends UnitSpec with GuiceOneAppPerSu
         status(result) shouldBe OK
         contentType(result) shouldBe Some("text/html")
         charset(result) shouldBe Some("utf-8")
-        contentAsString(result) shouldBe deregistered_enrolled(testVatNumber).body
+        contentAsString(result) shouldBe enrolledView(testVatNumber).body
       }
     }
 
@@ -60,7 +64,7 @@ class DeregisteredVatNumberControllerSpec extends UnitSpec with GuiceOneAppPerSu
         status(result) shouldBe OK
         contentType(result) shouldBe Some("text/html")
         charset(result) shouldBe Some("utf-8")
-        contentAsString(result) shouldBe deregistered_unenrolled(principalRoutes.CaptureVatNumberController.submit().url).body
+        contentAsString(result) shouldBe unenrolledView(principalRoutes.CaptureVatNumberController.submit().url).body
       }
     }
   }

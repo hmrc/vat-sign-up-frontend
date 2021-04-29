@@ -17,7 +17,6 @@
 package uk.gov.hmrc.vatsignupfrontend.controllers.principal
 
 import java.time.LocalDate
-
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
 import play.api.libs.json.Json
@@ -30,11 +29,14 @@ import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.forms.VatRegistrationDateForm._
 import uk.gov.hmrc.vatsignupfrontend.models.{DateModel, Overseas}
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.vat_registration_date
 
 class CaptureVatRegistrationDateControllerSpec extends UnitSpec with GuiceOneAppPerSuite
   with MockVatControllerComponents with FeatureSwitching {
 
-  object TestCaptureVatNumberController extends CaptureVatRegistrationDateController
+  val view = app.injector.instanceOf[vat_registration_date]
+
+  object TestCaptureVatNumberController extends CaptureVatRegistrationDateController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/vat-registration-date")
 

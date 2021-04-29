@@ -25,15 +25,17 @@ import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants.testVatNumber
 import uk.gov.hmrc.vatsignupfrontend.models.SoleTrader
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.resignup.sign_up_complete
 
 
 class SignUpCompleteViewSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[sign_up_complete]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page = uk.gov.hmrc.vatsignupfrontend.views.html.agent.resignup.sign_up_complete(SoleTrader, testVatNumber, testCall)(
+  lazy val page = view(SoleTrader, testVatNumber, testCall)(
     request,
     messagesApi.preferred(request),
     appConfig

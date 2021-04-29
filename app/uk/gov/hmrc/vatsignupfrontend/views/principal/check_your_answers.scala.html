@@ -22,6 +22,15 @@
 @import uk.gov.hmrc.vatsignupfrontend.models.{DateModel, PostCode}
 @import uk.gov.hmrc.vatsignupfrontend.utils.StringUtils._
 
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(
+        principal_main_template: principal_main_template,
+        form: FormWithCSRF,
+        continueButton: continueButton,
+        summaryRowHelper: summaryRowHelper
+)
+
 @(vatNumber: String,
   registrationDate: DateModel,
   optPostCode: Option[PostCode],

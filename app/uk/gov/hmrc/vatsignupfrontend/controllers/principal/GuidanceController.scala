@@ -26,12 +26,13 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.guidance
 import scala.concurrent.Future
 
 @Singleton
-class GuidanceController @Inject()(implicit vcc: VatControllerComponents) extends FrontendController(vcc.controllerComponents) with I18nSupport {
+class GuidanceController @Inject()(view: guidance)
+                                  (implicit vcc: VatControllerComponents) extends FrontendController(vcc.controllerComponents) with I18nSupport {
 
   implicit val appConfig: AppConfig = vcc.appConfig
 
   val show: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(guidance()))
+    Future.successful(Ok(view()))
   }
 
 }

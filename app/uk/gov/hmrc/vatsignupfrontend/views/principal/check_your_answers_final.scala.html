@@ -26,6 +26,16 @@
 @import uk.gov.hmrc.vatsignupfrontend.views.helpers.BusinessEntityHelper.getBusinessEntityName
 @import uk.gov.hmrc.vatsignupfrontend.views.helpers.ContactPreferenceHelper.getContactPreferenceName
 
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(
+        principal_main_template: principal_main_template,
+        form: FormWithCSRF,
+        continueButton: continueButton,
+        summaryRowHelper: summaryRowHelper,
+        summaryDoubleRowHelper: summaryDoubleRowHelper
+)
+
 @(
     vatNumber: String,
     businessEntity: BusinessEntity,

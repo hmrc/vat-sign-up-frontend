@@ -27,14 +27,15 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnership_as_company
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class PartnershipAsCompanyErrorController @Inject()(implicit ec: ExecutionContext,
-                                                      vcc: VatControllerComponents)
+class PartnershipAsCompanyErrorController @Inject()(view: partnership_as_company_error)
+                                                   (implicit ec: ExecutionContext,
+                                                    vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       Future.successful(
-        Ok(partnership_as_company_error(routes.PartnershipAsCompanyErrorController.submit())))
+        Ok(view(routes.PartnershipAsCompanyErrorController.submit())))
     }
   }
 

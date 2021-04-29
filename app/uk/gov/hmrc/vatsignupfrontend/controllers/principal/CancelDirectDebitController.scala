@@ -26,13 +26,14 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.cancel_direct_debit
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CancelDirectDebitController @Inject()(implicit ec: ExecutionContext,
-                                              vcc: VatControllerComponents)
+class CancelDirectDebitController @Inject()(view: cancel_direct_debit)
+                                           (implicit ec: ExecutionContext,
+                                            vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
-      Future.successful(Ok(cancel_direct_debit()))
+      Future.successful(Ok(view()))
     }
   }
 

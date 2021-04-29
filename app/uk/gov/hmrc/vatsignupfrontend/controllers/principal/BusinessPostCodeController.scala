@@ -29,7 +29,8 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.principal_place_of_bus
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class BusinessPostCodeController @Inject()(implicit ec: ExecutionContext,
+class BusinessPostCodeController @Inject()(view: principal_place_of_business)
+                                          (implicit ec: ExecutionContext,
                                            vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
@@ -37,7 +38,7 @@ class BusinessPostCodeController @Inject()(implicit ec: ExecutionContext,
     implicit request =>
       authorised() {
         Future.successful(
-          Ok(principal_place_of_business(businessPostCodeForm.form, routes.BusinessPostCodeController.submit()))
+          Ok(view(businessPostCodeForm.form, routes.BusinessPostCodeController.submit()))
         )
       }
   }
@@ -48,7 +49,7 @@ class BusinessPostCodeController @Inject()(implicit ec: ExecutionContext,
         businessPostCodeForm.bindFromRequest.fold(
           formWithErrors =>
             Future.successful(
-              BadRequest(principal_place_of_business(formWithErrors, routes.BusinessPostCodeController.submit()))
+              BadRequest(view(formWithErrors, routes.BusinessPostCodeController.submit()))
             ),
           businessPostCode => {
             val isMigrated: Boolean = request.session.get(SessionKeys.isMigratedKey).contains("true")

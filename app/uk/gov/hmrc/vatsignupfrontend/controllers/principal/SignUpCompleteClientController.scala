@@ -26,13 +26,14 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.sign_up_complete_clien
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SignUpCompleteClientController @Inject()(implicit ec: ExecutionContext,
-                                                 vcc: VatControllerComponents)
+class SignUpCompleteClientController @Inject()(view: sign_up_complete_client)
+                                              (implicit ec: ExecutionContext,
+                                               vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
-      Future.successful(Ok(sign_up_complete_client()))
+      Future.successful(Ok(view()))
     }
   }
 }

@@ -23,10 +23,13 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.controllers.principal.{routes => principalRoutes}
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnership_as_company_error
 
 class PartnershipAsCompanyErrorControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestPartnershipAsCompanyErrorController extends PartnershipAsCompanyErrorController
+  val view = app.injector.instanceOf[partnership_as_company_error]
+
+  object TestPartnershipAsCompanyErrorController extends PartnershipAsCompanyErrorController(view)
 
   "Calling the show action of the Partnership As Company Error controller" should {
     "show the Partnership As Controller Error page" in {

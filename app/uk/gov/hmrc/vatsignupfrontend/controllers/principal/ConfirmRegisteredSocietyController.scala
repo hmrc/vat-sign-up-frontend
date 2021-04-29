@@ -34,7 +34,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ConfirmRegisteredSocietyController @Inject()(storeRegisteredSocietyService: StoreRegisteredSocietyService,
-                                                   ctReferenceLookupService: CtReferenceLookupService)
+                                                   ctReferenceLookupService: CtReferenceLookupService,
+                                                   view: confirm_registered_society)
                                                   (implicit ec: ExecutionContext,
                                                    vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
@@ -46,7 +47,7 @@ class ConfirmRegisteredSocietyController @Inject()(storeRegisteredSocietyService
         optRegisteredSocietyName match {
           case Some(registeredSocietyName) =>
             val changeLink = routes.CaptureRegisteredSocietyCompanyNumberController.show().url
-            Ok(confirm_registered_society(
+            Ok(view(
               registeredSocietyName = registeredSocietyName,
               postAction = routes.ConfirmRegisteredSocietyController.submit(),
               changeLink = changeLink

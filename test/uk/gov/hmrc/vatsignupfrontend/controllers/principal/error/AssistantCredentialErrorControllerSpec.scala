@@ -23,10 +23,13 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.assistant_credential_error
 
 class AssistantCredentialErrorControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object AssistantCredentialErrorController extends AssistantCredentialErrorController
+  val view = app.injector.instanceOf[assistant_credential_error]
+
+  object AssistantCredentialErrorController extends AssistantCredentialErrorController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/error/not-administrator")
 

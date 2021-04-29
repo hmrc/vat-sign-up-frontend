@@ -522,7 +522,7 @@ object MessageLookup {
 
   object AgentRecentlyRegistered {
     val heading: String = "You cannot sign up for Making Tax Digital yet"
-    val title = heading + ServiceName.principalSuffix
+    val title = heading + ServiceName.agentSuffix
     val line1 = "You cannot sign up to Making Tax Digital (MTD) within the first 7 days of registering for VAT. You will be able to sign up 7 days after your effective date of registration."
     val button1 = "Return to VAT account"
     val button2 = "Sign a different business up to MTD"

@@ -37,7 +37,8 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_vat_number
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CaptureVatNumberController @Inject()(storeVatNumberOrchestrationService: StoreVatNumberOrchestrationService)
+class CaptureVatNumberController @Inject()(storeVatNumberOrchestrationService: StoreVatNumberOrchestrationService,
+                                           view: capture_vat_number)
                                           (implicit ec: ExecutionContext,
                                            vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
@@ -47,7 +48,7 @@ class CaptureVatNumberController @Inject()(storeVatNumberOrchestrationService: S
   def show: Action[AnyContent] = Action.async {
     implicit request =>
       authorised() {
-        Future.successful(Ok(capture_vat_number(validateVatNumberForm.form, routes.CaptureVatNumberController.submit())))
+        Future.successful(Ok(view(validateVatNumberForm.form, routes.CaptureVatNumberController.submit())))
       }
   }
 
@@ -59,7 +60,7 @@ class CaptureVatNumberController @Inject()(storeVatNumberOrchestrationService: S
           validateVatNumberForm.bindFromRequest.fold(
             formWithErrors =>
               Future.successful(
-                BadRequest(capture_vat_number(formWithErrors, routes.CaptureVatNumberController.submit()))
+                BadRequest(view(formWithErrors, routes.CaptureVatNumberController.submit()))
               ),
             formVatNumber => {
               if (VatNumberChecksumValidation.isValidChecksum(formVatNumber)) {

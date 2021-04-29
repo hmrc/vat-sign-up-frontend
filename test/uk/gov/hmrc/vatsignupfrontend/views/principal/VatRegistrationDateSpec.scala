@@ -24,15 +24,16 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{VatRegistrationDate =
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.forms.VatRegistrationDateForm._
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
-
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.vat_registration_date
 
 class VatRegistrationDateSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[vat_registration_date]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.vat_registration_date(
+  lazy val page: HtmlFormat.Appendable = view(
     vatRegistrationDateForm = vatRegistrationDateForm,
     postAction = testCall)(
     request,

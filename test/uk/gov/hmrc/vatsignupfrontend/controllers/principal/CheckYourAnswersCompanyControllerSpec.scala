@@ -30,12 +30,15 @@ import uk.gov.hmrc.vatsignupfrontend.models.BusinessEntity.BusinessEntitySession
 import uk.gov.hmrc.vatsignupfrontend.models._
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.MockStoreCompanyNumberService
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.check_your_answers_company
 
 class CheckYourAnswersCompanyControllerSpec extends UnitSpec with GuiceOneAppPerSuite
   with MockVatControllerComponents
   with MockStoreCompanyNumberService {
 
-  object TestCheckYourAnswersCompanyController extends CheckYourAnswersCompanyController(mockStoreCompanyNumberService)
+  val view = app.injector.instanceOf[check_your_answers_company]
+
+  object TestCheckYourAnswersCompanyController extends CheckYourAnswersCompanyController(mockStoreCompanyNumberService, view)
 
   def testGetRequest(companyUtr: Option[String] = Some(testCompanyUtr),
                      companyNumber: Option[String] = Some(testCompanyNumber),

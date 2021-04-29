@@ -27,15 +27,16 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.verify_email
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class VerifyEmailController @Inject()(implicit ec: ExecutionContext,
-                                        vcc: VatControllerComponents)
+class VerifyEmailController @Inject()(view: verify_email)
+                                     (implicit ec: ExecutionContext,
+                                      vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       val email = request.session(SessionKeys.emailKey)
       Future.successful(
-        Ok(verify_email(email))
+        Ok(view(email))
       )
     }
   }

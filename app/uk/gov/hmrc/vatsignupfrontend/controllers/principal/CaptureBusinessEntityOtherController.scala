@@ -30,8 +30,9 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_business_entit
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CaptureBusinessEntityOtherController @Inject()(implicit ec: ExecutionContext,
-                                                       vcc: VatControllerComponents)
+class CaptureBusinessEntityOtherController @Inject()(view: capture_business_entity_other)
+                                                    (implicit ec: ExecutionContext,
+                                                     vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   private lazy val businessEntityRoute: Map[BusinessEntity, Call] = Map(
@@ -47,7 +48,7 @@ class CaptureBusinessEntityOtherController @Inject()(implicit ec: ExecutionConte
   val show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       Future.successful(
-        Ok(capture_business_entity_other(
+        Ok(view(
           businessEntityForm = businessEntityForm(false),
           postAction = routes.CaptureBusinessEntityOtherController.submit()
         ))
@@ -60,7 +61,7 @@ class CaptureBusinessEntityOtherController @Inject()(implicit ec: ExecutionConte
       businessEntityForm(false).bindFromRequest.fold(
         formWithErrors =>
           Future.successful(
-            BadRequest(capture_business_entity_other(
+            BadRequest(view(
               businessEntityForm = formWithErrors,
               postAction = routes.CaptureBusinessEntityOtherController.submit()
             ))

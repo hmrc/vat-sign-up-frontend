@@ -17,7 +17,6 @@
 package uk.gov.hmrc.vatsignupfrontend.views.agent
 
 import java.time.LocalDate
-
 import play.api.i18n.MessagesApi
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
@@ -26,9 +25,11 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{AgentSignUpAfterThisD
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.models.DateModel
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.sign_up_after_this_date
 
 class SignUpAfterThisDateSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[sign_up_after_this_date]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
@@ -36,7 +37,7 @@ class SignUpAfterThisDateSpec extends ViewSpec {
   val testDate: LocalDate = LocalDate.now()
   val expectedFormattedDate: String = DateModel.dateConvert(testDate).toOutputDateFormat
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.agent.sign_up_after_this_date(
+  lazy val page: HtmlFormat.Appendable = view(
     date = testDate)(
     request,
     messagesApi.preferred(request),

@@ -24,6 +24,15 @@
 @import uk.gov.hmrc.vatsignupfrontend.controllers.agent.routes._
 @import uk.gov.hmrc.vatsignupfrontend.controllers.agent.soletrader.{routes => soletraderRoutes}
 @import uk.gov.hmrc.vatsignupfrontend.controllers.agent.partnerships.{routes => partnershipRoutes}
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(
+        agent_main_template: agent_main_template,
+        summaryRowHelper: summaryRowHelper,
+        summaryDoubleRowHelper: summaryDoubleRowHelper,
+        form: FormWithCSRF,
+        continueButton: continueButton
+)
 
 @(subSummary: SubscriptionRequestSummary,
   optBusinessEntity: Option[BusinessEntity],
