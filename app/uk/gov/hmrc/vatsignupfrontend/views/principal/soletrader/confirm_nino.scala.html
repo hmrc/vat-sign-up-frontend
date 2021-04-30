@@ -15,11 +15,19 @@
  *@
 
 @import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
-@import uk.gov.hmrc.play.views.html.helpers.form
 @import uk.gov.hmrc.vatsignupfrontend.views.html._
 @import uk.gov.hmrc.vatsignupfrontend.models.BusinessEntity
 @import uk.gov.hmrc.vatsignupfrontend.views.html.helpers.{summaryRowHelper, continueButton}
 @import uk.gov.hmrc.vatsignupfrontend.views.helpers.BusinessEntityHelper
+
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(
+        principal_main_template: principal_main_template,
+        form: FormWithCSRF,
+        summaryRowHelper: summaryRowHelper,
+        continueButton: continueButton
+)
 
 @(businessEntity: BusinessEntity, nino: String, postAction: Call)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 

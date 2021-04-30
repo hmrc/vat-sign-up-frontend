@@ -29,16 +29,17 @@ import uk.gov.hmrc.vatsignupfrontend.models.{BusinessEntity, SoleTrader}
 import uk.gov.hmrc.vatsignupfrontend.utils.SummarySectionTesting
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
 import uk.gov.hmrc.vatsignupfrontend.views.helpers.CheckYourAnswersCompanyConstants._
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.check_your_answers_company
 
 class CheckYourAnswersCompanyViewSpec extends ViewSpec with SummarySectionTesting {
 
   val testEntity: BusinessEntity = SoleTrader
-
+  val view = app.injector.instanceOf[check_your_answers_company]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  def page(): Html = uk.gov.hmrc.vatsignupfrontend.views.html.principal.check_your_answers_company(
+  def page(): Html = view(
     companyNumber = testCompanyNumber,
     companyUtr = testCompanyUtr,
     businessEntity = testEntity,

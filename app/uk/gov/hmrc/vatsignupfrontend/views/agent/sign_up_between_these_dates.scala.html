@@ -19,6 +19,13 @@
 @import uk.gov.hmrc.vatsignupfrontend.views.html.helpers.signOutButton
 @import uk.gov.hmrc.vatsignupfrontend.models.DateModel
 @import java.time.LocalDate
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(
+        agent_main_template: agent_main_template,
+        form: FormWithCSRF,
+        signOutButton: signOutButton
+)
 
 @(startDate: LocalDate, endDate: LocalDate)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 

@@ -24,17 +24,18 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{PrincipalDissolvedCom
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants.testCompanyName
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
-
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.dissolved_company
 
 class DissolvedCompanyViewSpec extends ViewSpec {
 
   val testLink: String = "test/test"
 
+  val view = app.injector.instanceOf[dissolved_company]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.dissolved_company(
+  lazy val page: HtmlFormat.Appendable = view(
     testLink, testCompanyName)(
     request,
     messagesApi.preferred(request),

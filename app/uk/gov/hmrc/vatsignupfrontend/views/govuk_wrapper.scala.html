@@ -16,6 +16,22 @@
 
 @import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 @import play.twirl.api.HtmlFormat
+@import uk.gov.hmrc.play.views.html.helpers.ReportAProblemLink
+@import views.html.layouts.GovUkTemplate
+@import uk.gov.hmrc.play.views.html.layouts._
+@this(
+        headWithTrackingConsent: HeadWithTrackingConsent,
+        headerNav: HeaderNav,
+        footer: Footer,
+        standardFooterLinks: FooterLinks,
+        standardServiceInfo: ServiceInfo,
+        betaBanner: BetaBanner,
+        standardMainContentHeader: MainContentHeader,
+        reportAProblemLink: ReportAProblemLink,
+        mainContentLayout: MainContent,
+        govukTemplate: GovUkTemplate
+)
+
 
 @(appConfig: AppConfig,
         title: String,
@@ -37,7 +53,7 @@
 @import uk.gov.hmrc.play.views.html.{helpers => uiHelpers}
 
 @head = {
-@uiLayouts.headWithTrackingConsent(
+@headWithTrackingConsent(
     Some(linkElements),
     headScripts = None)
     <meta name="format-detection" content="telephone=no" />
@@ -65,7 +81,7 @@
 }
 
 @insideHeader = {
-@uiLayouts.header_nav(
+@headerNav(
     navTitle = navigationTitle,
     navTitleLink = None,
     showBetaLink = false,
@@ -75,7 +91,7 @@
 @afterHeader = {}
 
 @bodyEnd = {
-@uiLayouts.footer(
+@footer(
     analyticsToken = None,
     analyticsHost = "",
     ssoUrl = None,
@@ -85,12 +101,12 @@
 
 @footerTop = {}
 @footerLinks = {
-    @uiLayouts.footer_links()
+    @standardFooterLinks
 }
 
 @serviceInfo = {
-@uiLayouts.serviceInfo(
-    betaBanner = uiLayouts.betaBanner(false, appConfig.betaFeedbackUrl, appConfig.betaFeedbackUnauthenticatedUrl),
+@standardServiceInfo(
+    betaBanner = betaBanner(false, appConfig.betaFeedbackUrl, appConfig.betaFeedbackUnauthenticatedUrl),
     includeGridWrapper = false,
     serviceInfoContent = Some(serviceInfoContent),
     includeHMRCBranding = true,
@@ -106,17 +122,17 @@
     </div>
 
 @if(contentHeader.isDefined) {
-    @uiLayouts.main_content_header(contentHeader = contentHeader.get)
+    @standardMainContentHeader(contentHeader = contentHeader.get)
 }
     <div><a id="back" class="link-back" href="javascript:history.back()">@Messages("app.common.back")</a></div>
 }
 
 @getHelpForm = @{
-    uiHelpers.reportAProblemLink(appConfig.reportAProblemPartialUrl, appConfig.reportAProblemNonJSUrl)
+    reportAProblemLink(appConfig.reportAProblemPartialUrl, appConfig.reportAProblemNonJSUrl)
 }
 
 @content = {
-@uiLayouts.main_content(
+@mainContentLayout(
     article = mainContent,
     mainClass = mainClass,
     mainDataAttributes = mainDataAttributes,
@@ -126,4 +142,4 @@
     sidebar = sidebar)
 }
 
-@hmrcGovUkTemplate(Some(title), bodyClasses)(head, bodyEnd, insideHeader, afterHeader, footerTop, Some(footerLinks), true)(content)
+@govukTemplate(Some(title), bodyClasses)(head, bodyEnd, insideHeader, afterHeader, footerTop, Some(footerLinks), true)(content)

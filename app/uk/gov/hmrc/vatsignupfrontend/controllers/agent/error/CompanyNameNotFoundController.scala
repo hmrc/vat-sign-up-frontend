@@ -27,14 +27,15 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.company_name_not_found
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CompanyNameNotFoundController @Inject()(implicit ec: ExecutionContext,
-                                                vcc: VatControllerComponents)
+class CompanyNameNotFoundController @Inject()(view: company_name_not_found)
+                                             (implicit ec: ExecutionContext,
+                                              vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       Future.successful(
-        Ok(company_name_not_found(routes.CompanyNameNotFoundController.submit()))
+        Ok(view(routes.CompanyNameNotFoundController.submit()))
       )
     }
   }

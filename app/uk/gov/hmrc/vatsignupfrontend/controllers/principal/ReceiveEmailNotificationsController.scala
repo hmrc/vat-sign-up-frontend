@@ -32,7 +32,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ReceiveEmailNotificationsController @Inject()(storeContactPreferenceService: StoreContactPreferenceService,
-                                                    storeEmailAddressService: StoreEmailAddressService)
+                                                    storeEmailAddressService: StoreEmailAddressService,
+                                                    view: receive_email_notifications)
                                                    (implicit ec: ExecutionContext,
                                                     vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
@@ -45,7 +46,7 @@ class ReceiveEmailNotificationsController @Inject()(storeContactPreferenceServic
       optEmail match {
         case Some(email) =>
           Future.successful(
-            Ok(receive_email_notifications(
+            Ok(view(
               email,
               contactPreferencesForm(isAgent = false),
               routes.ReceiveEmailNotificationsController.submit()
@@ -70,7 +71,7 @@ class ReceiveEmailNotificationsController @Inject()(storeContactPreferenceServic
         formWithErrors => optEmail match {
           case Some(email) =>
             Future.successful(
-              BadRequest(receive_email_notifications(
+              BadRequest(view(
                 email,
                 formWithErrors,
                 routes.ReceiveEmailNotificationsController.submit()

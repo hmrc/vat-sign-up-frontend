@@ -23,16 +23,18 @@ import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{AgentEmailVerified => messages, Base => common}
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.agent_email_verified
 
 class AgentEmailVerifiedSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[agent_email_verified]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
   val continueLink = ""
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.agent.agent_email_verified(continueLink)(
+  lazy val page: HtmlFormat.Appendable = view(continueLink)(
     request,
     messagesApi.preferred(request),
     appConfig

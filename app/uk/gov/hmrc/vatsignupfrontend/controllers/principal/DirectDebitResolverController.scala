@@ -27,7 +27,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class DirectDebitResolverController @Inject()(implicit ec: ExecutionContext,
-                                                vcc: VatControllerComponents)
+                                              vcc: VatControllerComponents)
   extends AuthenticatedController(retrievalPredicate = AdministratorRolePredicate) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>

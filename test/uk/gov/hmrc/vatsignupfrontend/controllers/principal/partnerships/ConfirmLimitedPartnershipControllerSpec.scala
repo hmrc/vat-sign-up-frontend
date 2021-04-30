@@ -33,6 +33,7 @@ import uk.gov.hmrc.vatsignupfrontend.httpparsers.StorePartnershipInformationHttp
 import uk.gov.hmrc.vatsignupfrontend.models.PartnershipEntityType.LimitedPartnership
 import uk.gov.hmrc.vatsignupfrontend.models.{No, Yes, YesNo}
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.MockStorePartnershipInformationService
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.confirm_partnership_utr
 
 import scala.concurrent.Future
 
@@ -40,7 +41,9 @@ import scala.concurrent.Future
 class ConfirmLimitedPartnershipControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents
   with MockStorePartnershipInformationService {
 
-  object TestConfirmLimitedPartnershipController extends ConfirmLimitedPartnershipController(mockStorePartnershipInformationService)
+  val view = app.injector.instanceOf[confirm_partnership_utr]
+
+  object TestConfirmLimitedPartnershipController extends ConfirmLimitedPartnershipController(mockStorePartnershipInformationService, view)
 
   val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/confirm-partnership-utr")
 

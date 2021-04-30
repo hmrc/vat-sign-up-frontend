@@ -36,14 +36,15 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.multiple_vat_check
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class MultipleVatCheckController @Inject()(storeVatNumberOrchestrationService: StoreVatNumberOrchestrationService)
+class MultipleVatCheckController @Inject()(storeVatNumberOrchestrationService: StoreVatNumberOrchestrationService,
+                                           view: multiple_vat_check)
                                           (implicit ec: ExecutionContext,
                                            vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
-      Future.successful(Ok(multiple_vat_check(multipleVatCheckForm, routes.MultipleVatCheckController.submit())))
+      Future.successful(Ok(view(multipleVatCheckForm, routes.MultipleVatCheckController.submit())))
     }
   }
 
@@ -53,7 +54,7 @@ class MultipleVatCheckController @Inject()(storeVatNumberOrchestrationService: S
       multipleVatCheckForm.bindFromRequest.fold(
         formWithErrors =>
           Future.successful(
-            BadRequest(multiple_vat_check(formWithErrors, routes.MultipleVatCheckController.submit()))
+            BadRequest(view(formWithErrors, routes.MultipleVatCheckController.submit()))
           ), {
           case Yes =>
             Future.successful(Redirect(routes.CaptureVatNumberController.show()))

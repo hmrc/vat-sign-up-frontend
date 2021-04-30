@@ -26,10 +26,13 @@ import uk.gov.hmrc.vatsignupfrontend.SessionKeys._
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.forms.BusinessEntityForm._
 import uk.gov.hmrc.vatsignupfrontend.controllers.principal.{routes => principalRoutes}
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.could_not_confirm_business
 
 class CouldNotConfirmBusinessControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestCouldNotConfirmBusinessController extends CouldNotConfirmBusinessController
+  val view = app.injector.instanceOf[could_not_confirm_business]
+
+  object TestCouldNotConfirmBusinessController extends CouldNotConfirmBusinessController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/error/could-not-confirm-business")
 

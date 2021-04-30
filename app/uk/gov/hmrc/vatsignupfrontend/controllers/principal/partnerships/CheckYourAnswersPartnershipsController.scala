@@ -35,7 +35,8 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.check_you
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CheckYourAnswersPartnershipsController @Inject()(storePartnershipInformationService: StorePartnershipInformationService)
+class CheckYourAnswersPartnershipsController @Inject()(storePartnershipInformationService: StorePartnershipInformationService,
+                                                       view: check_your_answers_partnerships)
                                                       (implicit ec: ExecutionContext,
                                                        vcc: VatControllerComponents)
   extends AuthenticatedController(retrievalPredicate = AdministratorRolePredicate) {
@@ -50,7 +51,7 @@ class CheckYourAnswersPartnershipsController @Inject()(storePartnershipInformati
 
       (optBusinessEntityType, optPartnershipCrn, optPartnershipUtr, optPartnershipPostCode) match {
         case (Some(GeneralPartnership), _, _, _) =>
-          Future.successful(Ok(check_your_answers_partnerships(
+          Future.successful(Ok(view(
             entityType = GeneralPartnership,
             partnershipUtr = optPartnershipUtr,
             companyNumber = None,
@@ -58,7 +59,7 @@ class CheckYourAnswersPartnershipsController @Inject()(storePartnershipInformati
             postAction = routes.CheckYourAnswersPartnershipsController.submit()
           )))
         case (Some(entity: LimitedPartnershipBase), Some(_), Some(_), Some(_)) =>
-          Future.successful(Ok(check_your_answers_partnerships(
+          Future.successful(Ok(view(
             entityType = entity,
             partnershipUtr = optPartnershipUtr,
             companyNumber = optPartnershipCrn,

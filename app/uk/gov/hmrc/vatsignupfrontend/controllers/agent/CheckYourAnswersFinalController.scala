@@ -37,7 +37,8 @@ import scala.concurrent.{ExecutionContext, Future}
 class CheckYourAnswersFinalController @Inject()(storeVatNumberService: StoreVatNumberService,
                                                 subscriptionRequestSummary: SubscriptionRequestSummaryConnector,
                                                 submissionService: SubmissionService,
-                                                getCompanyNameService: GetCompanyNameService)
+                                                getCompanyNameService: GetCompanyNameService,
+                                                view: check_your_answers_final)
                                                (implicit ec: ExecutionContext,
                                                 vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
@@ -61,7 +62,7 @@ class CheckYourAnswersFinalController @Inject()(storeVatNumberService: StoreVatN
                   case _ => Some(summary.businessEntity)
                 }
 
-                Ok(check_your_answers_final(
+                Ok(view(
                   subSummary = summary,
                   optBusinessEntity = optBusinessEntity,
                   optCompanyName = optCompanyName,

@@ -29,12 +29,14 @@ import uk.gov.hmrc.http.NotFoundException
 import uk.gov.hmrc.play.bootstrap.config.AuthRedirects
 import uk.gov.hmrc.play.bootstrap.http.FrontendErrorHandler
 import uk.gov.hmrc.vatsignupfrontend.views
+import uk.gov.hmrc.vatsignupfrontend.views.html.error_template
 
 import scala.concurrent.Future
 
 
 @Singleton
 class ErrorHandler @Inject()(val messagesApi: MessagesApi,
+                             view: error_template,
                              implicit val appConfig: AppConfig,
                              val config: Configuration,
                              val env: Environment
@@ -42,7 +44,7 @@ class ErrorHandler @Inject()(val messagesApi: MessagesApi,
   with AuthRedirects {
 
   override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit request: Request[_]): Html =
-    views.html.error_template(pageTitle, heading, message)
+    view(pageTitle, heading, message)
 
   override def onServerError(request: RequestHeader, exception: Throwable): Future[Result] = {
     exception match {

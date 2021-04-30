@@ -23,14 +23,16 @@ import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{PrincipalAlreadySignedUp => messages}
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.already_signed_up
 
 class AlreadySignedUpSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[already_signed_up]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.already_signed_up(
+  lazy val page: HtmlFormat.Appendable = view(
   )(
     request,
     messagesApi.preferred(request),

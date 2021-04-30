@@ -28,10 +28,13 @@ import uk.gov.hmrc.vatsignupfrontend.forms.PartnershipUtrForm._
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.models.Yes
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.partnerships.capture_partnership_utr
 
 class CapturePartnershipUtrControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestCapturePartnershipUtrController extends CapturePartnershipUtrController
+  val view = app.injector.instanceOf[capture_partnership_utr]
+
+  object TestCapturePartnershipUtrController extends CapturePartnershipUtrController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/partnership-utr")
 

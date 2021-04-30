@@ -26,14 +26,15 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.bta.cannot_confirm_bus
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class BtaCouldNotConfirmBusinessController @Inject()(implicit ec: ExecutionContext,
-                                                       vcc: VatControllerComponents)
+class BtaCouldNotConfirmBusinessController @Inject()(view: cannot_confirm_business)
+                                                    (implicit ec: ExecutionContext,
+                                                     vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       Future.successful(
-        Ok(cannot_confirm_business(routes.CouldNotConfirmBusinessController.submit()))
+        Ok(view(routes.CouldNotConfirmBusinessController.submit()))
       )
     }
   }

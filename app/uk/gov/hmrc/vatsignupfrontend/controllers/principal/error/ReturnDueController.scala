@@ -21,14 +21,15 @@ import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import uk.gov.hmrc.vatsignupfrontend.config.{AppConfig, VatControllerComponents}
-import uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility.return_due
 
 @Singleton
-class ReturnDueController @Inject()(implicit vcc: VatControllerComponents) extends FrontendController(vcc.controllerComponents) with I18nSupport {
+class ReturnDueController @Inject()(view: return_due)
+                                   (implicit vcc: VatControllerComponents) extends FrontendController(vcc.controllerComponents) with I18nSupport {
 
   implicit final val appConfig: AppConfig = vcc.appConfig
 
   def show: Action[AnyContent] = Action { implicit request =>
-    Ok(eligibility.return_due())
+    Ok(view())
   }
 }

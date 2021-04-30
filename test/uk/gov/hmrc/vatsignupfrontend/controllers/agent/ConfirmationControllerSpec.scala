@@ -25,10 +25,13 @@ import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.SessionKeys
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.models.SoleTrader
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.confirmation
 
 class ConfirmationControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestConfirmationController extends ConfirmationController
+  val view = app.injector.instanceOf[confirmation]
+
+  object TestConfirmationController extends ConfirmationController(view)
 
   lazy val testGetRequest = FakeRequest("GET", "/information-received").withSession(
     SessionKeys.businessEntityKey -> SoleTrader.toString,

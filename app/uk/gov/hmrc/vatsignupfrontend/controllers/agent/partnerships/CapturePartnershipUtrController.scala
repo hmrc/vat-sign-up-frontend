@@ -31,7 +31,8 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.partnerships.capture_partn
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CapturePartnershipUtrController @Inject()(implicit ec: ExecutionContext,
+class CapturePartnershipUtrController @Inject()(view: capture_partnership_utr)
+                                               (implicit ec: ExecutionContext,
                                                 vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
 
@@ -41,7 +42,7 @@ class CapturePartnershipUtrController @Inject()(implicit ec: ExecutionContext,
         val isGeneralPartnership = request.session.getModel[BusinessEntity](businessEntityKey).contains(GeneralPartnership)
 
         Future.successful(
-          Ok(capture_partnership_utr(
+          Ok(view(
             partnershipUtrForm.form,
             routes.CapturePartnershipUtrController.submit(),
             isGeneralPartnership
@@ -70,7 +71,7 @@ class CapturePartnershipUtrController @Inject()(implicit ec: ExecutionContext,
         partnershipUtrForm.form.bindFromRequest.fold(
           formWithErrors =>
             Future.successful(
-              BadRequest(capture_partnership_utr(
+              BadRequest(view(
                 formWithErrors,
                 routes.CapturePartnershipUtrController.submit(),
                 isGeneralPartnership

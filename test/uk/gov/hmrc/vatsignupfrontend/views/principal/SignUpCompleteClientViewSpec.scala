@@ -25,15 +25,16 @@ import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{Base, SignUpCompleteClient => messages}
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
-
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.sign_up_complete_client
 
 class SignUpCompleteClientViewSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[sign_up_complete_client]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.sign_up_complete_client()(
+  lazy val page: HtmlFormat.Appendable = view()(
     request,
     messagesApi.preferred(request),
     appConfig

@@ -26,10 +26,13 @@ import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.forms.NinoForm._
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants.testNino
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.soletrader.capture_nino
 
 class CaptureNinoControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents with FeatureSwitching {
 
-  object TestCaptureNinoController extends CaptureNinoController
+  val view = app.injector.instanceOf[capture_nino]
+
+  object TestCaptureNinoController extends CaptureNinoController(view)
 
   val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/national-insurance-number")
 

@@ -31,14 +31,15 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.vat_registration_date
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CaptureVatRegistrationDateController @Inject()(implicit ec: ExecutionContext,
-                                                       vcc: VatControllerComponents)
+class CaptureVatRegistrationDateController @Inject()(view: vat_registration_date)
+                                                    (implicit ec: ExecutionContext,
+                                                     vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   def show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       Future.successful(
-        Ok(vat_registration_date(vatRegistrationDateForm, routes.CaptureVatRegistrationDateController.submit()))
+        Ok(view(vatRegistrationDateForm, routes.CaptureVatRegistrationDateController.submit()))
       )
     }
   }
@@ -53,7 +54,7 @@ class CaptureVatRegistrationDateController @Inject()(implicit ec: ExecutionConte
       vatRegistrationDateForm.bindFromRequest.fold(
         formWithErrors =>
           Future.successful(
-            BadRequest(vat_registration_date(formWithErrors, routes.CaptureVatRegistrationDateController.submit()))
+            BadRequest(view(formWithErrors, routes.CaptureVatRegistrationDateController.submit()))
           ),
         vatRegistrationDate => {
           optBusinessEntity match {

@@ -27,12 +27,12 @@ import uk.gov.hmrc.vatsignupfrontend.forms.ContactPreferencesForm
 import uk.gov.hmrc.vatsignupfrontend.forms.ContactPreferencesForm._
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
-
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.receive_email_notifications
 
 class ReceiveEmailNotificationsSpec extends ViewSpec {
 
   val error = "error.principal.receive_email_notifications"
-
+  val view = app.injector.instanceOf[receive_email_notifications]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
@@ -41,7 +41,7 @@ class ReceiveEmailNotificationsSpec extends ViewSpec {
 
     "the form has no errors" should {
 
-      lazy val page = uk.gov.hmrc.vatsignupfrontend.views.html.principal.receive_email_notifications(
+      lazy val page = view(
         testEmail,
         contactPreferencesForm(isAgent = false),
         postAction = testCall)(
@@ -114,7 +114,7 @@ class ReceiveEmailNotificationsSpec extends ViewSpec {
 
     "the form has errors due to no radio option" should {
 
-      lazy val page = uk.gov.hmrc.vatsignupfrontend.views.html.principal.receive_email_notifications(
+      lazy val page = view(
         testEmail,
         contactPreferencesForm(isAgent = false).bind(Map(ContactPreferencesForm.contactPreference -> "")),
         postAction = testCall)(

@@ -26,13 +26,14 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.migration_in_progress_
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class MigrationInProgressErrorController @Inject()(implicit ec: ExecutionContext,
-                                                     vcc: VatControllerComponents)
+class MigrationInProgressErrorController @Inject()(view: migration_in_progress_error)
+                                                  (implicit ec: ExecutionContext,
+                                                   vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
-      Future.successful(Ok(migration_in_progress_error()))
+      Future.successful(Ok(view()))
     }
   }
 

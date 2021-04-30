@@ -35,7 +35,8 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.confirm_p
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ConfirmLimitedPartnershipController @Inject()(storePartnershipInformationService: StorePartnershipInformationService)
+class ConfirmLimitedPartnershipController @Inject()(storePartnershipInformationService: StorePartnershipInformationService,
+                                                    view: confirm_partnership_utr)
                                                    (implicit ec: ExecutionContext,
                                                     vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
@@ -51,7 +52,7 @@ class ConfirmLimitedPartnershipController @Inject()(storePartnershipInformationS
       (optVatNumber, optPartnershipUtr, optCompanyName, optCompanyNumber, optPartnershipType) match {
         case (Some(_), Some(partnershipUtr), Some(_), Some(_), Some(_)) =>
           Future.successful(
-            Ok(confirm_partnership_utr(
+            Ok(view(
               partnershipUtr, limitedPartnershipName = optCompanyName, confirmPartnershipForm, routes.ConfirmLimitedPartnershipController.submit()
             ))
           )
@@ -77,7 +78,7 @@ class ConfirmLimitedPartnershipController @Inject()(storePartnershipInformationS
         case (Some(vatNumber), Some(partnershipUtr), Some(companyNumber), Some(partnershipType)) =>
           confirmPartnershipForm.bindFromRequest().fold(
             error => Future.successful(BadRequest(
-              confirm_partnership_utr(partnershipUtr, limitedPartnershipName = optCompanyName, error, routes.ConfirmLimitedPartnershipController.submit())
+              view(partnershipUtr, limitedPartnershipName = optCompanyName, error, routes.ConfirmLimitedPartnershipController.submit())
             ))
             , {
               case Yes =>

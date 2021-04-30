@@ -29,7 +29,7 @@ import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.models._
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.{MockStoreContactPreferenceService, MockStoreEmailAddressService}
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
-
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.receive_email_notifications
 
 class ReceiveEmailNotificationsControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents
   with MockStoreContactPreferenceService with MockStoreEmailAddressService {
@@ -38,9 +38,12 @@ class ReceiveEmailNotificationsControllerSpec extends UnitSpec with GuiceOneAppP
     super.beforeEach()
   }
 
+  val view = app.injector.instanceOf[receive_email_notifications]
+
   object TestReceiveEmailController extends ReceiveEmailNotificationsController(
     mockStoreContactPreferenceService,
-    mockStoreEmailAddressService
+    mockStoreEmailAddressService,
+    view
   )
 
   val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/receive-email-notifications")

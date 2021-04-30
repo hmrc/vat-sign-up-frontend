@@ -27,14 +27,15 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.use_different_email_addres
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class UseDifferentEmailAddressController @Inject()(implicit ec: ExecutionContext,
-                                                     vcc: VatControllerComponents)
+class UseDifferentEmailAddressController @Inject()(view: use_different_email_address)
+                                                  (implicit ec: ExecutionContext,
+                                                   vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       Future.successful(
-        Ok(use_different_email_address(routes.UseDifferentEmailAddressController.submit()))
+        Ok(view(routes.UseDifferentEmailAddressController.submit()))
       )
     }
   }

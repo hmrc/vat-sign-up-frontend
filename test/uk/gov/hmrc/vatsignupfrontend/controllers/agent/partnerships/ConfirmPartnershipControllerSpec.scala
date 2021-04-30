@@ -28,10 +28,13 @@ import uk.gov.hmrc.vatsignupfrontend.config.featureswitch._
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.controllers.agent.{routes => agentRoutes}
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.partnerships.confirm_partnership
 
 class ConfirmPartnershipControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestConfirmPartnershipController extends ConfirmPartnershipController
+  val view = app.injector.instanceOf[confirm_partnership]
+
+  object TestConfirmPartnershipController extends ConfirmPartnershipController(view)
 
   val testGetRequest = FakeRequest("GET", "/confirm-partnership-company")
 

@@ -26,6 +26,7 @@ import play.twirl.api.{Html, HtmlFormat}
 import uk.gov.hmrc.http.SessionKeys
 import uk.gov.hmrc.play.bootstrap.config.{RunMode, ServicesConfig}
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
+import uk.gov.hmrc.vatsignupfrontend.views.html.main_template
 
 class MainTemplateViewSpec extends ViewSpec {
 
@@ -39,6 +40,8 @@ class MainTemplateViewSpec extends ViewSpec {
     override lazy val countdownLength: String = testCountdown
   }
 
+  val view = app.injector.instanceOf[main_template]
+
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
@@ -46,7 +49,7 @@ class MainTemplateViewSpec extends ViewSpec {
            showSignOutLink: Boolean = true,
            hasAuthToken: Boolean = false,
            scriptElem: Option[Html] = None
-          ): Html = uk.gov.hmrc.vatsignupfrontend.views.html.main_template(
+          ): Html = view(
     navTitle = None,
     title = "testTitle",
     sidebarLinks = None,

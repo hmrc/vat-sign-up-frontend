@@ -28,10 +28,13 @@ import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.forms.PartnershipPostCodeForm._
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.models.PostCode
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.principal_place_post_code
 
 class PrincipalPlacePostCodeControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestPrincipalPlacePostCodeController extends PrincipalPlacePostCodeController
+  val view = app.injector.instanceOf[principal_place_post_code]
+
+  object TestPrincipalPlacePostCodeController extends PrincipalPlacePostCodeController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/principal-place-postcode")
 

@@ -25,14 +25,16 @@ import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.controllers.principal.routes
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.verify_email
 
 class VerifyEmailSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[verify_email]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.verify_email(
+  lazy val page: HtmlFormat.Appendable = view(
     email = testEmail)(
     request,
     messagesApi.preferred(request),

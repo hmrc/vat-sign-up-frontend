@@ -27,15 +27,17 @@ import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.forms.eligibility.AreYouReadySubmitSoftwareForm
 import uk.gov.hmrc.vatsignupfrontend.models.YesNo
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility.are_you_ready_submit_software
 
 class AreYouReadySubmitSoftwareSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[are_you_ready_submit_software]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
   val page: Form[YesNo] => HtmlFormat.Appendable = (form: Form[YesNo]) =>
-    uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility.are_you_ready_submit_software(
+    view(
       form,
       postAction = testCall)(
       request,

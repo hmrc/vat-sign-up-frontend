@@ -28,11 +28,13 @@ import uk.gov.hmrc.vatsignupfrontend.controllers.principal.{routes => principalR
 import uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility
 
 import scala.concurrent.Future
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility.got_software
 
 class GotSoftwareControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
   class Setup {
-    val controller = new GotSoftwareController
+    val view = app.injector.instanceOf[got_software]
+    val controller = new GotSoftwareController(view)
   }
 
   "show" should {
@@ -40,7 +42,7 @@ class GotSoftwareControllerSpec extends UnitSpec with GuiceOneAppPerSuite with M
       implicit val req: Request[AnyContent] = FakeRequest()
       implicit val messages: Messages = mockVatControllerComponents.controllerComponents.messagesApi.preferred(req)
       val res: Future[Result] = controller.show(req)
-      contentAsString(res) shouldBe eligibility.got_software(principalRoutes.ResolveVatNumberController.resolve()).body
+      contentAsString(res) shouldBe view(principalRoutes.ResolveVatNumberController.resolve()).body
       status(res) shouldBe Status.OK
     }
   }

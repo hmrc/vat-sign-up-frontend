@@ -30,8 +30,9 @@ import scala.concurrent.{ExecutionContext, Future}
 
 
 @Singleton
-class CaptureNinoController @Inject()(implicit ec: ExecutionContext,
-                                        vcc: VatControllerComponents)
+class CaptureNinoController @Inject()(view: agent_capture_nino)
+                                     (implicit ec: ExecutionContext,
+                                      vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
 
   val validateNinoForm: PrevalidationAPI[String] = ninoForm(isAgent = true)
@@ -39,7 +40,7 @@ class CaptureNinoController @Inject()(implicit ec: ExecutionContext,
   def show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       Future.successful(
-        Ok(agent_capture_nino(validateNinoForm.form, routes.CaptureNinoController.submit()))
+        Ok(view(validateNinoForm.form, routes.CaptureNinoController.submit()))
       )
     }
   }
@@ -50,7 +51,7 @@ class CaptureNinoController @Inject()(implicit ec: ExecutionContext,
         validateNinoForm.bindFromRequest.fold(
           formWithErrors => {
             Future.successful(
-              BadRequest(agent_capture_nino(formWithErrors, routes.CaptureNinoController.submit()))
+              BadRequest(view(formWithErrors, routes.CaptureNinoController.submit()))
             )
           },
           nino =>

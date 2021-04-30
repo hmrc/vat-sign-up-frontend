@@ -17,7 +17,6 @@
 package uk.gov.hmrc.vatsignupfrontend.controllers.principal
 
 import java.time.LocalDate
-
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
 import play.api.libs.json.Json
@@ -34,6 +33,7 @@ import uk.gov.hmrc.vatsignupfrontend.models._
 import uk.gov.hmrc.vatsignupfrontend.services.StoreVatNumberService.VatNumberStored
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.{MockClaimSubscriptionService, MockStoreMigratedVatNumberService, MockStoreVatNumberService}
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.check_your_answers
 
 import scala.concurrent.Future
 
@@ -43,10 +43,13 @@ class CheckYourAnswersControllerSpec extends UnitSpec with GuiceOneAppPerSuite
   with MockStoreMigratedVatNumberService
   with MockClaimSubscriptionService {
 
+  val view = app.injector.instanceOf[check_your_answers]
+
   object TestCheckYourAnswersController extends CheckYourAnswersController(
     mockStoreVatNumberService,
     mockStoreMigratedVatNumberService,
-    mockClaimSubscriptionService
+    mockClaimSubscriptionService,
+    view
   )
 
   val testDate: DateModel = DateModel.dateConvert(LocalDate.now())

@@ -25,13 +25,14 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.recently_registered_va
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RecentlyRegisteredVatNumberController @Inject()(implicit val ec: ExecutionContext,
+class RecentlyRegisteredVatNumberController @Inject()(view: recently_registered_vat_number)
+                                                     (implicit val ec: ExecutionContext,
                                                       implicit val vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
       authorised() {
-        Future.successful(Ok(recently_registered_vat_number()))
+        Future.successful(Ok(view()))
       }
   }
 }

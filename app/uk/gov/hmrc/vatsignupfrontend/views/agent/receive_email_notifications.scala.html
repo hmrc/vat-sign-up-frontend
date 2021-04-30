@@ -21,6 +21,15 @@
 @import uk.gov.hmrc.vatsignupfrontend.forms.ContactPreferencesForm._
 @import uk.gov.hmrc.vatsignupfrontend.views.html._
 @import uk.gov.hmrc.vatsignupfrontend.views.html.helpers.{summaryErrorHelper, radioHelper, continueButton}
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(
+        agent_main_template: agent_main_template,
+        summaryErrorHelper: summaryErrorHelper,
+        form: FormWithCSRF,
+        radioHelper: radioHelper,
+        continueButton: continueButton
+)
 
 @(receiveEmailNotificationForm: Form[ContactPreference], postAction: Call)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 

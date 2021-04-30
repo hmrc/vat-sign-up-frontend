@@ -29,7 +29,8 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.confirmation
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ConfirmationController @Inject()(implicit ec: ExecutionContext,
+class ConfirmationController @Inject()(view: confirmation)
+                                      (implicit ec: ExecutionContext,
                                        vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
 
@@ -40,7 +41,7 @@ class ConfirmationController @Inject()(implicit ec: ExecutionContext,
 
       (optVatNumber, optBusinessEntity) match {
         case (Some(vatNumber), Some(businessEntity)) =>
-          Future.successful(Ok(confirmation(businessEntity, vatNumber, routes.SignUpAnotherClientController.submit())))
+          Future.successful(Ok(view(businessEntity, vatNumber, routes.SignUpAnotherClientController.submit())))
         case _ =>
           Future.successful(Redirect(routes.CaptureVatNumberController.show()))
       }

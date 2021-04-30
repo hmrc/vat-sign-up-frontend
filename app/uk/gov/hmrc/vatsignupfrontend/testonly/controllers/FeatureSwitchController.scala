@@ -33,7 +33,8 @@ import scala.collection.immutable.ListMap
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class FeatureSwitchController @Inject()(val appConfig: AppConfig,
+class FeatureSwitchController @Inject()(view: feature_switch)
+                                       (val appConfig: AppConfig,
                                         mcc: MessagesControllerComponents,
                                         featureSwitchConnector: BackendFeatureSwitchConnector)
                                        (implicit ec: ExecutionContext)
@@ -42,7 +43,7 @@ class FeatureSwitchController @Inject()(val appConfig: AppConfig,
   implicit val config: AppConfig = appConfig
 
   private def view(switchNames: Map[FeatureSwitch, Boolean], backendFeatureSwitches: Map[String, Boolean])(implicit request: Request[_]): Html =
-    feature_switch(
+    view(
       switchNames = switchNames,
       backendFeatureSwitches = backendFeatureSwitches,
       FeatureSwitchController.submit()

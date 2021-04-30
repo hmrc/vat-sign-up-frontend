@@ -24,15 +24,16 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{PrincipalCaptureCompa
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.forms.CompanyUtrForm._
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
-
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_company_utr
 
 class CaptureCompanyUtrSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[capture_company_utr]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_company_utr(
+  lazy val page: HtmlFormat.Appendable = view(
     companyUtrForm = companyUtrForm.form,
     postAction = testCall)(
     request,

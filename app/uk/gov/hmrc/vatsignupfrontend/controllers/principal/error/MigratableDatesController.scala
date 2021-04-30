@@ -30,8 +30,10 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.{sign_up_after_this_da
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class MigratableDatesController @Inject()(implicit ec: ExecutionContext,
-                                            vcc: VatControllerComponents)
+class MigratableDatesController @Inject()(signUpAfterView: sign_up_after_this_date,
+                                          signUpBetweenView: sign_up_between_these_dates)
+                                         (implicit ec: ExecutionContext,
+                                          vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
@@ -39,8 +41,8 @@ class MigratableDatesController @Inject()(implicit ec: ExecutionContext,
       val optMigratableDates = request.session.getModel[MigratableDates](migratableDatesKey)
       Future.successful(
         optMigratableDates match {
-          case Some(MigratableDates(Some(migratableDate), None)) => Ok(sign_up_after_this_date(migratableDate))
-          case Some(MigratableDates(Some(migratableDate), Some(migratableCutoffDate))) => Ok(sign_up_between_these_dates(migratableDate, migratableCutoffDate))
+          case Some(MigratableDates(Some(migratableDate), None)) => Ok(signUpAfterView(migratableDate))
+          case Some(MigratableDates(Some(migratableDate), Some(migratableCutoffDate))) => Ok(signUpBetweenView(migratableDate, migratableCutoffDate))
           case _ => Redirect(principalRoutes.CaptureVatNumberController.show())
         }
       )

@@ -24,10 +24,13 @@ import uk.gov.hmrc.vatsignupfrontend.SessionKeys
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.verify_email
 
 class VerifyEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestVerifyEmailController extends VerifyEmailController
+  val view = app.injector.instanceOf[verify_email]
+
+  object TestVerifyEmailController extends VerifyEmailController(view)
 
   "Calling the show action of the Verify Email controller" when {
     "email is in session" should {

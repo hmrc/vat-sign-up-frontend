@@ -37,7 +37,8 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.capture_p
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CapturePartnershipCompanyNumberController @Inject()(getCompanyNameService: GetCompanyNameService)
+class CapturePartnershipCompanyNumberController @Inject()(getCompanyNameService: GetCompanyNameService,
+                                                          view: capture_partnership_company_number)
                                                          (implicit ec: ExecutionContext,
                                                           vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
@@ -56,7 +57,7 @@ class CapturePartnershipCompanyNumberController @Inject()(getCompanyNameService:
     implicit request =>
       authorised() {
         Future.successful(
-          Ok(capture_partnership_company_number(
+          Ok(view(
             validateCompanyNumberForm.form,
             routes.CapturePartnershipCompanyNumberController.submit())
           )
@@ -70,7 +71,7 @@ class CapturePartnershipCompanyNumberController @Inject()(getCompanyNameService:
         validateCompanyNumberForm.bindFromRequest.fold(
           formWithErrors =>
             Future.successful(
-              BadRequest(capture_partnership_company_number(
+              BadRequest(view(
                 formWithErrors,
                 routes.CapturePartnershipCompanyNumberController.submit()
               ))

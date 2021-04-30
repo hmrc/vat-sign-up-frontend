@@ -37,7 +37,8 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class CheckYourAnswersController @Inject()(storeVatNumberService: StoreVatNumberService,
                                            storeMigratedVatNumberService: StoreMigratedVatNumberService,
-                                           claimSubscriptionService: ClaimSubscriptionService)
+                                           claimSubscriptionService: ClaimSubscriptionService,
+                                           view: check_your_answers)
                                           (implicit ec: ExecutionContext,
                                            vcc: VatControllerComponents) extends AuthenticatedController(AdministratorRolePredicate) {
 
@@ -59,7 +60,7 @@ class CheckYourAnswersController @Inject()(storeVatNumberService: StoreVatNumber
       (optVatNumber, optVatRegistrationDate, optBusinessPostCode, optPreviousVatReturn, optBox5Figure, optLastReturnMonth) match {
         case (Some(vatNumber), Some(vatRegistrationDate), _, _, _, _) if (isMigrated || isAlreadySubscribed) && isOverseas =>
           Future.successful(
-            Ok(check_your_answers(
+            Ok(view(
               vatNumber = vatNumber,
               registrationDate = vatRegistrationDate,
               optPostCode = None,
@@ -71,7 +72,7 @@ class CheckYourAnswersController @Inject()(storeVatNumberService: StoreVatNumber
           )
         case (Some(vatNumber), Some(vatRegistrationDate), Some(businessPostCode), _, _, _) if isMigrated || isAlreadySubscribed =>
           Future.successful(
-            Ok(check_your_answers(
+            Ok(view(
               vatNumber = vatNumber,
               registrationDate = vatRegistrationDate,
               optPostCode = Some(businessPostCode),
@@ -107,7 +108,7 @@ class CheckYourAnswersController @Inject()(storeVatNumberService: StoreVatNumber
           )
         case (Some(vatNumber), Some(vatRegistrationDate), _, _, _, _) =>
           Future.successful(
-            Ok(check_your_answers(
+            Ok(view(
               vatNumber = vatNumber,
               registrationDate = vatRegistrationDate,
               optPostCode = if (optBusinessEntity contains Overseas.toString) None else optBusinessPostCode,

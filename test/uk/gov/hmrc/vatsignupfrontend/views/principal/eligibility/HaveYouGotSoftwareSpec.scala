@@ -25,14 +25,16 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{PrincipalHaveYouGotSo
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.forms.HaveYouGotSoftwareForm._
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility.have_you_got_software
 
 class HaveYouGotSoftwareSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[have_you_got_software]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility.have_you_got_software(
+  lazy val page: HtmlFormat.Appendable = view(
     haveYouGotSoftwareForm, postAction = testCall)(
     request,
     messagesApi.preferred(request),

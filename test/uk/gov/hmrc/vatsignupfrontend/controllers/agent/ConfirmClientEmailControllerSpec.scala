@@ -27,11 +27,14 @@ import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.MockStoreEmailAddressService
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.confirm_email
 
 class ConfirmClientEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents
   with MockStoreEmailAddressService {
 
-  object TestConfirmEmailController extends ConfirmClientEmailController(mockStoreEmailAddressService)
+  val view = app.injector.instanceOf[confirm_email]
+
+  object TestConfirmEmailController extends ConfirmClientEmailController(mockStoreEmailAddressService, view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/confirm-client-email")
 

@@ -25,16 +25,17 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{CaptureLastReturnMont
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.forms.MonthForm._
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
-
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_last_return_month_period
 
 class CaptureLastReturnMonthPeriodViewSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[capture_last_return_month_period]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
   lazy val page: HtmlFormat.Appendable =
-    uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_last_return_month_period(monthForm, postAction = testCall)(
+    view(monthForm, postAction = testCall)(
       request,
       messagesApi.preferred(request),
       appConfig

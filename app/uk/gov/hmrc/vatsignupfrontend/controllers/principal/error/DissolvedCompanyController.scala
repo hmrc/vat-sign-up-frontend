@@ -31,8 +31,9 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.dissolved_company
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class DissolvedCompanyController @Inject()(implicit ec: ExecutionContext,
-                                             vcc: VatControllerComponents)
+class DissolvedCompanyController @Inject()(view: dissolved_company)
+                                          (implicit ec: ExecutionContext,
+                                           vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   val show: Action[AnyContent] = Action.async {
@@ -53,7 +54,7 @@ class DissolvedCompanyController @Inject()(implicit ec: ExecutionContext,
 
         optCompanyName match {
           case Some(companyName) =>
-            Future.successful(Ok(dissolved_company(redirectUrl = redirectRoute.url, companyName = companyName)))
+            Future.successful(Ok(view(redirectUrl = redirectRoute.url, companyName = companyName)))
           case _ =>
             Future.successful(Redirect(redirectRoute).removingFromSession(SessionKeys.companyNameKey))
         }

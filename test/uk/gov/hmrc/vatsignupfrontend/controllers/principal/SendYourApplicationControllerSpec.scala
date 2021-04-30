@@ -26,13 +26,16 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup
 import uk.gov.hmrc.vatsignupfrontend.controllers.ControllerSpec
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.{MockMigratedSubmissionService, MockSubmissionService}
-
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.send_your_application
 
 class SendYourApplicationControllerSpec extends ControllerSpec with MockMigratedSubmissionService with MockSubmissionService {
 
+  val view = app.injector.instanceOf[send_your_application]
+
   object TestSendYourApplicationController extends SendYourApplicationController(
     mockMigratedSubmissionService,
-    mockSubmissionService
+    mockSubmissionService,
+    view
   )
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/about-to-submit")

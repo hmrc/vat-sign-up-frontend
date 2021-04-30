@@ -26,10 +26,13 @@ import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.controllers.principal.{routes => principalRoutes}
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.views.html.principal.incorrect_enrolment_vat_number
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.incorrect_enrolment_vat_number
 
 class IncorrectEnrolmentVatNumberControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestIncorrectEnrolmentVatNumberController extends IncorrectEnrolmentVatNumberController
+  val view = app.injector.instanceOf[incorrect_enrolment_vat_number]
+
+  object TestIncorrectEnrolmentVatNumberController extends IncorrectEnrolmentVatNumberController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/error/sign-in-with-different-details")
 
@@ -43,7 +46,7 @@ class IncorrectEnrolmentVatNumberControllerSpec extends UnitSpec with GuiceOneAp
       val result = TestIncorrectEnrolmentVatNumberController.show(request)
 
       status(result) shouldBe Status.OK
-      contentAsString(result) shouldBe incorrect_enrolment_vat_number(principalRoutes.CaptureVatNumberController.show().url).body
+      contentAsString(result) shouldBe view(principalRoutes.CaptureVatNumberController.show().url).body
     }
   }
 

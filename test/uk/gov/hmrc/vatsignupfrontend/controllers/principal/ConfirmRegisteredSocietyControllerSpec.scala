@@ -29,15 +29,17 @@ import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.{MockCtReferenceLookupService, MockStoreRegisteredSocietyService}
-
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.confirm_registered_society
 
 class ConfirmRegisteredSocietyControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents
   with MockStoreRegisteredSocietyService with MockCtReferenceLookupService with FeatureSwitching {
 
+  val view = app.injector.instanceOf[confirm_registered_society]
 
   object TestConfirmRegisteredSocietyController extends ConfirmRegisteredSocietyController(
     mockStoreRegisteredSocietyService,
-    mockCtReferenceLookupService
+    mockCtReferenceLookupService,
+    view
   )
 
   val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/confirm-registered-society")

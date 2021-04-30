@@ -27,13 +27,16 @@ import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants.{testNino, testVatNum
 import uk.gov.hmrc.vatsignupfrontend.models.SoleTrader
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.MockStoreNinoService
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.soletrader.confirm_nino
 
 class ConfirmNinoControllerSpec extends UnitSpec
   with GuiceOneAppPerSuite
   with MockVatControllerComponents
   with MockStoreNinoService {
 
-  object TestConfirmNinoController extends ConfirmNinoController(mockStoreNinoService)
+  val view = app.injector.instanceOf[confirm_nino]
+
+  object TestConfirmNinoController extends ConfirmNinoController(mockStoreNinoService, view)
 
   val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/confirm-national-insurance-number")
   val testPostRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("POST", "/confirm-national-insurance-number")

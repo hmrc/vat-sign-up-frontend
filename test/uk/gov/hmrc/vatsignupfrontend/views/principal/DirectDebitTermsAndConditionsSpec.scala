@@ -24,14 +24,16 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{PrincipalDirectDebitT
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.controllers.principal.routes
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.direct_debit_terms_and_conditions
 
 class DirectDebitTermsAndConditionsSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[direct_debit_terms_and_conditions]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.principal.direct_debit_terms_and_conditions(postAction = testCall)(
+  lazy val page: HtmlFormat.Appendable = view(postAction = testCall)(
     request,
     messagesApi.preferred(request),
     appConfig

@@ -24,10 +24,13 @@ import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.controllers.principal.error.{routes => errorRoutes}
 import uk.gov.hmrc.vatsignupfrontend.forms.MultipleVatCheckForm._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.software_ready
 
 class SoftwareReadyControllerSpec extends UnitSpec with MockVatControllerComponents {
 
-  object TestSoftwareReadyController extends SoftwareReadyController
+  val view = app.injector.instanceOf[software_ready]
+
+  object TestSoftwareReadyController extends SoftwareReadyController(view)
 
   val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/software-ready")
 

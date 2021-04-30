@@ -25,15 +25,17 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{CaptureBusinessEntity
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.forms.BusinessEntityForm._
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.capture_business_entity_other
 
 class CaptureBusinessEntityOtherSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[capture_business_entity_other]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
 
-  def page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.agent.capture_business_entity_other(
+  def page: HtmlFormat.Appendable = view(
     businessEntityForm,
     postAction = testCall
   )(

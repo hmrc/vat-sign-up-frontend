@@ -20,6 +20,16 @@
 @import uk.gov.hmrc.vatsignupfrontend.views.helpers.BusinessEntityHelper
 @import uk.gov.hmrc.vatsignupfrontend.views.html._
 @import uk.gov.hmrc.vatsignupfrontend.views.html.helpers.{continueButton, summaryRowHelper}
+@import _root_.uk.gov.hmrc.vatsignupfrontend.views.helpers.CheckYourAnswersIdConstants._
+@import _root_.uk.gov.hmrc.vatsignupfrontend.views.helpers.CheckYourAnswersPartnershipsIdConstants.CompanyNumberId
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(
+        summaryRowHelper: summaryRowHelper,
+        agent_main_template: agent_main_template,
+        form: FormWithCSRF,
+        continueButton: continueButton
+)
 
 @(utr: Option[String],
   entityType: BusinessEntity,
@@ -27,8 +37,7 @@
   companyNumber: Option[String],
   postAction: Call)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
-@import _root_.uk.gov.hmrc.vatsignupfrontend.views.helpers.CheckYourAnswersIdConstants._
-@import _root_.uk.gov.hmrc.vatsignupfrontend.views.helpers.CheckYourAnswersPartnershipsIdConstants.CompanyNumberId
+
 
 @businessEntityCheck() = @{
     val rowName = BusinessEntityId

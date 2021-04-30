@@ -30,9 +30,11 @@ import uk.gov.hmrc.vatsignupfrontend.models.{GeneralPartnership, LimitedPartners
 import uk.gov.hmrc.vatsignupfrontend.utils.SummarySectionTesting
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
 import uk.gov.hmrc.vatsignupfrontend.views.helpers.CheckYourAnswersPartnershipsIdConstants._
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.check_your_answers_partnerships
 
 class CheckYourAnswersPartnershipsViewSpec extends ViewSpec with SummarySectionTesting {
 
+  val view = app.injector.instanceOf[check_your_answers_partnerships]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
@@ -40,7 +42,7 @@ class CheckYourAnswersPartnershipsViewSpec extends ViewSpec with SummarySectionT
 
   "Limited Partnership Check Your Answers View" should {
 
-    lazy val limitedPartnershipPage: Html = uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.check_your_answers_partnerships(
+    lazy val limitedPartnershipPage: Html = view(
       entityType = LimitedPartnership,
       partnershipUtr = Some(testCompanyUtr),
       companyNumber = Some(testCompanyNumber),
@@ -117,7 +119,7 @@ class CheckYourAnswersPartnershipsViewSpec extends ViewSpec with SummarySectionT
   "General Partnership Check Your Answers View" when {
     "the user has an Sautr" should {
 
-      lazy val generalPartnershipPage: Html = uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.check_your_answers_partnerships(
+      lazy val generalPartnershipPage: Html = view(
         entityType = GeneralPartnership,
         partnershipUtr = Some(testCompanyUtr),
         companyNumber = None,

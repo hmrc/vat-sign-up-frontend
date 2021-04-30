@@ -26,14 +26,16 @@ import uk.gov.hmrc.vatsignupfrontend.assets.MessageLookup.{ConfirmEmail => messa
 import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants.testEmail
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.confirm_email
 
 class ConfirmEmailSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[confirm_email]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
-  lazy val page: HtmlFormat.Appendable = uk.gov.hmrc.vatsignupfrontend.views.html.agent.confirm_email(
+  lazy val page: HtmlFormat.Appendable = view(
     email = testEmail,
     postAction = testCall)(
     request,

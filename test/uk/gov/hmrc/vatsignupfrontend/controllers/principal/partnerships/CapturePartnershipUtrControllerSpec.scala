@@ -30,10 +30,13 @@ import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.models._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.capture_partnership_utr
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.capture_partnership_utr
 
 class CapturePartnershipUtrControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestCapturePartnershipUtrController extends CapturePartnershipUtrController
+  val view = app.injector.instanceOf[capture_partnership_utr]
+
+  object TestCapturePartnershipUtrController extends CapturePartnershipUtrController(view)
 
   val testGetRequestForNoUtr: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/partnership-no-utr")
   val testGetRequestForShow: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/partnership-utr")
@@ -50,7 +53,7 @@ class CapturePartnershipUtrControllerSpec extends UnitSpec with GuiceOneAppPerSu
       )
       implicit val messages: Messages = mockVatControllerComponents.controllerComponents.messagesApi.preferred(testGetRequestForShow)
 
-      lazy val view = capture_partnership_utr(
+      lazy val viewBody = view(
         partnershipUtrForm = PartnershipUtrForm.partnershipUtrForm.form,
         postAction = routes.CapturePartnershipUtrController.submit(),
         displayGeneralPartnershipAccordion = true
@@ -62,7 +65,7 @@ class CapturePartnershipUtrControllerSpec extends UnitSpec with GuiceOneAppPerSu
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some("text/html")
       charset(result) shouldBe Some("utf-8")
-      contentAsString(result) shouldBe view
+      contentAsString(result) shouldBe viewBody
     }
 
     s"go to the Partnership utr page with the right content && $LimitedPartnership" in {
@@ -74,7 +77,7 @@ class CapturePartnershipUtrControllerSpec extends UnitSpec with GuiceOneAppPerSu
 
       implicit val messages: Messages = mockVatControllerComponents.controllerComponents.messagesApi.preferred(testGetRequestForShow)
 
-      lazy val view = capture_partnership_utr(
+      lazy val viewBody = view(
         partnershipUtrForm = PartnershipUtrForm.partnershipUtrForm.form,
         postAction = routes.CapturePartnershipUtrController.submit(),
         displayGeneralPartnershipAccordion = false
@@ -86,7 +89,7 @@ class CapturePartnershipUtrControllerSpec extends UnitSpec with GuiceOneAppPerSu
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some("text/html")
       charset(result) shouldBe Some("utf-8")
-      contentAsString(result) shouldBe view
+      contentAsString(result) shouldBe viewBody
     }
   }
 
@@ -159,7 +162,7 @@ class CapturePartnershipUtrControllerSpec extends UnitSpec with GuiceOneAppPerSu
 
       implicit val messages: Messages = mockVatControllerComponents.controllerComponents.messagesApi.preferred(request)
 
-      lazy val view = capture_partnership_utr(
+      lazy val viewBody = view(
         partnershipUtrForm = PartnershipUtrForm.partnershipUtrForm.form.bindFromRequest()(testGetRequestForNoUtr),
         postAction = routes.CapturePartnershipUtrController.submit(),
         displayGeneralPartnershipAccordion = true
@@ -172,7 +175,7 @@ class CapturePartnershipUtrControllerSpec extends UnitSpec with GuiceOneAppPerSu
       status(result) shouldBe Status.BAD_REQUEST
       contentType(result) shouldBe Some("text/html")
       charset(result) shouldBe Some("utf-8")
-      contentAsString(result) shouldBe view
+      contentAsString(result) shouldBe viewBody
     }
 
     s"reload the page with errors with the right content && $LimitedPartnership" in {
@@ -182,7 +185,7 @@ class CapturePartnershipUtrControllerSpec extends UnitSpec with GuiceOneAppPerSu
 
       implicit val messages: Messages = mockVatControllerComponents.controllerComponents.messagesApi.preferred(request)
 
-      lazy val view = capture_partnership_utr(
+      lazy val viewBody = view(
         partnershipUtrForm = PartnershipUtrForm.partnershipUtrForm.form.bindFromRequest()(testGetRequestForNoUtr),
         postAction = routes.CapturePartnershipUtrController.submit(),
         displayGeneralPartnershipAccordion = false
@@ -195,7 +198,7 @@ class CapturePartnershipUtrControllerSpec extends UnitSpec with GuiceOneAppPerSu
       status(result) shouldBe Status.BAD_REQUEST
       contentType(result) shouldBe Some("text/html")
       charset(result) shouldBe Some("utf-8")
-      contentAsString(result) shouldBe view
+      contentAsString(result) shouldBe viewBody
     }
   }
 

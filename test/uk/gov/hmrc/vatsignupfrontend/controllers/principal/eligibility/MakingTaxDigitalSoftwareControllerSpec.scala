@@ -26,11 +26,13 @@ import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.controllers.principal.eligibility.{routes => principalRoutes}
 import uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility.making_tax_digital_software
 
 class MakingTaxDigitalSoftwareControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
   class Setup {
-    val controller = new MakingTaxDigitalSoftwareController
+    val view = app.injector.instanceOf[making_tax_digital_software]
+    val controller = new MakingTaxDigitalSoftwareController(view)
   }
 
   "show" should {
@@ -38,7 +40,7 @@ class MakingTaxDigitalSoftwareControllerSpec extends UnitSpec with GuiceOneAppPe
       implicit val req: Request[AnyContent] = FakeRequest()
       implicit val messages: Messages = mockVatControllerComponents.controllerComponents.messagesApi.preferred(req)
       val res = controller.show(req)
-      contentAsString(res) shouldBe eligibility.making_tax_digital_software(
+      contentAsString(res) shouldBe view(
         principalRoutes.HaveYouGotSoftwareController.show()).body
       status(res) shouldBe Status.OK
     }

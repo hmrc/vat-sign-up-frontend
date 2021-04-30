@@ -26,10 +26,13 @@ import uk.gov.hmrc.vatsignupfrontend.SessionKeys
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.models.SoleTrader
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants.testVatNumber
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.information_received
 
 class InformationReceivedControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestInformationReceivedController extends InformationReceivedController
+  val view = app.injector.instanceOf[information_received]
+
+  object TestInformationReceivedController extends InformationReceivedController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/information-received").withSession(
     SessionKeys.businessEntityKey -> SoleTrader.toString,

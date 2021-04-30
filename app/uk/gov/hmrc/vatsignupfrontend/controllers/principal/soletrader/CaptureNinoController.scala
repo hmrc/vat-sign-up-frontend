@@ -29,7 +29,7 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.soletrader.capture_nin
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CaptureNinoController @Inject()(implicit ec: ExecutionContext,
+class CaptureNinoController @Inject()(view: capture_nino)(implicit ec: ExecutionContext,
                                         vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
@@ -38,7 +38,7 @@ class CaptureNinoController @Inject()(implicit ec: ExecutionContext,
   def show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       Future.successful(
-        Ok(capture_nino(validateNinoForm.form, routes.CaptureNinoController.submit()))
+        Ok(view(validateNinoForm.form, routes.CaptureNinoController.submit()))
       )
     }
   }
@@ -48,7 +48,7 @@ class CaptureNinoController @Inject()(implicit ec: ExecutionContext,
       authorised() {
         validateNinoForm.bindFromRequest.fold(
           formWithErrors => Future.successful(
-            BadRequest(capture_nino(formWithErrors, routes.CaptureNinoController.submit()))
+            BadRequest(view(formWithErrors, routes.CaptureNinoController.submit()))
           ),
           nino => Future.successful(
             Redirect(routes.ConfirmNinoController.show()).addingToSession(ninoKey -> nino)

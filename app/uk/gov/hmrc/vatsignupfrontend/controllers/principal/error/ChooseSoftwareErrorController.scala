@@ -24,12 +24,13 @@ import uk.gov.hmrc.vatsignupfrontend.config.{AppConfig, VatControllerComponents}
 import uk.gov.hmrc.vatsignupfrontend.views.html.principal.choose_software_error
 
 @Singleton
-class ChooseSoftwareErrorController @Inject()(implicit vcc: VatControllerComponents) extends FrontendController(vcc.controllerComponents) with I18nSupport {
+class ChooseSoftwareErrorController @Inject()(view: choose_software_error)
+                                             (implicit vcc: VatControllerComponents) extends FrontendController(vcc.controllerComponents) with I18nSupport {
 
   implicit val appConfig: AppConfig = vcc.appConfig
 
   val show: Action[AnyContent] = Action { implicit request =>
-    Ok(choose_software_error(routes.ChooseSoftwareErrorController.submit()))
+    Ok(view(routes.ChooseSoftwareErrorController.submit()))
   }
 
   val submit: Action[AnyContent] = Action { implicit request =>

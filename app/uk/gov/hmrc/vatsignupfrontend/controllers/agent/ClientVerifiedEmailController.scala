@@ -25,13 +25,14 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.client_verified_email
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ClientVerifiedEmailController @Inject()(implicit ec: ExecutionContext,
-                                                vcc: VatControllerComponents)
+class ClientVerifiedEmailController @Inject()(view: client_verified_email)
+                                             (implicit ec: ExecutionContext,
+                                              vcc: VatControllerComponents)
   extends AuthenticatedController() {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
     Future.successful(
-      Ok(client_verified_email())
+      Ok(view())
     )
   }
 

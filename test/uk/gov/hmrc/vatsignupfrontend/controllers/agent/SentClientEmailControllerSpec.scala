@@ -25,10 +25,13 @@ import uk.gov.hmrc.vatsignupfrontend.SessionKeys
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.sent_client_email
 
 class SentClientEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestSentClientEmailController extends SentClientEmailController
+  val view = app.injector.instanceOf[sent_client_email]
+
+  object TestSentClientEmailController extends SentClientEmailController(view)
 
   lazy val testGetRequest = FakeRequest("GET", "/verify-email")
 

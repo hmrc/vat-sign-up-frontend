@@ -26,11 +26,14 @@ import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.featureswitch.FeatureSwitching
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.controllers.principal.{routes => principalRoutes}
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.could_not_confirm_vat_number
 
 class InvalidVatNumberControllerSpec extends UnitSpec with GuiceOneAppPerSuite
   with MockVatControllerComponents with FeatureSwitching with BeforeAndAfterEach {
 
-  object TestInvalidVatNumberController extends InvalidVatNumberController
+  val view = app.injector.instanceOf[could_not_confirm_vat_number]
+
+  object TestInvalidVatNumberController extends InvalidVatNumberController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/error/could-not-confirm-vat-number")
 

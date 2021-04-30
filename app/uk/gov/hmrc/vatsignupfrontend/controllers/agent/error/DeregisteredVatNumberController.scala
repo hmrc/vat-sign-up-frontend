@@ -27,14 +27,15 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.deregistered_unenrolled
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class DeregisteredVatNumberController @Inject()(implicit ec: ExecutionContext,
-                                                  vcc: VatControllerComponents)
+class DeregisteredVatNumberController @Inject()(view: deregistered_unenrolled)
+                                               (implicit ec: ExecutionContext,
+                                                vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
 
   val show: Action[AnyContent] = Action.async {
     implicit request =>
       authorised() {
-        Future.successful(Ok(deregistered_unenrolled(agentRoutes.CaptureVatNumberController.show().url)))
+        Future.successful(Ok(view(agentRoutes.CaptureVatNumberController.show().url)))
       }
   }
 

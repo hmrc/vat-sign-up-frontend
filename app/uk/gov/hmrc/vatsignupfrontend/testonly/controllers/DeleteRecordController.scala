@@ -32,7 +32,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class DeleteRecordController @Inject()(deleteRecordConnector: DeleteRecordConnector,
-                                       vcc: VatControllerComponents)
+                                       vcc: VatControllerComponents,
+                                       view: delete_record)
                                       (implicit ec: ExecutionContext)
   extends FrontendController(vcc.controllerComponents) with I18nSupport {
 
@@ -42,7 +43,7 @@ class DeleteRecordController @Inject()(deleteRecordConnector: DeleteRecordConnec
 
   val show: Action[AnyContent] = Action.async { implicit request =>
     Future.successful(
-      Ok(delete_record(validateVatNumberForm.form, routes.DeleteRecordController.submit()))
+      Ok(view(validateVatNumberForm.form, routes.DeleteRecordController.submit()))
     )
   }
 
@@ -50,7 +51,7 @@ class DeleteRecordController @Inject()(deleteRecordConnector: DeleteRecordConnec
     validateVatNumberForm.bindFromRequest.fold(
       formWithErrors =>
         Future.successful(
-          BadRequest(delete_record(formWithErrors, routes.DeleteRecordController.submit()))
+          BadRequest(view(formWithErrors, routes.DeleteRecordController.submit()))
         ),
       vatNumber =>
         deleteRecordConnector.deleteRecord(vatNumber).map {

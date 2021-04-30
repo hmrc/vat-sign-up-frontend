@@ -25,10 +25,13 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.views.html.principal.sign_up_complete_client
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.sign_up_complete_client
 
 class SignUpCompleteClientControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestInformationReceivedController extends SignUpCompleteClientController
+  val view = app.injector.instanceOf[sign_up_complete_client]
+
+  object TestInformationReceivedController extends SignUpCompleteClientController(view)
 
   implicit lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/sign-up-complete-client")
 
@@ -40,7 +43,7 @@ class SignUpCompleteClientControllerSpec extends UnitSpec with GuiceOneAppPerSui
 
       val result = TestInformationReceivedController.show(request)
       status(result) shouldBe Status.OK
-      contentAsString(result) shouldBe sign_up_complete_client().body
+      contentAsString(result) shouldBe view().body
     }
   }
 

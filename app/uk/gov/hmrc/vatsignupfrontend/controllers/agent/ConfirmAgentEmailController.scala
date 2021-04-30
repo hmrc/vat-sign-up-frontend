@@ -30,7 +30,8 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.confirm_agent_email
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ConfirmAgentEmailController @Inject()(storeEmailAddressService: StoreEmailAddressService)
+class ConfirmAgentEmailController @Inject()(storeEmailAddressService: StoreEmailAddressService,
+                                            view: confirm_agent_email)
                                            (implicit ec: ExecutionContext,
                                             vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
@@ -43,7 +44,7 @@ class ConfirmAgentEmailController @Inject()(storeEmailAddressService: StoreEmail
       (optVatNumber, optTransactionEmail) match {
         case (Some(_), Some(transactionEmail)) =>
           Future.successful(
-            Ok(confirm_agent_email(transactionEmail, routes.ConfirmAgentEmailController.submit()))
+            Ok(view(transactionEmail, routes.ConfirmAgentEmailController.submit()))
           )
         case (None, _) =>
           Future.successful(

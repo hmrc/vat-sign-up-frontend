@@ -60,11 +60,12 @@ class CheckYourAnswersFinalSpec extends ViewSpec with SummarySectionTesting with
     )
 
   implicit val messages: Messages = messagesApi.preferred(viewTestRequest)
+  val view = app.injector.instanceOf[check_your_answers_final]
 
   def testView(summary: SubscriptionRequestSummary,
                optBusinessEntity: Option[BusinessEntity],
                optCompanyName: Option[String] = None
-              ): Html = check_your_answers_final(
+              ): Html = view(
     subSummary = summary,
     optBusinessEntity = optBusinessEntity,
     optCompanyName = optCompanyName,

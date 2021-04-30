@@ -36,13 +36,16 @@ import uk.gov.hmrc.vatsignupfrontend.utils.SessionUtils.jsonSessionFormatter
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 
 import scala.concurrent.Future
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.check_your_answers_partnerships
 
 class CheckYourAnswersPartnershipsControllerSpec extends UnitSpec
   with GuiceOneAppPerSuite
   with MockVatControllerComponents
   with MockStorePartnershipInformationService {
 
-  object TestCheckYourAnswersController extends CheckYourAnswersPartnershipsController(mockStorePartnershipInformationService)
+  val view = app.injector.instanceOf[check_your_answers_partnerships]
+
+  object TestCheckYourAnswersController extends CheckYourAnswersPartnershipsController(mockStorePartnershipInformationService, view)
 
   val generalPartnershipType: String = GeneralPartnership.toString
   val limitedPartnershipType: String = LimitedPartnership.toString

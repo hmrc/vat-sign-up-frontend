@@ -14,9 +14,16 @@
  * limitations under the License.
  *@
 
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
 @import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
-@import uk.gov.hmrc.play.views.html.helpers.form
-@import uk.gov.hmrc.vatsignupfrontend.views.html._
+@import uk.gov.hmrc.vatsignupfrontend.views.html.principal_main_template
+@import uk.gov.hmrc.vatsignupfrontend.views.html.helpers.continueButton
+
+@this(
+        principal_main_template: principal_main_template,
+        form: FormWithCSRF,
+        continueButton: continueButton
+)
 
 @(action: Call)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
@@ -45,11 +52,11 @@
 
             @form(action) {
                 <div class='actions'>
-                    @helpers.continueButton(alternativeText = Some(messages("base.sign_up")))
+                    @continueButton(alternativeText = Some(messages("base.sign_up")))
                 </div>
             }
 
         </div>
     </div>
 
-}
+}@import uk.gov.hmrc.vatsignupfrontend.views.html.principal_main_template

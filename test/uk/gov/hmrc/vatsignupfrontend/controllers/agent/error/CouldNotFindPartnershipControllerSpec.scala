@@ -24,10 +24,13 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.controllers.agent.partnerships.{routes => partnershipRoutes}
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.partnerships.could_not_find_partnership
 
 class CouldNotFindPartnershipControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestCouldNotFindPartnershipController extends CouldNotFindPartnershipController
+  val view = app.injector.instanceOf[could_not_find_partnership]
+
+  object TestCouldNotFindPartnershipController extends CouldNotFindPartnershipController(view)
 
   lazy val testGetRequest = FakeRequest("GET", "/client/error/company-number-not-found ")
 

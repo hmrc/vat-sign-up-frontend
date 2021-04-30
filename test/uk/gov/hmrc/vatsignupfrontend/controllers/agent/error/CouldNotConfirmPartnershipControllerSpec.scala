@@ -30,7 +30,9 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.partnerships.could_not_con
 
 class CouldNotConfirmPartnershipControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestCouldNotConfirmPartnershipController extends CouldNotConfirmPartnershipController
+  val view = app.injector.instanceOf[could_not_confirm_partnership]
+
+  object TestCouldNotConfirmPartnershipController extends CouldNotConfirmPartnershipController(view)
 
   implicit lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/client/error/could-not-confirm-partnership ")
 
@@ -44,7 +46,7 @@ class CouldNotConfirmPartnershipControllerSpec extends UnitSpec with GuiceOneApp
       status(result) shouldBe Status.OK
       contentType(result) shouldBe Some("text/html")
       charset(result) shouldBe Some("utf-8")
-      contentAsString(result) shouldBe could_not_confirm_partnership(agentRoutes.SignUpAnotherClientController.submit()).body
+      contentAsString(result) shouldBe view(agentRoutes.SignUpAnotherClientController.submit()).body
     }
   }
 

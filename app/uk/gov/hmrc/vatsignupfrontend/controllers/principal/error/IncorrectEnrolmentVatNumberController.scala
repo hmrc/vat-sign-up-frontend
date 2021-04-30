@@ -27,15 +27,16 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.incorrect_enrolment_va
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class IncorrectEnrolmentVatNumberController @Inject()(implicit ec: ExecutionContext,
-                                                        vcc: VatControllerComponents)
+class IncorrectEnrolmentVatNumberController @Inject()(view: incorrect_enrolment_vat_number)
+                                                     (implicit ec: ExecutionContext,
+                                                      vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       val changeLink = principalRoutes.CaptureVatNumberController.show().url
       Future.successful(
-        Ok(incorrect_enrolment_vat_number(
+        Ok(view(
           changeLink = changeLink
         ))
       )

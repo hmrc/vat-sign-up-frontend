@@ -33,7 +33,8 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.check_your_answers_com
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CheckYourAnswersCompanyController @Inject()(storeCompanyNumberService: StoreCompanyNumberService)
+class CheckYourAnswersCompanyController @Inject()(storeCompanyNumberService: StoreCompanyNumberService,
+                                                  view: check_your_answers_company)
                                                  (implicit ec: ExecutionContext,
                                                   vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
@@ -49,7 +50,7 @@ class CheckYourAnswersCompanyController @Inject()(storeCompanyNumberService: Sto
         (optCompanyNumber, optCompanyUtr) match {
           case (Some(companyNumber), Some(companyUtr)) =>
             Future.successful(
-              Ok(check_your_answers_company(
+              Ok(view(
                 companyNumber = companyNumber,
                 companyUtr = companyUtr,
                 businessEntity = LimitedCompany,

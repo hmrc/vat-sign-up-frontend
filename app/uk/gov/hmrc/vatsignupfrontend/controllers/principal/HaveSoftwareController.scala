@@ -29,19 +29,20 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.have_software
 import scala.concurrent.Future
 
 @Singleton
-class HaveSoftwareController @Inject()(implicit vcc: VatControllerComponents) extends FrontendController(vcc.controllerComponents) with I18nSupport {
+class HaveSoftwareController @Inject()(view: have_software)
+                                      (implicit vcc: VatControllerComponents) extends FrontendController(vcc.controllerComponents) with I18nSupport {
 
   implicit val appConfig: AppConfig = vcc.appConfig
 
   val show: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(have_software(haveSoftwareForm, routes.HaveSoftwareController.submit())))
+    Future.successful(Ok(view(haveSoftwareForm, routes.HaveSoftwareController.submit())))
   }
 
   val submit: Action[AnyContent] = Action.async { implicit request =>
     haveSoftwareForm.bindFromRequest.fold(
       formWithErrors =>
         Future.successful(
-          BadRequest(have_software(formWithErrors, routes.HaveSoftwareController.submit()))
+          BadRequest(view(formWithErrors, routes.HaveSoftwareController.submit()))
         ), {
         case Yes =>
           Future.successful(Redirect(routes.SoftwareReadyController.show()))

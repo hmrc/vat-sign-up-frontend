@@ -16,6 +16,8 @@
 
 @import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 
+@this()
+
 @(alternativeText: Option[String] = None, isAgent: Boolean)(implicit appConfig: AppConfig, request: Request[_], messages: Messages)
 
 @href = @{

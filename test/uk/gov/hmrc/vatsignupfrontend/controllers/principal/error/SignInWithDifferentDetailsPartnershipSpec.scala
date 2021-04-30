@@ -23,10 +23,13 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.sign_in_with_different_details_partnership
 
 class SignInWithDifferentDetailsPartnershipSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestSignInWithDifferentDetailsPartnershipController extends SignInWithDifferentDetailsPartnershipController
+  val view = app.injector.instanceOf[sign_in_with_different_details_partnership]
+
+  object TestSignInWithDifferentDetailsPartnershipController extends SignInWithDifferentDetailsPartnershipController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/error/right-partnership-utr")
 

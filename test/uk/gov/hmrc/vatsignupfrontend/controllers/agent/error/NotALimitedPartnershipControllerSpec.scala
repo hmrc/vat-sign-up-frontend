@@ -24,10 +24,13 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.controllers.agent.{routes => agentRoutes}
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.partnerships.company_name_not_found_lp
 
 class NotALimitedPartnershipControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestNotALimitedPartnershipControllerr extends NotALimitedPartnershipController
+  val view = app.injector.instanceOf[company_name_not_found_lp]
+
+  object TestNotALimitedPartnershipControllerr extends NotALimitedPartnershipController(view)
 
   lazy val testGetRequest = FakeRequest("GET", "/client/error/not-a-limited-partnership ")
 

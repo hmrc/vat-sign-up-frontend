@@ -23,10 +23,13 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.bta.cannot_confirm_business
 
 class BtaCouldNotConfirmBusinessControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestCouldNotConfirmBusinessController extends BtaCouldNotConfirmBusinessController
+  val view = app.injector.instanceOf[cannot_confirm_business]
+
+  object TestCouldNotConfirmBusinessController extends BtaCouldNotConfirmBusinessController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/error/bta/could-not-confirm-business")
 

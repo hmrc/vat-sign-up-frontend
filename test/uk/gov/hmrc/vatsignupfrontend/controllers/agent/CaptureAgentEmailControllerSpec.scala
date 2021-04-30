@@ -26,10 +26,13 @@ import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.forms.EmailForm._
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.capture_agent_email
 
 class CaptureAgentEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestCaptureAgentEmailController extends CaptureAgentEmailController
+  val view = app.injector.instanceOf[capture_agent_email]
+
+  object TestCaptureAgentEmailController extends CaptureAgentEmailController(view)
 
   val uri = "/client/email-address"
   val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", uri)

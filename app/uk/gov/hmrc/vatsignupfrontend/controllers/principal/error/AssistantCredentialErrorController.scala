@@ -25,13 +25,14 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.assistant_credential_e
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AssistantCredentialErrorController @Inject()(implicit ec: ExecutionContext,
-                                                     vcc: VatControllerComponents)
+class AssistantCredentialErrorController @Inject()(view: assistant_credential_error)
+                                                  (implicit ec: ExecutionContext,
+                                                   vcc: VatControllerComponents)
   extends AuthenticatedController() {
 
   val show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
-      Future.successful(Ok(assistant_credential_error()))
+      Future.successful(Ok(view()))
     }
   }
 

@@ -30,7 +30,7 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.resignup.sign_up_compl
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SignUpCompleteController @Inject()(implicit ec: ExecutionContext,
+class SignUpCompleteController @Inject()(view: sign_up_complete)(implicit ec: ExecutionContext,
                                            vcc: VatControllerComponents)
   extends AuthenticatedController(AdministratorRolePredicate) {
 
@@ -42,7 +42,7 @@ class SignUpCompleteController @Inject()(implicit ec: ExecutionContext,
       (optVatNumber, optBusinessEntity) match {
         case (Some(vatNumber), Some(businessEntity)) =>
           Future.successful(
-            Ok(sign_up_complete(businessEntity, vatNumber))
+            Ok(view(businessEntity, vatNumber))
           )
         case _ =>
           Future.successful(Redirect(CaptureVatNumberController.show()))

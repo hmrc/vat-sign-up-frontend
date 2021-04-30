@@ -28,7 +28,9 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.agent_email_verified
 
 class AgentVerifiedEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestAgentVerifiedEmailController extends AgentVerifiedEmailController
+  val view = app.injector.instanceOf[agent_email_verified]
+
+  object TestAgentVerifiedEmailController extends AgentVerifiedEmailController(view)
 
   "Calling the show action of the AgentVerifiedEmailController" should {
     implicit lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/verified-your-email")
@@ -39,7 +41,7 @@ class AgentVerifiedEmailControllerSpec extends UnitSpec with GuiceOneAppPerSuite
       val result = TestAgentVerifiedEmailController.show(testGetRequest)
 
       status(result) shouldBe Status.OK
-      contentAsString(result) shouldBe agent_email_verified(routes.ContactPreferenceController.show().url).body
+      contentAsString(result) shouldBe view(routes.ContactPreferenceController.show().url).body
     }
   }
 }

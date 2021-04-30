@@ -16,6 +16,8 @@
 
 @import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 
+@this()
+
 @(href: String, alternativeText: Option[String] = None)(implicit messages: Messages, appConfig: AppConfig)
 
 <a id="alternate-button" class="govuk-button--secondary button" href=@href>@alternativeText.getOrElse(Messages("base.continue"))</a>

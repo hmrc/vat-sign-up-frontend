@@ -24,10 +24,13 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.controllers.agent.{routes => agentRoutes}
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.registered_society_company_name_not_found
 
 class RegisteredSocietyCompanyNameNotFoundControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestRegisteredSocietyCompanyNameNotFoundController extends RegisteredSocietyCompanyNameNotFoundController
+  val view = app.injector.instanceOf[registered_society_company_name_not_found]
+
+  object TestRegisteredSocietyCompanyNameNotFoundController extends RegisteredSocietyCompanyNameNotFoundController(view)
 
   lazy val testGetRequest = FakeRequest("GET", "/client/error/registered-society-company-name-not-found")
 

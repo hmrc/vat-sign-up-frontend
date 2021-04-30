@@ -35,7 +35,8 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.confirm_vat_number
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ConfirmVatNumberController @Inject()(storeVatNumberOrchestrationService: StoreVatNumberOrchestrationService)
+class ConfirmVatNumberController @Inject()(storeVatNumberOrchestrationService: StoreVatNumberOrchestrationService,
+                                           view: confirm_vat_number)
                                           (implicit ec: ExecutionContext,
                                            vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
@@ -46,7 +47,7 @@ class ConfirmVatNumberController @Inject()(storeVatNumberOrchestrationService: S
         request.session.get(vatNumberKey) match {
           case Some(vatNumber) if vatNumber.nonEmpty =>
             Future.successful(
-              Ok(confirm_vat_number(vatNumber, routes.ConfirmVatNumberController.submit()))
+              Ok(view(vatNumber, routes.ConfirmVatNumberController.submit()))
             )
           case _ =>
             Future.successful(

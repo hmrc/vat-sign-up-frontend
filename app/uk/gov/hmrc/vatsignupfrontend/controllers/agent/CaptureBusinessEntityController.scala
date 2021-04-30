@@ -32,7 +32,8 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.capture_business_entity
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CaptureBusinessEntityController @Inject()(administrativeDivisionLookupService: AdministrativeDivisionLookupService)
+class CaptureBusinessEntityController @Inject()(administrativeDivisionLookupService: AdministrativeDivisionLookupService,
+                                                view: capture_business_entity)
                                                (implicit ec: ExecutionContext,
                                                 vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
@@ -54,7 +55,7 @@ class CaptureBusinessEntityController @Inject()(administrativeDivisionLookupServ
                 .addingToSession(SessionKeys.businessEntityKey, Division.asInstanceOf[BusinessEntity])
             )
           case Some(_) =>
-            Future.successful(Ok(capture_business_entity(businessEntityForm, routes.CaptureBusinessEntityController.submit())))
+            Future.successful(Ok(view(businessEntityForm, routes.CaptureBusinessEntityController.submit())))
           case _ =>
             Future.successful(
               Redirect(routes.CaptureVatNumberController.show())
@@ -68,7 +69,7 @@ class CaptureBusinessEntityController @Inject()(administrativeDivisionLookupServ
       businessEntityForm.bindFromRequest.fold(
         formWithErrors =>
           Future.successful(
-            BadRequest(capture_business_entity(
+            BadRequest(view(
               formWithErrors,
               routes.CaptureBusinessEntityController.submit()
             ))

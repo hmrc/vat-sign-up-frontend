@@ -29,8 +29,9 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.previous_vat_return
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class PreviousVatReturnController @Inject()(implicit ec: ExecutionContext,
-                                              vcc: VatControllerComponents)
+class PreviousVatReturnController @Inject()(view: previous_vat_return)
+                                           (implicit ec: ExecutionContext,
+                                            vcc: VatControllerComponents)
 
   extends AuthenticatedController(AdministratorRolePredicate) {
 
@@ -38,7 +39,7 @@ class PreviousVatReturnController @Inject()(implicit ec: ExecutionContext,
     implicit request =>
       authorised() {
         Future.successful(
-          Ok(previous_vat_return(previousVatReturnForm, routes.PreviousVatReturnController.submit()))
+          Ok(view(previousVatReturnForm, routes.PreviousVatReturnController.submit()))
         )
       }
   }
@@ -49,7 +50,7 @@ class PreviousVatReturnController @Inject()(implicit ec: ExecutionContext,
         previousVatReturnForm.bindFromRequest.fold(
           formWithErrors =>
             Future.successful(
-              BadRequest(previous_vat_return(formWithErrors, routes.PreviousVatReturnController.submit()))
+              BadRequest(view(formWithErrors, routes.PreviousVatReturnController.submit()))
             ), {
             case Yes =>
               Future.successful(

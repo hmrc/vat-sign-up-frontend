@@ -27,10 +27,12 @@ import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.forms.OtherBusinessEntityForm._
 import uk.gov.hmrc.vatsignupfrontend.models.BusinessEntity.BusinessEntitySessionFormatter
 import uk.gov.hmrc.vatsignupfrontend.models._
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.capture_business_entity_other
 
 class CaptureBusinessEntityOtherControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestCaptureBusinessEntityOtherController extends CaptureBusinessEntityOtherController
+  val view = app.injector.instanceOf[capture_business_entity_other]
+  object TestCaptureBusinessEntityOtherController extends CaptureBusinessEntityOtherController(view)
 
   val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/business-type-other")
 

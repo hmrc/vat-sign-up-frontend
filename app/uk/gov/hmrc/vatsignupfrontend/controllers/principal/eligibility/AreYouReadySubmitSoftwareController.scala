@@ -29,7 +29,8 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.principal.eligibility.are_you_re
 import scala.concurrent.Future
 
 @Singleton
-class AreYouReadySubmitSoftwareController @Inject()(implicit vcc: VatControllerComponents)
+class AreYouReadySubmitSoftwareController @Inject()(view: are_you_ready_submit_software)
+                                                   (implicit vcc: VatControllerComponents)
   extends FrontendController(vcc.controllerComponents) with I18nSupport {
 
   implicit val appConfig: AppConfig = vcc.appConfig
@@ -37,7 +38,7 @@ class AreYouReadySubmitSoftwareController @Inject()(implicit vcc: VatControllerC
   val show: Action[AnyContent] = Action.async {
     implicit request =>
       Future.successful(
-        Ok(are_you_ready_submit_software(
+        Ok(view(
           readyToSubmitForm = areYouReadySubmitSoftwareForm,
           postAction = routes.AreYouReadySubmitSoftwareController.submit()
         ))
@@ -49,7 +50,7 @@ class AreYouReadySubmitSoftwareController @Inject()(implicit vcc: VatControllerC
       areYouReadySubmitSoftwareForm.bindFromRequest.fold(
         formWithErrors =>
           Future.successful(
-            BadRequest(are_you_ready_submit_software(
+            BadRequest(view(
               readyToSubmitForm = formWithErrors,
               postAction = routes.AreYouReadySubmitSoftwareController.submit()
             ))

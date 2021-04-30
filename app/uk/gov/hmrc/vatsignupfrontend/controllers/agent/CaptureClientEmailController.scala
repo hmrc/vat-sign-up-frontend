@@ -30,8 +30,9 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.capture_client_email
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CaptureClientEmailController @Inject()(implicit ec: ExecutionContext,
-                                               vcc: VatControllerComponents)
+class CaptureClientEmailController @Inject()(view: capture_client_email)
+                                            (implicit ec: ExecutionContext,
+                                             vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
 
   val validateEmailForm: PrevalidationAPI[String] = emailForm(isAgent = true)
@@ -41,7 +42,7 @@ class CaptureClientEmailController @Inject()(implicit ec: ExecutionContext,
       val hasDirectDebit = request.session.get(SessionKeys.hasDirectDebitKey).getOrElse("false").toBoolean
 
       Future.successful(
-        Ok(capture_client_email(
+        Ok(view(
           hasDirectDebit = hasDirectDebit,
           validateEmailForm.form,
           routes.CaptureClientEmailController.submit()
@@ -57,7 +58,7 @@ class CaptureClientEmailController @Inject()(implicit ec: ExecutionContext,
       validateEmailForm.bindFromRequest.fold(
         formWithErrors =>
           Future.successful(
-            BadRequest(capture_client_email(
+            BadRequest(view(
               hasDirectDebit = hasDirectDebit,
               formWithErrors,
               routes.CaptureClientEmailController.submit()

@@ -32,7 +32,8 @@ import uk.gov.hmrc.vatsignupfrontend.views.html.agent.receive_email_notification
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ContactPreferenceController @Inject()(contactPreferenceService: StoreContactPreferenceService)
+class ContactPreferenceController @Inject()(contactPreferenceService: StoreContactPreferenceService,
+                                            view: receive_email_notifications)
                                            (implicit ec: ExecutionContext,
                                             vcc: VatControllerComponents)
   extends AuthenticatedController(AgentEnrolmentPredicate) {
@@ -40,7 +41,7 @@ class ContactPreferenceController @Inject()(contactPreferenceService: StoreConta
   val show: Action[AnyContent] = Action.async { implicit request =>
     authorised() {
       Future.successful(
-        Ok(receive_email_notifications(contactPreferencesForm(isAgent = true), routes.ContactPreferenceController.submit()))
+        Ok(view(contactPreferencesForm(isAgent = true), routes.ContactPreferenceController.submit()))
       )
     }
   }
@@ -74,7 +75,7 @@ class ContactPreferenceController @Inject()(contactPreferenceService: StoreConta
 
       contactPreferencesForm(isAgent = true).bindFromRequest.fold(
         formWithErrors => Future.successful(
-          BadRequest(receive_email_notifications(formWithErrors, routes.ConfirmClientEmailController.submit()))
+          BadRequest(view(formWithErrors, routes.ConfirmClientEmailController.submit()))
         ),
         storeContactPreference
       )

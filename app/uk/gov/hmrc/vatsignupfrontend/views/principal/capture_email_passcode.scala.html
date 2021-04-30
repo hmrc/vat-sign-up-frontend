@@ -20,7 +20,16 @@
 @import uk.gov.hmrc.vatsignupfrontend.views.html.helpers._
 @import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
 
-@this(form: FormWithCSRF)
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(
+        main_template: main_template,
+        form: FormWithCSRF,
+        summaryErrorHelper: summaryErrorHelper,
+        labelHelper: labelHelper,
+        inputHelper: inputHelper,
+        continueButton: continueButton
+)
 
 @(passcodeForm: Form[String], email: String, postAction: Call)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 

@@ -19,6 +19,12 @@
 @import uk.gov.hmrc.vatsignupfrontend.views.html._
 @import uk.gov.hmrc.vatsignupfrontend.views.html.helpers._
 @import uk.gov.hmrc.vatsignupfrontend.models.BusinessEntity
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+
+@this(
+        agent_main_template: agent_main_template,
+        form: FormWithCSRF
+)
 
 @(entityType: BusinessEntity, vatRegistrationNumber: String, postAction: Call)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 

@@ -25,16 +25,17 @@ import uk.gov.hmrc.vatsignupfrontend.config.AppConfig
 import uk.gov.hmrc.vatsignupfrontend.controllers.principal.partnerships.routes
 import uk.gov.hmrc.vatsignupfrontend.forms.PartnershipUtrForm._
 import uk.gov.hmrc.vatsignupfrontend.views.ViewSpec
-
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.capture_partnership_utr
 
 class CapturePartnershipUtrSpec extends ViewSpec {
 
+  val view = app.injector.instanceOf[capture_partnership_utr]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
   lazy val page: Boolean => HtmlFormat.Appendable = (displayGeneralPartnershipAccordion: Boolean) => {
-    uk.gov.hmrc.vatsignupfrontend.views.html.principal.partnerships.capture_partnership_utr(
+    view(
       partnershipUtrForm = partnershipUtrForm.form,
       postAction = testCall,
       displayGeneralPartnershipAccordion = displayGeneralPartnershipAccordion

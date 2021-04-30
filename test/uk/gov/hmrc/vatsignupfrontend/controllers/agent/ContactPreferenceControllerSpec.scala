@@ -28,10 +28,13 @@ import uk.gov.hmrc.vatsignupfrontend.forms.ContactPreferencesForm
 import uk.gov.hmrc.vatsignupfrontend.helpers.TestConstants._
 import uk.gov.hmrc.vatsignupfrontend.models.{Digital, Paper}
 import uk.gov.hmrc.vatsignupfrontend.services.mocks.MockStoreContactPreferenceService
+import uk.gov.hmrc.vatsignupfrontend.views.html.agent.receive_email_notifications
 
 class ContactPreferenceControllerSpec extends ControllerSpec with MockStoreContactPreferenceService {
 
-  object TestContactPreferenceController extends ContactPreferenceController(mockStoreContactPreferenceService)
+  val view = app.injector.instanceOf[receive_email_notifications]
+
+  object TestContactPreferenceController extends ContactPreferenceController(mockStoreContactPreferenceService, view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/client/receive-email-notifications")
   lazy val testPostRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("POST", "/client/receive-email-notifications")

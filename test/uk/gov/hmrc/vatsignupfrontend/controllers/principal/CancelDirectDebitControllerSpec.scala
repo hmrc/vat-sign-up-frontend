@@ -23,10 +23,14 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.vatsignupfrontend.config.mocks.MockVatControllerComponents
 import uk.gov.hmrc.vatsignupfrontend.utils.UnitSpec
+import uk.gov.hmrc.vatsignupfrontend.views.html.principal.cancel_direct_debit
 
 class CancelDirectDebitControllerSpec extends UnitSpec with GuiceOneAppPerSuite with MockVatControllerComponents {
 
-  object TestCancelDirectDebitController extends CancelDirectDebitController
+
+  val view = app.injector.instanceOf[cancel_direct_debit]
+
+  object TestCancelDirectDebitController extends CancelDirectDebitController(view)
 
   lazy val testGetRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/cancel-direct-debit")
 
