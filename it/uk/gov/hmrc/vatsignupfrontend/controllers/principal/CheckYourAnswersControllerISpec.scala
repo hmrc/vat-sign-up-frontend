@@ -411,7 +411,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with CustomMatch
     }
 
     "handle attempting to store a Unenrolled migrated vat number" should {
-      "throw an error if the known facts mismatch" in {
+      "redirect to the correct location if the known facts mismatch" in {
         stubAuth(OK, successfulAuthResponse())
         stubStoreVatNumberKnownFactsMismatchMigrated(
           testVatNumber,
@@ -430,7 +430,8 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with CustomMatch
         )()
 
         res should have(
-          httpStatus(INTERNAL_SERVER_ERROR)
+          httpStatus(SEE_OTHER),
+          redirectUri(errorRoutes.VatCouldNotConfirmBusinessController.show().toString)
         )
       }
 
@@ -481,7 +482,7 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with CustomMatch
     }
 
     "handle attempting to store a Unenrolled migrated overseas vat number" should {
-      "throw an error if the known facts mismatch" in {
+      "redirect to the correct location if the known facts mismatch" in {
         stubAuth(OK, successfulAuthResponse())
         stubStoreVatNumberKnownFactsMismatchMigrated(
           testVatNumber,
@@ -500,7 +501,8 @@ class CheckYourAnswersControllerISpec extends ComponentSpecBase with CustomMatch
         )()
 
         res should have(
-          httpStatus(INTERNAL_SERVER_ERROR)
+          httpStatus(SEE_OTHER),
+          redirectUri(errorRoutes.VatCouldNotConfirmBusinessController.show().toString)
         )
       }
 
