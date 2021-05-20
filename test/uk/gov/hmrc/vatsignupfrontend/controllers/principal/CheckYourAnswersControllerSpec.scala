@@ -464,7 +464,7 @@ class CheckYourAnswersControllerSpec extends UnitSpec with GuiceOneAppPerSuite
           }
         }
 
-        "return a un-successful response from mismatching known facts" in {
+        "redirect to the correct location with mismatching known facts" in {
           mockAuthRetrieveEmptyEnrolment()
           mockStoreMigratedVatNumber(
             testVatNumber,
@@ -474,9 +474,10 @@ class CheckYourAnswersControllerSpec extends UnitSpec with GuiceOneAppPerSuite
             Future.successful(Left(StoreMigratedVatNumberHttpParser.KnownFactsMismatch))
           )
 
-          intercept[InternalServerException] {
-            TestCheckYourAnswersController.submit(testPostRequest().withSession(SessionKeys.isMigratedKey -> "true"))
-          }
+          val result = TestCheckYourAnswersController.submit(testPostRequest().withSession(SessionKeys.isMigratedKey -> "true"))
+          status(result) shouldBe Status.SEE_OTHER
+          redirectLocation(result) shouldBe Some(errorRoutes.VatCouldNotConfirmBusinessController.show().toString)
+
         }
       }
 
@@ -514,7 +515,7 @@ class CheckYourAnswersControllerSpec extends UnitSpec with GuiceOneAppPerSuite
           }
         }
 
-        "return a un-successful response from mismatching known facts" in {
+        "redirect to the correct location with mismatching known facts" in {
           mockAuthRetrieveEmptyEnrolment()
           mockStoreMigratedVatNumber(
             testVatNumber,
@@ -524,11 +525,12 @@ class CheckYourAnswersControllerSpec extends UnitSpec with GuiceOneAppPerSuite
             Future.successful(Left(StoreMigratedVatNumberHttpParser.KnownFactsMismatch))
           )
 
-          intercept[InternalServerException] {
-            TestCheckYourAnswersController.submit(testPostRequest(postCode = None).withSession(
+          val result = TestCheckYourAnswersController.submit(testPostRequest(postCode = None).withSession(
               SessionKeys.isMigratedKey -> "true", SessionKeys.businessEntityKey -> Overseas.toString
             ))
-          }
+
+          status(result) shouldBe Status.SEE_OTHER
+          redirectLocation(result) shouldBe Some(errorRoutes.VatCouldNotConfirmBusinessController.show().toString)
         }
       }
 

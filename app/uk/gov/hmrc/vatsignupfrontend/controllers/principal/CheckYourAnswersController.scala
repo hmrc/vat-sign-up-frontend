@@ -201,7 +201,7 @@ class CheckYourAnswersController @Inject()(storeVatNumberService: StoreVatNumber
             case Right(StoreMigratedVatNumberHttpParser.StoreMigratedVatNumberSuccess) =>
               Redirect(routes.CaptureBusinessEntityController.show())
             case Left(StoreMigratedVatNumberHttpParser.KnownFactsMismatch) =>
-              throw new InternalServerException(s"[CheckYourAnswersController][storeMigratedUnenrolledVatNumber] Failed to store vat number for unenrolled known facts mismatch")
+              Redirect(errorRoutes.VatCouldNotConfirmBusinessController.show())
           }
         case (_, _, _, None, _, _) =>
           Future.successful(
